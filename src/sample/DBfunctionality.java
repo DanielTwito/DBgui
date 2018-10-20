@@ -41,4 +41,9 @@ public class DBfunctionality {
     public boolean deleteEntry(String username){
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "DBfunctionality";
+    }
 }

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -17,9 +18,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        Parent root = fxmlLoader.load(getClass().getResource("SQLInterface.fxml").openStream());
+
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 1000, 780));
+
+        Controller controller = fxmlLoader.getController();     //gettin the controller for the FXML
+        controller.setModel(new DBfunctionality());             //setting a model for it
+
         primaryStage.show();
     }
 
@@ -37,8 +45,8 @@ public class Main extends Application {
     public static void ValidateDatabase(String db_name) {
         Connection c = null;                                    //this object holds the connection to the database
 
-        File db = new File(db_name);    //a file object to point to the database file
-        if (!db.exists()) {                                      //checks if the database exist, if not than creates it
+        File db = new File(db_name);                            //a file object to point to the database file
+        if (!db.exists()) {                                     //checks if the database exist, if not than creates it
             try {                                               //creates a new database inside the Database directory
                 c = DriverManager.getConnection("jdbc:sqlite:" + db_name);
             } catch (Exception e) {
