@@ -6,11 +6,11 @@ public class DBfunctionality {
      * This Function is in charge of adding a new Entry to the Database
      * by the following order (userName, password, birthDate, firstName, lastName, homeTown)
      * @param newUser String that represents the new fields of the user
-     * @return Boolean value whether the Entry was added or not
+     * @return RESULT value whether the Entry was added or not
      */
-    public boolean addEntry(String newUser){
+    public RESULT addEntry(String newUser){
         String[] userInfo = newUser.split(",");
-        return true;
+        return RESULT.Success;
     }
 
     /**
@@ -19,7 +19,7 @@ public class DBfunctionality {
      * @return A string that represents the User in the following order (userName, password, birthDate, firstName, lastName, homeTown)
      */
     public String readEntry(String username){
-        return null;
+        return "";
     }
 
     /**
@@ -27,10 +27,10 @@ public class DBfunctionality {
      * @param username String that represents the userName of the specific user
      * @param field Enum from the field to Change
      * @param newValue The new value of the field
-     * @return Boolean value whether the Entry was changed or not
+     * @return RESULT value whether the Entry was changed or not
      */
-    public boolean updateEntry(String username, Fields field, String newValue){
-        return true;
+    public RESULT updateEntry(String username, Fields field, String newValue){
+        return RESULT.Success;
     }
 
     /**
@@ -38,8 +38,8 @@ public class DBfunctionality {
      * @param username String that represents the userName of the specific user
      * @return Boolean value whether the Entry was deleted or not
      */
-    public boolean deleteEntry(String username){
-        return true;
+    public RESULT deleteEntry(String username){
+        return RESULT.Success;
     }
 
     @Override

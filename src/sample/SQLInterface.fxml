@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -37,7 +38,7 @@
          <children>
             <TextArea fx:id="query_output" accessibleRole="TEXT" editable="false" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" promptText="Query output will be shown here..." GridPane.rowIndex="2" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cdcdcd" height="522.0" stroke="BLACK" strokeType="INSIDE" width="515.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
-            <Button fx:id="create_btn" alignment="CENTER" mnemonicParsing="false" prefHeight="78.0" prefWidth="234.0" text="CREATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="create_btn" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#CreateHandler" prefHeight="78.0" prefWidth="234.0" text="CREATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <effect>
                   <DropShadow />
                </effect>
@@ -48,7 +49,7 @@
                   <Insets top="-400.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="search_btn" alignment="CENTER" mnemonicParsing="false" prefHeight="78.0" prefWidth="234.0" text="SEARCH" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="search_btn" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#SearchHandler" prefHeight="78.0" prefWidth="234.0" text="SEARCH" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <effect>
                   <DropShadow />
                </effect>
@@ -59,7 +60,7 @@
                   <Insets top="-130.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="update_btn" alignment="CENTER" mnemonicParsing="false" prefHeight="78.0" prefWidth="234.0" text="UPDATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="update_btn" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#UpdateHandler" prefHeight="78.0" prefWidth="234.0" text="UPDATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <effect>
                   <DropShadow />
                </effect>
@@ -70,7 +71,7 @@
                   <Insets top="130.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="remove_btn" alignment="CENTER" mnemonicParsing="false" prefHeight="78.0" prefWidth="234.0" text="REMOVE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="remove_btn" onMouseClicked="#deleteHandler" alignment="CENTER" mnemonicParsing="false" prefHeight="78.0" prefWidth="234.0" text="REMOVE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <effect>
                   <DropShadow />
                </effect>
@@ -113,36 +114,40 @@
             </TextField>
             <TextField fx:id="ID_search" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <TextField fx:id="ID_remove" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <TextField fx:id="ID_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets left="10.0" top="30.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="password_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="Password" snapToPixel="false" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets left="10.0" top="80.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="birthDate_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="BirthDate" snapToPixel="false" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets top="30.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="firstName_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="First Name" snapToPixel="false" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets top="80.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="lastName_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="Last Name" snapToPixel="false" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets right="10.0" top="30.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="hometown_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="City" snapToPixel="false" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets right="10.0" top="80.0" />
-               </GridPane.margin>
-            </TextField>
+            <StackPane fx:id="stackpanel" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <TextField id="username" fx:id="ID_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="20.0" top="30.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <TextField fx:id="password_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="Password" snapToPixel="false" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets left="20.0" top="80.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <TextField fx:id="birthDate_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="Birth Date" snapToPixel="false" StackPane.alignment="TOP_CENTER">
+                     <StackPane.margin>
+                        <Insets top="30.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <TextField fx:id="firstName_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="First Name" snapToPixel="false" StackPane.alignment="TOP_CENTER">
+                     <StackPane.margin>
+                        <Insets top="80.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <TextField fx:id="lastName_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="Last Name" snapToPixel="false" StackPane.alignment="TOP_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="20.0" top="30.0" />
+                     </StackPane.margin>
+                  </TextField>
+                  <TextField fx:id="homeTown_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="City" snapToPixel="false" StackPane.alignment="TOP_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="20.0" top="80.0" />
+                     </StackPane.margin>
+                  </TextField>
+               </children>
+            </StackPane>
          </children>
       </GridPane>
    </children>
