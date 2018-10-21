@@ -72,12 +72,15 @@ public class DBfunctionality {
         try
         {
             Statement query = c.createStatement();                  // create a statement and execute the query
-            int result = query.executeUpdate("UPDATE "+table+" SET "+fieldToUpdate.toString()+" = "+ newValue +" WHERE "+ wantedField+" = "+ data+";");
-            if(result==0)
-                out=RESULT.Fail;
+            int result = query.executeUpdate("UPDATE "+table+" SET "+fieldToUpdate.toString()+" = '"+ newValue +"' WHERE "+ wantedField+" = '"+ data+"';");
+            if(result==0) {
+                out = RESULT.Fail;
+
+            }
             c.close();
         }
         catch(Exception e) {
+            System.out.println(e.getMessage());
             throw new NullPointerException();
         }
 

@@ -86,13 +86,13 @@ public class Controller {
      */
     public void UpdateHandler(MouseEvent mouseEvent)
     {
-        RESULT res=RESULT.Success;
+        RESULT res=RESULT.Fail;
         if(fields_combo.getSelectionModel().isEmpty()) return;  // checks if anything is selected from the combo box
         Fields field = Fields.valueOf(fields_combo.getValue().toString());// gets the field from the combo cox
         try{
-            res = model.updateEntry("USERS", field, value_Update.getText(),Fields.userName,ID_update.getText());
+            res = model.updateEntry("users", field, value_Update.getText(),Fields.userName,ID_update.getText());
         }catch (NullPointerException e){
-
+            System.out.println("bug");
         }
         query_output.setText("Update "+res.toString());     // output the result in the text area
     }
