@@ -76,9 +76,9 @@ public class DBfunctionality {
         try {
             Statement query = c.createStatement();                             // create a statement
             String sql = "DELETE FROM USERS WHERE userName = '"+username+"';"; //the sql query to delete
-            query.executeUpdate(sql);                                          //execute the sql query
+            int works = query.executeUpdate(sql);                                          //execute the sql query
         c.close();
-        if(readEntry(username,Fields.userName).equals("")){                    //checks whether the entry was deleted
+        if(works==1){                    //checks whether the entry was deleted
             return RESULT.Success;
         }
         else return RESULT.Fail;
