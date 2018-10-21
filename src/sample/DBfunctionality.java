@@ -21,6 +21,7 @@ public class DBfunctionality {
      */
     public RESULT addEntry(String newUser){
         String[] userInfo = newUser.split(",");
+
         return RESULT.Success;
     }
 
@@ -28,9 +29,10 @@ public class DBfunctionality {
      * This Function is in charge of reading(searching) the Database for a specific entry
      * @param data String that represents the userName of the specific user
      * @param field the Field to search in
+     * @param table
      * @return A string that represents the User in the following order (userName, password, birthDate, firstName, lastName, homeTown)
      */
-    public String readEntry(String data, Fields field)
+    public String readEntry(String data,  String table, Fields field)
     {
         Connection c = openConnection();
         String out = "";
@@ -38,7 +40,7 @@ public class DBfunctionality {
         try
         {
             Statement query = c.createStatement();                  // create a statement and execute the query
-            ResultSet result = query.executeQuery("SELECT * FROM USERS WHERE "+field.toString()+"="+data);
+            ResultSet result = query.executeQuery("SELECT * FROM "+table+" WHERE "+field.toString()+"='"+data+"';");
             while(result.next())                                    // collection all data received
             {
                 out += result.getString("userName")+",";
@@ -56,13 +58,30 @@ public class DBfunctionality {
 
     /**
      * This Function is in charge of updating(changing) a specific entry in the database
-     * @param username String that represents the userName of the specific user
-     * @param field Enum from the field to Change
-     * @param newValue The new value of the field
+     * @param table String that represents the table to update
+     * @param fieldToUpdate Enum from the field to Change
+     * @param newValue String that represents the new value to update
+     * @param wantedField which field check in the condition
+     * @param data records that are equals to given data in the wanted field will be update
      * @return RESULT value whether the Entry was changed or not
      */
-    public RESULT updateEntry(String username, Fields field, String newValue){
-        return RESULT.Success;
+    public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){
+        Connection c = openConnection();
+        RESULT out=RESULT.Success;
+        if(c == null) throw new NullPointerException();
+        try
+        {
+            Statement query = c.createStatement();                  // create a statement and execute the query
+            int result = query.executeUpdate("UPDATE "+table+" SET "+fieldToUpdate.toString()+" = "+ newValue +" WHERE "+ wantedField+" = "+ data+";");
+            if(result==0)
+                out=RESULT.Failiure;
+            c.close();
+        }
+        catch(Exception e) {
+            throw new NullPointerException();
+        }
+
+        return out;
     }
 
     /**

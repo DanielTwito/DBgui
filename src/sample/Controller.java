@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
+import javax.xml.transform.Result;
+
 public class Controller {
 
     private DBfunctionality model = null;                   //it may be more generic to use and interface for the model
@@ -67,7 +69,7 @@ public class Controller {
     public void SearchHandler(MouseEvent mouseEvent)
     {
         String result;
-        try { result = model.readEntry(ID_search.getText(), Fields.userName); // gets the query results from the model
+        try { result = model.readEntry(ID_search.getText(), "USERS" ,Fields.userName); // gets the query results from the model
         }
         catch(NullPointerException e) {                                       // catches an exception connection failed
             query_output.setText("There was a problem connection the database, please try again.");
@@ -84,9 +86,14 @@ public class Controller {
      */
     public void UpdateHandler(MouseEvent mouseEvent)
     {
+        RESULT res=RESULT.Success;
         if(fields_combo.getSelectionModel().isEmpty()) return;  // checks if anything is selected from the combo box
         Fields field = Fields.valueOf(fields_combo.getValue().toString());// gets the field from the combo cox
-        RESULT res = model.updateEntry(ID_update.getText(), field, value_Update.getText());// update
+        try{
+            res = model.updateEntry("USERS", field, value_Update.getText(),Fields.userName,ID_update.getText());
+        }catch (NullPointerException e){
+
+        }
         query_output.setText("Update "+res.toString());     // output the result in the text area
     }
 
