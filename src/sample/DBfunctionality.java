@@ -38,7 +38,7 @@ public class DBfunctionality {
         try
         {
             Statement query = c.createStatement();                  // create a statement and execute the query
-            ResultSet result = query.executeQuery("SELECT * FROM USERS WHERE "+field.toString()+"="+data);
+            ResultSet result = query.executeQuery("SELECT * FROM USERS WHERE "+field.toString()+"='"+data+"';");
             while(result.next())                                    // collection all data received
             {
                 out += result.getString("userName")+",";
