@@ -1,3 +1,3 @@
 package sample;
 
-public enum RESULT {Success, Failiure}
+public enum RESULT {Success, Fail}

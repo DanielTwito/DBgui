@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 
 public class Main extends Application {
 
@@ -48,6 +49,16 @@ public class Main extends Application {
         if (!db.exists()) {                                     //checks if the database exist, if not than creates it
             try {                                               //creates a new database inside the Database directory
                 c = DriverManager.getConnection("jdbc:sqlite:" + db_name);
+                Statement stmt = c.createStatement();
+                String sql = "CREATE TABLE USERS " +            //creates a users table
+                        "(userName VARCHAR(20) PRIMARY KEY     NOT NULL," +
+                        " password         TEXT(20)    NOT NULL, " +
+                        " birthDate        DATE        NOT NULL, " +
+                        " firstName        VARCHAR(20) NOT NULL, " +
+                        " lastName         VARCHAR(20) NOT NULL," +
+                        " homeTown         VARCHAR(20) NOT NULL";
+                stmt.executeUpdate(sql);
+                stmt.close();
                 c.close();
             } catch (Exception e) {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
