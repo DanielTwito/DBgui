@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -26,7 +25,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1000, 780));
 
         Controller controller = fxmlLoader.getController();     //gettin the controller for the FXML
-        controller.setModel(new DBfunctionality());             //setting a model for it
+        controller.setModel(new DBfunctionality("Database/projectdb.db"));//setting a model for it
 
         primaryStage.show();
     }
@@ -49,6 +48,7 @@ public class Main extends Application {
         if (!db.exists()) {                                     //checks if the database exist, if not than creates it
             try {                                               //creates a new database inside the Database directory
                 c = DriverManager.getConnection("jdbc:sqlite:" + db_name);
+                c.close();
             } catch (Exception e) {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
