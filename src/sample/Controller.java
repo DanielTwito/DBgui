@@ -2,17 +2,15 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-
-import javax.xml.transform.Result;
-import java.sql.*;
 
 public class Controller {
 
-    private Connection database;                            //connection object to hold the connection to the database
     private DBfunctionality model = null;                   //it may be more generic to use and interface for the model
 
     public TextArea query_output;
@@ -68,7 +66,13 @@ public class Controller {
      */
     public void SearchHandler(MouseEvent mouseEvent)
     {
-        String result = model.readEntry(ID_search.getText()); // gets the query results from the model
+        String result;
+        try { result = model.readEntry(ID_search.getText(), Fields.userName); // gets the query results from the model
+        }
+        catch(NullPointerException e) {                                       // catches an exception connection failed
+            query_output.setText("There was a problem connection the database, please try again.");
+            return;
+        }
         if(result.equals("")) query_output.setText("User not found.");
         else query_output.setText(result);                    // put the result in the output text area
     }
@@ -119,6 +123,6 @@ public class Controller {
 to do list:
 TODO: create method CREATE() <fill name of the dude whos going to do it>
 TODO: create method UPDATE() <fill name of the dude whos going to do it>
-TODO: create method READ() <fill name of the dude whos going to do it>
+TODO: create method READ() by Elad
 TODO: create method REMOVE() <fill name of the dude whos going to do it>
  */
