@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="lib-javafx11">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/openjfx-11_windows-x64_bin-sdk/javafx-sdk-11/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/Downloads/openjfx-11_windows-x64_bin-sdk/javafx-sdk-11/lib" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Downloads/openjfx-11_windows-x64_bin-sdk/javafx-sdk-11/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/openjfx-11_windows-x64_bin-sdk/javafx-sdk-11/lib" recursive="false" type="SOURCES" />
+  </library>
+</component>
