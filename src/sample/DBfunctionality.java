@@ -23,7 +23,6 @@ public class DBfunctionality {
         String[] userInfo = newUser.split(",");
         return RESULT.Success;
     }
-
     /**
      * This Function is in charge of reading(searching) the Database for a specific entry
      * @param data String that represents the userName of the specific user
@@ -51,6 +50,7 @@ public class DBfunctionality {
             c.close();
         }
         catch(Exception e) { throw new NullPointerException(); }
+        System.out.println(out);
         return out;
     }//TODO: this method is untested, must test it before publish
 
@@ -71,9 +71,20 @@ public class DBfunctionality {
      * @return Boolean value whether the Entry was deleted or not
      */
     public RESULT deleteEntry(String username){
-        return RESULT.Success;
+        Connection c = openConnection();
+        if(c == null) throw new NullPointerException();
+        try {
+            Statement query = c.createStatement();                             // create a statement
+            String sql = "DELETE FROM USERS WHERE userName = '"+username+"';"; //the sql query to delete
+            int works = query.executeUpdate(sql);                                          //execute the sql query
+        c.close();
+        if(works==1){                    //checks whether the entry was deleted
+            return RESULT.Success;
+        }
+        else return RESULT.Fail;
     }
-
+        catch(Exception e) { throw new NullPointerException(); }
+    }
     @Override
     public String toString() {
         return "DBfunctionality";
