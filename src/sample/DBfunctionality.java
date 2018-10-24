@@ -19,8 +19,34 @@ public class DBfunctionality {
      * @param newUser String that represents the new fields of the user
      * @return RESULT value whether the Entry was added or not
      */
-    public RESULT addEntry(String newUser){
+    public RESULT addEntry(String newUser)throws Exception {
         String[] userInfo = newUser.split(",");
+
+        for (int i = 0; i <userInfo.length ; i++) {
+            userInfo[i]="'"+userInfo[i]+"'";
+            System.out.println(userInfo[i]);
+        }
+        Connection c = openConnection();
+        String qry= "INSERT INTO users("+       Fields.userName+','+
+                Fields.password+ ',' +
+                Fields.birthDate+','+
+                Fields.firstName+','+
+                Fields.lastName+','+
+                Fields.homeTown+')'+
+                "VALUES("+ userInfo[0]+','+
+                userInfo[1]+','+
+                userInfo[2]+','+
+                userInfo[3]+','+
+                userInfo[4]+','+
+                userInfo[5]+
+                ");";
+
+
+        System.out.println(qry);
+
+            Statement query = c.createStatement();                  // create a statement and execute the query
+            query.executeUpdate(qry);
+            c.close();
 
         return RESULT.Success;
     }
@@ -86,7 +112,6 @@ public class DBfunctionality {
 
         return out;
     }
-    ///5555
 
     /**
      * This Function is in charge of deleting an entry in the Database
