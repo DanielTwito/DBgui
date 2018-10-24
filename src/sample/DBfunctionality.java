@@ -19,7 +19,7 @@ public class DBfunctionality {
      * @param newUser String that represents the new fields of the user
      * @return RESULT value whether the Entry was added or not
      */
-    public RESULT addEntry(String newUser)throws Exception {
+    public RESULT addEntry(String newUser, String table)throws Exception {
         String[] userInfo = newUser.split(",");
 
         for (int i = 0; i <userInfo.length ; i++) {
@@ -27,7 +27,7 @@ public class DBfunctionality {
             System.out.println(userInfo[i]);
         }
         Connection c = openConnection();
-        String qry= "INSERT INTO users("+       Fields.userName+','+
+        String qry= "INSERT INTO "+table+"("+       Fields.userName+','+
                 Fields.password+ ',' +
                 Fields.birthDate+','+
                 Fields.firstName+','+
@@ -112,18 +112,19 @@ public class DBfunctionality {
 
         return out;
     }
+    ///5555
 
     /**
      * This Function is in charge of deleting an entry in the Database
      * @param username String that represents the userName of the specific user
      * @return Boolean value whether the Entry was deleted or not
      */
-    public RESULT deleteEntry(String username){
+    public RESULT deleteEntry(String username, String table){
         Connection c = openConnection();
         if(c == null) throw new NullPointerException();
         try {
             Statement query = c.createStatement();                             // create a statement
-            String sql = "DELETE FROM USERS WHERE userName = '"+username+"';"; //the sql query to delete
+            String sql = "DELETE FROM " + table+ " WHERE userName = '"+username+"';"; //the sql query to delete
             int works = query.executeUpdate(sql);                                          //execute the sql query
         c.close();
         if(works==1){                    //checks whether the entry was deleted
