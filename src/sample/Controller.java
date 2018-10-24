@@ -86,13 +86,13 @@ public class Controller {
      */
     public void UpdateHandler(MouseEvent mouseEvent)
     {
-        RESULT res=RESULT.Success;
+        RESULT res=RESULT.Fail;
         if(fields_combo.getSelectionModel().isEmpty()) return;  // checks if anything is selected from the combo box
         Fields field = Fields.valueOf(fields_combo.getValue().toString());// gets the field from the combo cox
         try{
-            res = model.updateEntry("USERS", field, value_Update.getText(),Fields.userName,ID_update.getText());
+            res = model.updateEntry("users", field, value_Update.getText(),Fields.userName,ID_update.getText());
         }catch (NullPointerException e){
-
+            System.out.println("bug");
         }
         query_output.setText("Update "+res.toString());     // output the result in the text area
     }
@@ -102,20 +102,23 @@ public class Controller {
      * it will show a success of failure in the output text area
      * @param mouseEvent
      */
-    public void CreateHandler(MouseEvent mouseEvent) {
+    public void CreateHandler(MouseEvent mouseEvent)
+    {
         String entery = "";
+        RESULT res=RESULT.Success;
         for (Node n : stackpanel.getChildren())              // Iterate though the fields to collect the data
         {
-            if (n instanceof TextField)                      // only collect data from the text fields on the cell
+            if(n instanceof TextField)                      // only collect data from the text fields on the cell
                 entery += ((TextField) n).getText().equals("") ? " ," : ((TextField) n).getText() + ",";
         }
         try {// for easier handling, the empty data is converted to " "
-            RESULT res = model.addEntry(entery);                // calling the add method at the model and gets the result
+            res = model.addEntry(entery, "users");                // calling the add method at the model and gets the result
 
 
         }catch (Exception e){
-            query_output.setText(e.toString());// output the result to the output text area
+            query_output.setText(e.getMessage());// output the result to the output text area
         }
+        //query_output.setText("Create "+res.toString());
     }
 
     /**
@@ -125,7 +128,7 @@ public class Controller {
      */
     public void deleteHandler(MouseEvent mouseEvent)
     {
-        RESULT res = model.deleteEntry(ID_remove.getText());
+        RESULT res = model.deleteEntry(ID_remove.getText(), "users");
         query_output.setText("Delete "+res.toString()+"!");// output the result to the output text area
     }
 }
