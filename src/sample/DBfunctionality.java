@@ -109,18 +109,19 @@ public class DBfunctionality {
 
         return out;
     }
+    ///5555
 
     /**
      * This Function is in charge of deleting an entry in the Database
      * @param username String that represents the userName of the specific user
      * @return Boolean value whether the Entry was deleted or not
      */
-    public RESULT deleteEntry(String username){
+    public RESULT deleteEntry(String username, String table){
         Connection c = openConnection();
         if(c == null) throw new NullPointerException();
         try {
             Statement query = c.createStatement();                             // create a statement
-            String sql = "DELETE FROM USERS WHERE userName = '"+username+"';"; //the sql query to delete
+            String sql = "DELETE FROM " + table+ " WHERE userName = '"+username+"';"; //the sql query to delete
             int works = query.executeUpdate(sql);                                          //execute the sql query
         c.close();
         if(works==1){                    //checks whether the entry was deleted
