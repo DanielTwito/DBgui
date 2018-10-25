@@ -116,12 +116,12 @@ public class DBfunctionality {
      * @param username String that represents the userName of the specific user
      * @return Boolean value whether the Entry was deleted or not
      */
-    public RESULT deleteEntry(String username, String table){
+    public RESULT deleteEntry(String username){
         Connection c = openConnection();
         if(c == null) throw new NullPointerException();
         try {
             Statement query = c.createStatement();                             // create a statement
-            String sql = "DELETE FROM " + table+ " WHERE userName = '"+username+"';"; //the sql query to delete
+            String sql = "DELETE FROM  users"+ " WHERE userName = '"+username+"';"; //the sql query to delete
             int works = query.executeUpdate(sql);                                          //execute the sql query
         c.close();
         if(works==1){                    //checks whether the entry was deleted

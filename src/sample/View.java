@@ -52,7 +52,10 @@ public class View {
     public void SearchHandler(MouseEvent mouseEvent)
     {
         String result;
-        try { result = control.readEntry(ID_search.getText(), "USERS" ,Fields.userName); // gets the query results from the model
+        try {
+            result = control.readEntry(ID_search.getText(), "USERS" ,Fields.userName); // gets the query results from the model
+            if(result!="")
+                clearFields();
         }
         catch(NullPointerException e) {                                       // catches an exception connection failed
             query_output.setText("There was a problem connection the database, please try again.");
@@ -73,9 +76,9 @@ public class View {
         if(fields_combo.getSelectionModel().isEmpty()) return;  // checks if anything is selected from the combo box
         Fields field = Fields.valueOf(fields_combo.getValue().toString());// gets the field from the combo cox
         try{
-            System.out.println("itsHere");
             res = control.updateEntry("USERS", field, value_Update.getText(),Fields.userName,ID_update.getText());
-            System.out.println("itsDone");
+            if(res==RESULT.Success)
+                clearFields();
         }catch (NullPointerException e){ }
         query_output.setText("Update "+res.toString());     // output the result in the text area
     }
@@ -95,17 +98,27 @@ public class View {
                 entery += ((TextField) n).getText().equals("") ? " ," : ((TextField) n).getText() + ",";
         }
         try {// for easier handling, the empty data is converted to " "
-            res = control.addEntry(entery, "USERS");                // calling the add method at the model and gets the result
-            for (Node n : stackpanel.getChildren())              // Iterate though the fields to collect the data
-            {
-                if(n instanceof TextField)                      // only collect data from the text fields on the cell
-                    ((TextField) n).setText("");
-            }
-
+            res = control.addEntry(entery, "USERS");
+            if(res==RESULT.Success)// calling the add method at the model and gets the result
+                    clearFields();
+            query_output.setText("Create "+res.toString());
         }catch (Exception e){
-            query_output.setText(e.getMessage());// output the result to the output text area
+            query_output.setText("user already exist");// output the result to the output text area
         }
-        query_output.setText("Create "+res.toString());
+    }
+
+    private void clearFields() {
+
+        for (Node n : stackpanel.getChildren())              // Iterate though the fields to collect the data
+        {
+            if(n instanceof TextField)                      // only collect data from the text fields on the cell
+                ((TextField) n).setText("");
+        }
+
+        ID_remove.setText("");
+        value_Update.setText("");
+        ID_search.setText("");
+        ID_update.setText("");
     }
 
     /**
@@ -116,6 +129,8 @@ public class View {
     public void deleteHandler(MouseEvent mouseEvent)
     {
         RESULT res = control.deleteEntry(ID_remove.getText());
+        if(res==RESULT.Success)
+            clearFields();
         query_output.setText("Delete "+res.toString()+"!");// output the result to the output text area
     }
 }
