@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.View">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
@@ -71,7 +71,7 @@
                   <Insets top="130.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="remove_btn" onMouseClicked="#deleteHandler" alignment="CENTER" mnemonicParsing="false" prefHeight="78.0" prefWidth="234.0" text="REMOVE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="remove_btn" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#deleteHandler" prefHeight="78.0" prefWidth="234.0" text="REMOVE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <effect>
                   <DropShadow />
                </effect>
@@ -102,7 +102,7 @@
             <Line endX="-100.82843017578125" endY="374.29290771484375" startX="-100.82844543457031" startY="240.14344787597656" GridPane.halignment="RIGHT" />
             <Line endX="-100.82843017578125" endY="368.43634033203125" startX="-100.82844543457031" startY="240.14344787597656" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <ComboBox fx:id="fields_combo" prefWidth="150.0" promptText="Field to update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <TextField fx:id="ID_update" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+            <TextField fx:id="ID_update" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="User Name" snapToPixel="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="40.0" />
                </GridPane.margin>
@@ -112,11 +112,11 @@
                   <Insets right="40.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="ID_search" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <TextField fx:id="ID_remove" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="ID_search" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="User Name" snapToPixel="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="ID_remove" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="User Name" snapToPixel="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <StackPane fx:id="stackpanel" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <TextField id="username" fx:id="ID_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="ID" snapToPixel="false" StackPane.alignment="TOP_LEFT">
+                  <TextField id="username" fx:id="ID_create" maxHeight="-Infinity" maxWidth="100.0" minHeight="5.0" minWidth="5.0" pickOnBounds="false" prefHeight="25.0" prefWidth="0.0" promptText="User Name" snapToPixel="false" StackPane.alignment="TOP_LEFT">
                      <StackPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </StackPane.margin>

@@ -12,21 +12,21 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class Main extends Application {
-
     // a boolean variable to enable various in code debug
     static final boolean _DEBUG = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
+        Controller control=new Controller();
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("SQLInterface.fxml").openStream());
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Vacation4u");
         primaryStage.setScene(new Scene(root, 1000, 780));
 
-        Controller controller = fxmlLoader.getController();     //gettin the controller for the FXML
-        controller.setModel(new DBfunctionality("Database/projectdb.db"));//setting a model for it
+        View view = fxmlLoader.getController();     //getting the controller for the FXML
+        view.setControl(control);
+        control.setModel(new DBfunctionality("Database/projectdb.db"));//setting a model for it
 
         primaryStage.show();
     }
