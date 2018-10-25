@@ -22,9 +22,9 @@ public class DBfunctionality {
     public RESULT addEntry(String newUser, String table)throws Exception {
         String[] userInfo = newUser.split(",");
 
-        for (int i = 0; i <userInfo.length ; i++) {
+        for (int i = 0; i < userInfo.length ; i++) {
             userInfo[i]="'"+userInfo[i]+"'";
-            System.out.println(userInfo[i]);
+
         }
         Connection c = openConnection();
         String qry= "INSERT INTO "+table+"("+       Fields.userName+','+
@@ -41,12 +41,9 @@ public class DBfunctionality {
                 userInfo[5]+
                 ");";
 
-
-        System.out.println(qry);
-
-            Statement query = c.createStatement();                  // create a statement and execute the query
-            query.executeUpdate(qry);
-            c.close();
+        Statement query = c.createStatement();                  // create a statement and execute the query
+        query.executeUpdate(qry);
+        c.close();
 
         return RESULT.Success;
     }
