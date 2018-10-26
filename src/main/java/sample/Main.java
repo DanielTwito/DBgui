@@ -1,4 +1,4 @@
-package sample;
+package main.java.sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +65,6 @@ public class Main extends Application {
                 System.exit(0);
             }
         }
-
         if (_DEBUG)                                              //for debugging purposes
             System.out.println("Opened database successfully");
     }
