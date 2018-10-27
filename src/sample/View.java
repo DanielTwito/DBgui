@@ -19,7 +19,7 @@ public class View {
     public ComboBox fields_combo;
     public TextField ID_update, value_Update;
 
-    // Create widgets and variables:
+    // Create widgets and variables :
     public Button create_btn;
     public StackPane stackpanel;      // the grid cell contains a stack panel for easy iteration through the text fields
     public TextField ID_create, password_create, birthDate_create,
