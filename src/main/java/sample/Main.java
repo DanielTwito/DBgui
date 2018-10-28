@@ -73,7 +73,3 @@ public class Main extends Application {
     }
 }
 
-/*
-to do list:
-TODO: switch _DEBUG to false at the end of the development
- */

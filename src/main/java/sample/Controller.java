@@ -26,17 +26,9 @@ public class Controller {
     }
 
 
-    public String readEntry(String data,  String table, Fields field){return model.readEntry(data, table, field);}
-    public RESULT addEntry(String newUser,String table)throws Exception{return model.addEntry(newUser, table);}
+    public String readEntry(String data,  String table, Fields field){return model.readEntry(data, table, field);}public RESULT addEntry(String newUser,String table)throws Exception{return model.addEntry(newUser, table);}
     public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){return model.updateEntry(table, fieldToUpdate, newValue, wantedField, data);}
     public RESULT deleteEntry(String username){return model.deleteEntry(username);}
 
 }
 
-/*
-to do list:
-TODO: create method CREATE() <fill name of the dude whos going to do it>
-TODO: create method UPDATE() <fill name of the dude whos going to do it>
-TODO: create method READ() by Elad
-TODO: create method REMOVE() <fill name of the dude whos going to do it>
- */

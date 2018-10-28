@@ -39,7 +39,7 @@ public class View {
         for (Fields f: Fields.values())                     // Iterates though the ENUM
         {
             if(Main._DEBUG)
-                System.out.println(f.toString());
+              //  System.out.println(f.toString());
             fields_combo.getItems().addAll(f.toString());   // each ENUM vale become an item for the combo box
         }//end foreach
     }//end initialize
