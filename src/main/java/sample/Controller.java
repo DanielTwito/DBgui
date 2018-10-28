@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 import javax.xml.transform.Result;
+import java.sql.SQLException;
 
 public class Controller {
 
@@ -26,7 +27,8 @@ public class Controller {
     }
 
 
-    public String readEntry(String data,  String table, Fields field){return model.readEntry(data, table, field);}public RESULT addEntry(String newUser,String table)throws Exception{return model.addEntry(newUser, table);}
+    public String readEntry(String data,  String table, Fields field){return model.readEntry(data, table, field);}
+    public RESULT addEntry(String newUser,String table)throws SQLException,NullPointerException {return model.addEntry(newUser, table);}
     public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){return model.updateEntry(table, fieldToUpdate, newValue, wantedField, data);}
     public RESULT deleteEntry(String username){return model.deleteEntry(username);}
 

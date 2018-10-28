@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.sample.View">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.sample.View">
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
@@ -38,7 +38,7 @@
          <children>
             <TextArea fx:id="query_output" accessibleRole="TEXT" editable="false" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" promptText="Query output will be shown here..." GridPane.rowIndex="2" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cdcdcd" height="522.0" stroke="BLACK" strokeType="INSIDE" width="515.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
-            <Button fx:id="create_btn" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#CreateHandler" prefHeight="78.0" prefWidth="234.0" text="CREATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="create_btn" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#CreateHandler" prefHeight="78.0" prefWidth="245.0" text="CREATE" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <effect>
                   <DropShadow />
                </effect>

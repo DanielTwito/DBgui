@@ -19,10 +19,12 @@ public class DBfunctionality {
      * @param newUser String that represents the new fields of the user
      * @return RESULT value whether the Entry was added or not
      */
-    public RESULT addEntry(String newUser, String table)throws Exception {
+    public RESULT addEntry(String newUser, String table)throws SQLException,NullPointerException {
         String[] userInfo = newUser.split(",");
 
         for (int i = 0; i < userInfo.length ; i++) {
+            if(userInfo[i].equals(" "))
+                throw new NullPointerException();
             userInfo[i]="'"+userInfo[i]+"'";
 
         }
@@ -40,6 +42,7 @@ public class DBfunctionality {
                 userInfo[4]+','+
                 userInfo[5]+
                 ");";
+
 
         Statement query = c.createStatement();                  // create a statement and execute the query
         query.executeUpdate(qry);

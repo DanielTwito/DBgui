@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
+import java.sql.SQLException;
+
 public class View {
     private Controller control;
 
@@ -102,8 +104,11 @@ public class View {
             if(res==RESULT.Success)// calling the add method at the model and gets the result
                     clearFields();
             query_output.setText("Create "+res.toString());
-        }catch (Exception e){
+        }catch (SQLException e){
             query_output.setText("user already exist");// output the result to the output text area
+        }
+        catch (NullPointerException e){
+            query_output.setText("need to fill all fields to create new user");
         }
     }
 
