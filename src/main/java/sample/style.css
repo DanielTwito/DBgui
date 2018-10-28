@@ -3,7 +3,6 @@
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
 }
-
 .text-area .scroll-pane {
     -fx-background-color: transparent;
 }
