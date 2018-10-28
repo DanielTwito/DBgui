@@ -1,4 +1,4 @@
-package sample;
+package main.java.sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
