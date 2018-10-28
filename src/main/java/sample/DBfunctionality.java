@@ -44,7 +44,6 @@ public class DBfunctionality {
         Statement query = c.createStatement();                  // create a statement and execute the query
         query.executeUpdate(qry);
         c.close();
-
         return RESULT.Success;
     }
 
@@ -77,7 +76,7 @@ public class DBfunctionality {
         }
         catch(Exception e) { throw new NullPointerException(); }
         return out;
-    }//TODO: this method is untested, must test it before publish
+    }
 
     /**
      * This Function is in charge of updating(changing) a specific entry in the database

@@ -1,0 +1,17 @@
+#query_output{
+    -fx-background-image:url("logo_vacation.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}

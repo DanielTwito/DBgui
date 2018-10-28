@@ -22,9 +22,12 @@ public class Main extends Application {
         Parent root = fxmlLoader.load(getClass().getResource("SQLInterface.fxml").openStream());
 
         primaryStage.setTitle("Vacation4u");
-        primaryStage.setScene(new Scene(root, 1000, 780));
+        Scene scene = new Scene(root, 1000, 780);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        primaryStage.setScene(scene);
 
         View view = fxmlLoader.getController();     //getting the controller for the FXML
+
         view.setControl(control);
         control.setModel(new DBfunctionality("Database/projectdb.db"));//setting a model for it
 
@@ -70,7 +73,3 @@ public class Main extends Application {
     }
 }
 
-/*
-to do list:
-TODO: switch _DEBUG to false at the end of the development
- */
