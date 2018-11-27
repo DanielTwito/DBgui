@@ -1,10 +1,11 @@
-package main.java.sample;
+package sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sample.ModelLogic.Model;
 
 import java.io.File;
 import java.sql.Connection;
@@ -19,17 +20,17 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Controller control=new Controller();
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("SQLInterface.fxml").openStream());
+        Parent root = fxmlLoader.load(getClass().getResource("SearchPage.fxml").openStream());
 
         primaryStage.setTitle("Vacation4u");
         Scene scene = new Scene(root, 1000, 780);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
 
-        View view = fxmlLoader.getController();     //getting the controller for the FXML
+        SearchPageView searcgPageView = fxmlLoader.getController();     //getting the controller for the FXML
 
-        view.setControl(control);
-        control.setModel(new DBfunctionality("Database/projectdb.db"));//setting a model for it
+        searcgPageView.setControl(control);
+        control.setModel(new Model("Database/projectdb.db"));//setting a Model for it
 
         primaryStage.show();
     }

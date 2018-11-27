@@ -1,3 +1,3 @@
-package main.java.sample;
+package sample.Enums;
 
 public enum RESULT {Success, Fail}

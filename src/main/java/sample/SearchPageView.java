@@ -1,4 +1,4 @@
-package main.java.sample;
+package sample;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -8,10 +8,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import sample.Enums.Fields;
+import sample.Enums.RESULT;
 
 import java.sql.SQLException;
 
-public class View {
+public class SearchPageView {
     private Controller control;
 
     public TextArea query_output;
@@ -55,7 +57,7 @@ public class View {
     {
         String result;
         try {
-            result = control.readEntry(ID_search.getText(), "USERS" ,Fields.userName); // gets the query results from the model
+            result = control.readEntry(ID_search.getText(), "USERS" ,Fields.userName); // gets the query results from the Model
             if(result!="")
                 clearFields();
         }
@@ -101,7 +103,7 @@ public class View {
         }
         try {// for easier handling, the empty data is converted to " "
             res = control.addEntry(entery, "USERS");
-            if(res==RESULT.Success)// calling the add method at the model and gets the result
+            if(res==RESULT.Success)// calling the add method at the Model and gets the result
                     clearFields();
             query_output.setText("Create "+res.toString());
         }catch (SQLException e){

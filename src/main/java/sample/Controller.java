@@ -1,36 +1,32 @@
-package main.java.sample;
+package sample;
 
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import sample.Enums.Fields;
+import sample.Enums.RESULT;
+import sample.ModelLogic.Model;
 
-import javax.xml.transform.Result;
 import java.sql.SQLException;
 
 public class Controller {
 
-    private DBfunctionality model = null;                   //it may be more generic to use and interface for the model
+    private Model model = null;                   //it may be more generic to use and interface for the Model
 
     /**
-     * this method set the model for the controller, the model can only be set once
+     * this method set the Model for the controller, the Model can only be set once
      * @param model
      */
-    public void setModel(DBfunctionality model)
+    public void setModel(Model model)
     {
-        if(this.model != null) return;                      // model can only be set once
+        if(this.model != null) return;                      // Model can only be set once
         this.model = model;
     }
 
 
-    public String readEntry(String data,  String table, Fields field){return model.readEntry(data, table, field);}
-    public RESULT addEntry(String newUser,String table)throws SQLException,NullPointerException {return model.addEntry(newUser, table);}
-    public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){return model.updateEntry(table, fieldToUpdate, newValue, wantedField, data);}
-    public RESULT deleteEntry(String username){return model.deleteEntry(username);}
+    public String readEntry(String data,  String table, Fields field){return null;}
+    public RESULT addEntry(String newUser, String table)throws SQLException,NullPointerException {return null;}
+    public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){
+        return null;
+    }
+    public RESULT deleteEntry(String username){return null;}
 
 }
 
