@@ -19,8 +19,6 @@ public class Controller {
         if(this.model != null) return;                      // Model can only be set once
         this.model = model;
     }
-
-
     public String readEntry(String data,  String table, Fields field){return null;}
     public RESULT addEntry(String newUser, String table)throws SQLException,NullPointerException {return null;}
     public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){
