@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +17,8 @@ import sample.Enums.Tables;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,16 +33,18 @@ public class RegisterFormView {
     public TextField lastNameTXT;
     public TextField emailTXT;
     public TextField cityTXT;
+    public DatePicker birthdate;
     public Button uploadImage;
     public TextField errorTxt;
-
+    public String date=null;
+    public LocalDate ld;
     ArrayList<TextField> txtList = new ArrayList<>();
     //data for the user
     public Image image = null;
 
 
     //final FileChooser fileChooser = new FileChooser();
-    public void start(final Stage stage) {
+    public void initiate(final Stage stage) {
         StringBuilder errortext = new StringBuilder();
         stage.setTitle("Register Form");
         txtList.add(userNameTXT);
@@ -54,8 +55,10 @@ public class RegisterFormView {
         txtList.add(emailTXT);
         txtList.add(cityTXT);
         final FileChooser fileChooser = new FileChooser();
+        birthdate.setOnAction((ActionEvent event)->{
         uploadImage = new Button("Choose account Image");
         uploadImage.setOnAction((final ActionEvent e) -> {
+            ld=birthdate.getValue();});
             File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
                 image = new Image(file.toURI().toString());
@@ -74,9 +77,12 @@ public class RegisterFormView {
             if (tx.getText().trim().isEmpty())
                 missing = missing + tx + ", ";
         }
+        if(ld==null)
+            errortext.append("please fill your date of birth \n");
         if (!missing.isEmpty())
             errortext.append("Please fill all the required fieids in the form. missing: " + missing + ".\n");
-
+        if(ld!=null && Period.between(LocalDate.now(),ld).getYears()<18)
+            errortext.append("all users must be over 18 years old. \n");
         String[][] userResult = control.ReadEntry(new String[]{userNameTXT.getText().trim()}, new Fields[]{Fields.Username}, Tables.Users);
         if (userResult == null)
             errortext.append("user name already in the system please choose a different one.\n");
