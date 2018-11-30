@@ -66,7 +66,8 @@ public class RegisterFormView {
         if (!missing.isEmpty()){
             errortext.append("Please fill all the required fieids in the form. missing: "+missing+".\n");
         }
-        control.readEntry(userNameTXT.getText().trim(),Tables.Users,Fields.userName);// TODO: check if username/email is already in the database
+        String[][] results = control.ReadEntry(userNameTXT.getText().trim(),Tables.Users);// TODO: check if username/email is already in the database
+        if (results!=null &&)
         if(!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())){
             errortext.append("Password and confirm password are not the same\n");
         }
