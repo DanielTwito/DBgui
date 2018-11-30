@@ -16,8 +16,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.Controller;
 import sample.Enums.Fields;
+import sample.Enums.Tables;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class RegisterFormView {
         if (!missing.isEmpty()){
             errortext.append("Please fill all the required fieids in the form. missing: "+missing+".\n");
         }
-        control.readEntry(userNameTXT.getText().trim(),"USERS",Fields.userName);// TODO: check if username/email is already in the database
+        control.readEntry(userNameTXT.getText().trim(),Tables.Users,Fields.userName);// TODO: check if username/email is already in the database
         if(!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())){
             errortext.append("Password and confirm password are not the same\n");
         }
@@ -72,8 +74,13 @@ public class RegisterFormView {
             errortext.append("please enter a real Email address\n");
         }
         if(errortext.toString().length()==0){
+            try{
             control.addEntry(userNameTXT.getText().trim()+","+passwordTXT.getText().trim()+","+firstNameTXT.getText().trim()+
             ","+lastNameTXT.getText().trim()+","+emailTXT.getText().trim()+","+cityTXT.getText().trim(),"USERS"); //TODO: add an user to the database
+        }
+        catch (SQLException e){
+                e.getErrorCode();
+        }
         }
     }
 }
