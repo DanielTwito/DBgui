@@ -1,3 +1,3 @@
 package sample.Enums;
 
-public enum Fields {userName, password, birthDate, firstName, lastName, homeTown}
+public enum Fields {Username, Password, Birthdate, FirstName, LastName,Email, city,image}

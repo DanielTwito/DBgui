@@ -44,45 +44,55 @@ public class RegisterFormView {
 
     //final FileChooser fileChooser = new FileChooser();
     public void start(final Stage stage) {
-        StringBuilder errortext=new StringBuilder();
+        StringBuilder errortext = new StringBuilder();
         stage.setTitle("Register Form");
-        txtList.add(userNameTXT);txtList.add(passwordTXT);txtList.add(confirm_passwordTXT);txtList.add(firstNameTXT);txtList.add(lastNameTXT);
-        txtList.add(emailTXT);txtList.add(cityTXT);
+        txtList.add(userNameTXT);
+        txtList.add(passwordTXT);
+        txtList.add(confirm_passwordTXT);
+        txtList.add(firstNameTXT);
+        txtList.add(lastNameTXT);
+        txtList.add(emailTXT);
+        txtList.add(cityTXT);
         final FileChooser fileChooser = new FileChooser();
         uploadImage = new Button("Choose account Image");
         uploadImage.setOnAction((final ActionEvent e) -> {
             File file = fileChooser.showOpenDialog(stage);
-            if (file != null) {image = new Image(file.toURI().toString());}});
+            if (file != null) {
+                image = new Image(file.toURI().toString());
+            }
+        });
     }
-    public void setControl(Controller control){this.control=control;}
 
-    public void SignUp(MouseEvent mouseevent){
-        StringBuilder errortext=new StringBuilder();
+    public void setControl(Controller control) {
+        this.control = control;
+    }
+
+    public void SignUp(MouseEvent mouseevent) {
+        StringBuilder errortext = new StringBuilder();
         String missing = new String();
-        for (TextField tx:txtList) {
-            if(tx.getText().trim().isEmpty())
-                missing=missing+tx+", ";
+        for (TextField tx : txtList) {
+            if (tx.getText().trim().isEmpty())
+                missing = missing + tx + ", ";
         }
-        if (!missing.isEmpty()){
-            errortext.append("Please fill all the required fieids in the form. missing: "+missing+".\n");
-        }
-        String[][] results = control.ReadEntry(userNameTXT.getText().trim(),Tables.Users);// TODO: check if username/email is already in the database
-        if (results!=null &&)
-        if(!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())){
-            errortext.append("Password and confirm password are not the same\n");
-        }
-        if(!emailTXT.getText().contains("@")||!emailTXT.getText().contains(".")||emailTXT.getText().contains(",")){
-            errortext.append("please enter a real Email address\n");
-        }
-        if(errortext.toString().length()==0){
-            try{
-            control.addEntry(userNameTXT.getText().trim()+","+passwordTXT.getText().trim()+","+firstNameTXT.getText().trim()+
-            ","+lastNameTXT.getText().trim()+","+emailTXT.getText().trim()+","+cityTXT.getText().trim(),"USERS"); //TODO: add an user to the database
-        }
-        catch (SQLException e){
-                e.getErrorCode();
-        }
-        }
+        if (!missing.isEmpty())
+            errortext.append("Please fill all the required fieids in the form. missing: " + missing + ".\n");
+
+        String[][] userResult = control.ReadEntry(new String[]{userNameTXT.getText().trim()}, new Fields[]{Fields.Username}, Tables.Users);
+        if (userResult == null)
+            errortext.append("user name already in the system please choose a different one.\n");
+        String[][] EmailResult = control.ReadEntry(new String[]{emailTXT.getText().trim()}, new Fields[]{Fields.Email}, Tables.Users);
+        if (EmailResult == null)
+            errortext.append("email address already in the system please choose a different one.\n");
+        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {
+            errortext.append("Password and confirm password are not the same\n");}
+        if (!emailTXT.getText().contains("@") || !emailTXT.getText().contains(".") || emailTXT.getText().contains(",")) {
+            errortext.append("please enter a real Email address\n");}
+        if (errortext.toString().length() == 0)
+            control.AddEntry(new String[]{userNameTXT.getText().trim(), passwordTXT.getText().trim(), firstNameTXT.getText().trim(),
+                    lastNameTXT.getText().trim(), emailTXT.getText().trim(), cityTXT.getText().trim()}, Tables.Users);
+         else
+            errorTxt.setText(errortext.toString());
     }
 }
+
 
