@@ -2,6 +2,7 @@ package sample;
 
 import sample.Enums.Fields;
 import sample.Enums.RESULT;
+import sample.Enums.Tables;
 import sample.ModelLogic.Model;
 
 import java.sql.SQLException;
@@ -19,14 +20,10 @@ public class Controller {
         if(this.model != null) return;                      // Model can only be set once
         this.model = model;
     }
-
-
-    public String readEntry(String data,  String table, Fields field){return null;}
-    public RESULT addEntry(String newUser, String table)throws SQLException,NullPointerException {return null;}
-    public RESULT updateEntry(String table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){
-        return null;
-    }
-    public RESULT deleteEntry(String username){return null;}
+    public RESULT AddEntry(String[] data, Tables table){return  null;}
+    public String[][] ReadEntry(String Key, Tables table){return null;}
+    public RESULT UpdateEntry(Tables table, Fields fieldToUpdate, String newValue, Fields wantedField, String data){return null;}
+    public RESULT DeleteEntry (String key,Tables table){return null;}
 
 }
 
