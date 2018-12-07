@@ -1,7 +1,7 @@
 package sample.ModelLogic;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.util.Pair;
+import sample.Enums.Fields;
 import sample.Enums.RESULT;
 import sample.Enums.Tables;
 
@@ -14,58 +14,19 @@ public class AccessLayer {
 
     private Connection connection;
 
-    public AccessLayer() {
-        this.connection = null;
-    }
-
     public void connectDB(String db_name){
 
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:" + db_name);
         }
         catch(Exception e) {
-            System.out.println("could not establish connection");
+            System.out.println("could not establish a connection to database");
         }
     }
 
     //TODO:Twito
+    public RESULT AddEntry(List<String> data, Tables table){return  null;}
 
-    /**
-     * this function add entries on table in the DB according to the given parameters
-     * @param table which table to add
-     * @param data list of fields and thie values to put in the table
-     * @return RESULT SUCCESS or FAIL
-     *
-     * note: you must give the fields as they written in the data base!
-     */
-    public RESULT AddEntry(Tables table,ArrayList<Pair> data){
-       int size=data.size();
-        if (size==0) {
-            return RESULT.Fail;
-        }
-
-        StringBuilder paramsFields= new StringBuilder(" (");
-        StringBuilder paramsFValues= new StringBuilder(" VALUES (");
-        String qry = "INSERT INTO "+table;
-        for(int i=0;i<size-1;i++){
-            paramsFields.append("'").append(data.get(i).getKey()).append("', ");
-            paramsFValues.append("?, ");
-        }
-        paramsFields.append("'").append(data.get(size - 1).getKey()).append("') ");
-        paramsFValues.append("? )");
-        qry=qry+paramsFields.toString()+paramsFValues.toString();
-        try {
-            PreparedStatement stmt = connection.prepareStatement(qry);
-            for (int i = 1; i <=size ; i++) {
-                stmt.setString(i,(String)data.get(i-1).getValue());
-            }
-            stmt.execute();
-        }catch (Exception e){
-            e.printStackTrace();
-
-        }
-        return RESULT.Success;
-    }
 
     /**
      * This function reads entries from DB according the given parameters.
@@ -163,40 +124,14 @@ public class AccessLayer {
         return out;
     }
 
-    /**
-     * this function delete entries from tabel on the DB acoording to the given params
-     * @param table from which table to delete
-     * @param fieldValues list of fields and their values to put on the WHERE condition
-     * @return RESULT whether the delete succeeded
-     */
-    public RESULT DeleteEntry (Tables table, ArrayList<Pair> fieldValues){
-        int size= fieldValues.size();
-        String qry="DELETE FROM "+table+" WHERE ";
-        StringBuilder whereParam=new StringBuilder();
-        for (int i = 0; i < size-1 ; i++) {
-            whereParam.append(fieldValues.get(i).getKey()).append(" = ? and ");
-        }
-        whereParam.append(fieldValues.get(size - 1).getKey()).append(" = ? ;");
-        qry = qry + whereParam.toString();
-        try {
-            PreparedStatement stmt = connection.prepareStatement(qry);
-            for (int i = 1; i <=size ; i++) {
-              stmt.setString(i,fieldValues.get(i-1).getValue().toString());
-            }
-            stmt.execute();
-        }catch (Exception e){
-            return RESULT.Fail;
-
-        }
-        return RESULT.Success;
-
-    }
+    //TODO:Twito
+    public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return null;}
 
     public void discoonetDB(){
         try {
             connection.close();
         }catch (Exception e){
-            System.out.println("could not close connection");
+            System.out.println("could not establish connection");
         }
     }
 
