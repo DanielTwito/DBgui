@@ -124,7 +124,7 @@ public class AccessLayer {
         return out;
     }
 
-    //TODO:Twito
+    
     public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return null;}
 
     public void discoonetDB(){
