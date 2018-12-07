@@ -1,17 +1,14 @@
 package sample.ModelLogic;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.util.Pair;
 import sample.Enums.Fields;
 import sample.Enums.RESULT;
 import sample.Enums.Tables;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AccessLayer {
 
@@ -37,7 +34,7 @@ public class AccessLayer {
      * The function selects the all columns of the given table
      * @param table- "FROM" which table to read
      * @param fieldsNvalues- list of fields and their values to put in "WHERE" condition
-     * @return
+     * @return Table - the result of the query
      */
     public ArrayList<HashMap<String, String>> ReadEntries(ArrayList<Pair> fieldsNvalues, Tables table){
 
@@ -101,7 +98,7 @@ public class AccessLayer {
      * @param fieldToUpdate- given field to update
      * @param newValue- the new value to assign to given field
      * @param fieldsNvalues- list of fields and their values to put in "WHERE" condition
-     * @return
+     * @return RESULT whether the update succeeded
      */
     public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues){
 
