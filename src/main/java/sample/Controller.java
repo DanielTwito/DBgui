@@ -26,7 +26,7 @@ public class Controller {
         this.model = model;
     }
     public RESULT AddEntry(List<String> data, Tables table){return  null;}
-    public ArrayList<HashMap<String, String>> ReadEntries(boolean fieldsNvalues, Tables table){return  null;}
+    public ArrayList<HashMap<String, String>> ReadEntries(ArrayList<Pair> fieldsNvalues, Tables table){return  null;}
     public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues){return null;}
     public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return null;}
 }
