@@ -28,19 +28,19 @@ public class RegisterFormView {
 
     //Controls in the javaFX
     @FXML
-    private TextField userNameTXT;
+    private TextField userName;
     @FXML
-    private PasswordField passwordTXT;
+    private PasswordField password;
     @FXML
-    private PasswordField confirm_passwordTXT;
+    private PasswordField confirm_password;
     @FXML
-    private TextField firstNameTXT;
+    private TextField firstName;
     @FXML
-    private TextField lastNameTXT;
+    private TextField lastName;
     @FXML
-    private TextField emailTXT;
+    private TextField email;
     @FXML
-    private TextField cityTXT;
+    private TextField city;
     @FXML
     private DatePicker birthdate;
     @FXML
@@ -60,13 +60,13 @@ public class RegisterFormView {
     @FXML
     public void initialize()
     {
-        txtList.add(userNameTXT);
-        txtList.add(passwordTXT);
-        txtList.add(confirm_passwordTXT);
-        txtList.add(firstNameTXT);
-        txtList.add(lastNameTXT);
-        txtList.add(emailTXT);
-        txtList.add(cityTXT);
+        txtList.add(userName);
+        txtList.add(password);
+        txtList.add(confirm_password);
+        txtList.add(firstName);
+        txtList.add(lastName);
+        txtList.add(email);
+        txtList.add(city);
     }
 
     /**
@@ -89,8 +89,9 @@ public class RegisterFormView {
         String missing = new String();
         for (TextField tx : txtList) {
             if (tx.getText().trim().isEmpty())
-                missing = missing + tx + ", ";
+                missing = missing + tx.getId() + ", ";
         }
+        missing=missing.substring(0,missing.length()-2);
         if (ld == null)// checks if no birth date was added
             errortext.append("please fill your date of birth \n");
         if (!missing.isEmpty())//checks if text fields are empty
@@ -99,25 +100,25 @@ public class RegisterFormView {
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
         ArrayList<Pair> tmp1 = new ArrayList<>();
-        tmp1.add(new Pair<>(Fields.Username, userNameTXT.getText()));
+        tmp1.add(new Pair<>(Fields.Username, userName.getText()));
         ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
         ArrayList<Pair> tmp2 = new ArrayList<>();
-        tmp1.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
+        tmp1.add(new Pair<>(Fields.Email, email.getText().trim()));
         ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(tmp2, Tables.Users);
         if (ContainsEmail != null && ContainsEmail.size() == 0)
             errortext.append("email address already in the system please choose a different one.\n");
         // check if password confirm is legit
-        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {errortext.append("Password and confirm password are not the same\n");}
+        if (!password.getText().trim().equals(confirm_password.getText().trim())) {errortext.append("Password and confirm password are not the same\n");}
 
-        if(passwordTXT.getText().trim().length()<6){errortext.append("Password must be over 6 characters long\n");}
+        if(password.getText().trim().length()<6){errortext.append("Password must be over 6 characters long\n");}
         //check the email according to a regex
         String regexMail = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
         Pattern pattern;
         pattern = Pattern.compile(regexMail, Pattern.CASE_INSENSITIVE);
-        if (!pattern.matcher(emailTXT.getText().trim()).matches())
+        if (!pattern.matcher(email.getText().trim()).matches())
             errortext.append("please enter a real Email address\n");
 
         //turns the image url to a byte array
@@ -125,6 +126,23 @@ public class RegisterFormView {
         ByteArrayOutputStream imageStream= new ByteArrayOutputStream();
         ImageIO.write(userImage, "jpg", imageStream);
         byte [] bytePhoto = imageStream.toByteArray();
+        String strImage = new String(bytePhoto);
+        if (errortext.toString().length() == 0) {
+            ArrayList<Pair> user = new ArrayList<>();
+            user.add(new Pair<>(Fields.Username, userName.getText().trim()));
+            user.add(new Pair<>(Fields.Password, password.getText().trim()));
+            user.add(new Pair<>(Fields.FirstName, firstName.getText().trim()));
+            user.add(new Pair<>(Fields.LastName, lastName.getText().trim()));
+            user.add(new Pair<>(Fields.Email, email.getText().trim()));
+            user.add(new Pair<>(Fields.city, city.getText().trim()));
+            user.add(new Pair<>(Fields.image, strImage));
+            user.add(new Pair<>(Fields.Password, password.getText().trim()));
+            System.out.println("adding user DONE");
+            //control.AddEntry(user,Tables.Users);
+        }
+        else {errorTxt.setText(errortext.toString());}
+    }
+
 
                     //this is to get image from byte array to image
         /**
@@ -134,16 +152,8 @@ public class RegisterFormView {
         System.out.println("Converted Successfully!");
         **/
 
-        //if the length of the error messege is zero then it addes the user, else it prints the error messege on the screen
-//        if (errortext.toString().length() == 0)
-//            control.AddEntry(new ArrayList<String>(Arrays.asList(userNameTXT.getText().trim(), passwordTXT.getText().trim(), firstNameTXT.getText().trim(),
-//                    lastNameTXT.getText().trim(), emailTXT.getText().trim(), cityTXT.getText().trim(), imageURL)), Tables.Users);
-//        else {
-//            errorTxt.setText(errortext.toString());
-//            return;
-//
-//        }
-    }
+
+
 
     public void OnAction(ActionEvent actionEvent)
     {
@@ -159,4 +169,5 @@ public class RegisterFormView {
             imageURL = file.toURI().toString();
         }
     }
+
 }

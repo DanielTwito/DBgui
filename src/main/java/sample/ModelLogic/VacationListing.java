@@ -26,7 +26,6 @@ public class VacationListing {
                 ", isConnection=" + isConnection +
                 '}';
     }
-
     public void setDest(String dest) {
         this.dest.set(dest);
     }

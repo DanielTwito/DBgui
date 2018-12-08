@@ -241,6 +241,20 @@ public class SearchPageView {
 
     public void openAddVacationForm(ActionEvent actionEvent)
     {
-
+        Parent root;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            root = fxmlLoader.load(getClass().getResource("../AddVacation.fxml").openStream());
+            Stage stage = new Stage();
+            stage.setTitle("sell vacation");
+            stage.setScene(new Scene(root, 650, 400));
+            AddVacationView rfv = fxmlLoader.getController();
+            rfv.setControl(control);
+            stage.show();
+            ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

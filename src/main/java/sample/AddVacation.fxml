@@ -9,23 +9,23 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane id="mainpane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddVacationView">
     <Label id="passwordconf" alignment="CENTER" contentDisplay="CENTER" layoutX="-49.0" layoutY="190.0" prefHeight="44.0" prefWidth="202.0" text="you are selling:" />
     <TextField id="AirLineTXT" fx:id="AirLineTXT" layoutX="439.0" layoutY="212.0" promptText="Air line" />
     <TextField id="destination" fx:id="destinationTXT" layoutX="34.0" layoutY="77.0" promptText="destination" />
     <TextField id="LastnameTXT" fx:id="vacationTypeTXT" layoutX="439.0" layoutY="164.0" promptText="Vacation type " />
-    <Button id="sign_up" fx:id="submit" layoutX="296.0" layoutY="362.0" mnemonicParsing="false" onAction="#addVcation" text="Sumbit!" />
-    <DatePicker id="startDate" fx:id="startDate" layoutX="129.0" layoutY="114.0" onAction="#addStart" prefHeight="26.0" prefWidth="149.0" promptText="vacation starts at" />
-    <Label id="cof" layoutX="298.0" layoutY="107.0" prefHeight="30.0" prefWidth="54.0" text="-">
-      <font>
-         <Font size="28.0" />
-      </font></Label>
-    <DatePicker id="returnDate" fx:id="endDate" layoutX="337.0" layoutY="116.0" onAction="#addEnd" prefHeight="26.0" prefWidth="149.0" promptText="until" />
+    <Button id="sign_up" fx:id="submit" layoutX="296.0" layoutY="362.0" mnemonicParsing="false" onAction="#addVacation" text="Sumbit!" />
+    <DatePicker id="startDate" fx:id="startDate" layoutX="108.0" layoutY="114.0" onAction="#addStart" prefHeight="26.0" prefWidth="149.0" promptText="vacation starts at" />
+    <Label id="cof" layoutX="269.0" layoutY="107.0" prefHeight="30.0" prefWidth="54.0" text="-">
+        <font>
+            <Font size="28.0" />
+        </font></Label>
+    <DatePicker id="returnDate" fx:id="endDate" layoutX="296.0" layoutY="114.0" onAction="#addEnd" prefHeight="26.0" prefWidth="149.0" promptText="until" />
     <ComboBox id="LuggageTYPE" fx:id="LuggageType" layoutX="33.0" layoutY="164.0" prefWidth="150.0" promptText="Luggage type">
         <items>
             <FXCollections fx:factory="observableArrayList">
@@ -48,9 +48,9 @@
     <Label id="lname" layoutX="470.0" layoutY="265.0" prefHeight="30.0" prefWidth="86.0" text="Room rank" />
     <Label id="lname" layoutX="156.0" layoutY="4.0" prefHeight="30.0" prefWidth="266.0" text="sell your unwanted vacation!">
         <font>
-          <Font size="19.0" />
+            <Font size="19.0" />
         </font>
     </Label>
-   <TextArea id="errorBoard" fx:id="errorBoard" layoutX="402.0" layoutY="4.0" opacity="0.0" prefHeight="111.0" prefWidth="189.0" />
-   <TextField fx:id="Price" layoutX="422.0" layoutY="349.0" promptText="Vacation price in NIS" />
+    <TextField fx:id="Price" layoutX="422.0" layoutY="349.0" promptText="Vacation price in NIS" />
+   <Text id="errorBoard" fx:id="errorBoard" layoutX="409.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="174.3999465405941" />
 </AnchorPane>

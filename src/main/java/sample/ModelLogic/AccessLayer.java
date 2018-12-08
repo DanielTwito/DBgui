@@ -25,10 +25,33 @@ public class AccessLayer {
         }
     }
 
-    //TODO:Twito
-    public RESULT AddEntry(ArrayList<Pair> fieldsNvalues, Tables table){return  null;}
+       public RESULT AddEntry(ArrayList<Pair> data, Tables table){
+            int size=data.size();
+            if (size==0) {
+                return RESULT.Fail;
+            }
 
-
+            StringBuilder paramsFields= new StringBuilder(" (");
+            StringBuilder paramsFValues= new StringBuilder(" VALUES (");
+            String qry = "INSERT INTO "+table;
+            for(int i=0;i<size-1;i++){
+                paramsFields.append("'").append(data.get(i).getKey()).append("', ");
+                paramsFValues.append("?, ");
+            }
+            paramsFields.append("'").append(data.get(size - 1).getKey()).append("') ");
+            paramsFValues.append("? )");
+            qry=qry+paramsFields.toString()+paramsFValues.toString();
+            try {
+                PreparedStatement stmt = connection.prepareStatement(qry);
+                for (int i = 1; i <=size ; i++) {
+                    stmt.setString(i,(String)data.get(i-1).getValue());
+                }
+                stmt.execute();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return RESULT.Success;
+        }
     /**
      * This function reads entries from DB according the given parameters.
      * Actually it executes a SELECT query command.
@@ -126,7 +149,27 @@ public class AccessLayer {
     }
 
 
-    public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return null;}
+    public RESULT DeleteEntry (Tables table, ArrayList<Pair> fieldValues){
+        int size= fieldValues.size();
+        StringBuilder whereParam=new StringBuilder();
+        for (int i = 0; i < size-1 ; i++) {
+            whereParam.append(fieldValues.get(i).getKey()).append(" = ? and ");
+        }
+        whereParam.append(fieldValues.get(size - 1).getKey()).append(" = ? ;");
+        String qry="DELETE FROM "+table+" WHERE " + whereParam.toString();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(qry);
+            for (int i = 1; i <=size ; i++) {
+                stmt.setString(i,fieldValues.get(i-1).getValue().toString());
+            }
+            stmt.execute();
+        }catch (Exception e){
+            return RESULT.Fail;
+
+        }
+        return RESULT.Success;
+
+    }
 
     public void discoonetDB(){
         try {

@@ -26,6 +26,6 @@
         <Button id="imageButton" fx:id="uploadImage" layoutX="109.0" layoutY="258.0" mnemonicParsing="false" onAction="#onUploadAction" text="Upload Image" />
         <Button id="sign_up" fx:id="submit" layoutX="268.0" layoutY="319.0" mnemonicParsing="false" onAction="#SignUp" text="Sumbit" />
         <Text id="errorTXT" layoutX="21.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.33667373657227" />
-      <DatePicker id="birthDate" fx:id="birthdate" layoutX="383.0" layoutY="279.0" onAction="#OnAction" prefHeight="26.0" prefWidth="149.0" promptText="Date of Birth" />
+        <DatePicker id="birthDate" fx:id="birthdate" layoutX="383.0" layoutY="279.0" onAction="#OnAction" prefHeight="26.0" prefWidth="149.0" promptText="Date of Birth" />
     </children>
 </AnchorPane>

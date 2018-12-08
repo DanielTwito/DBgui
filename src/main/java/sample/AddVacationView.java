@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -49,33 +50,17 @@ public class AddVacationView {
     @FXML
     CheckBox withStuff;
     @FXML
-    TextArea errorBoard;
+    Text errorBoard;
     @FXML
     Button submit;
 
     private Controller control;
     private LocalDate startD;
     private LocalDate endD;
-
-    public void start(Stage stage) throws Exception {
-      //   assert LuggageType !=null :"fx:id=\"LuggageType\" was not injected: check your FXML file 'AddVacation.fxml'.";
-        Parent root = FXMLLoader.load(getClass().getResource("../AddVacation.fxml"));
-        Scene scene = new Scene(root, 800, 500);
-        stage.setScene(scene);
-       // ComboBox<String> LuggageType = new ComboBox<String>();
-     //   LuggageType.getItems().addAll("no luggage","hand luggage","Large suitcase","Large suitcase and hand luggage");
-       // LuggageType.setValue("no luggage");
-       // Group roots = (Group) scene.getRoot();
-        //roots.getChildren().add(LuggageType);
-      //  LuggageType.getSelectionModel().select("Option B");
-        // scene.getStylesheets().add(getClass().getResource("RegisterForm.css").toExternalForm());
-        stage.setTitle("Add vacation");
-        stage.show();
-    }
     public void setControl(Controller control) {
         this.control = control;
     }
-    public void addVcation(ActionEvent event) {
+    public void addVacation(ActionEvent event) {
 
         StringBuilder msg = new StringBuilder();
         if (vacationTypeTXT.getText().trim().isEmpty()) {
@@ -99,7 +84,7 @@ public class AddVacationView {
         if(Price.getText().trim().isEmpty()){
             msg.append("please enter a price\n");
         }
-        if(Price.getText().trim().isEmpty() && Integer.parseInt(Price.getText().trim())<=0){msg.append("please enter a price higher then zero\n");}
+        if(!Price.getText().trim().isEmpty() && Integer.parseInt(Price.getText().trim())<=0){msg.append("please enter a price higher then zero\n");}
         if (startD == null || endD == null) {
             msg.append("please add vacation dates\n");
         }
@@ -122,7 +107,7 @@ public class AddVacationView {
             vac.add(new Pair<>(Fields.includeReturn, withReturn.isSelected()));
             vac.add(new Pair<>(Fields.price,Price.getText().trim()));
             System.out.println("adding vacation DONE");
-            //control.AddEntry(vac,Tables.ListingVacations);
+            //control.AddEntry(vac,Tables.ListingVacations);Username
         } else {
             errorBoard.setText(msg.toString());
         }
