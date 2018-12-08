@@ -1,14 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.ViewVacation"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewVacation">
+   <children>
+      <Label layoutX="14.0" layoutY="82.0" prefHeight="31.0" prefWidth="71.0" text="Airline:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="166.0" layoutY="14.0" prefHeight="44.0" prefWidth="254.0" text="Vacation Details" textFill="#4e1eba">
+         <font>
+            <Font name="Rockwell Extra Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="113.0" prefHeight="31.0" prefWidth="109.0" text="Flight Date:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="148.0" prefHeight="31.0" prefWidth="121.0" text="Return Date:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="271.0" layoutY="185.0" prefHeight="31.0" prefWidth="121.0" text="Include Room:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="271.0" layoutY="148.0" prefHeight="31.0" prefWidth="109.0" text="Vaction Type:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="271.0" layoutY="113.0" prefHeight="31.0" prefWidth="188.0" text="Including Return Flight:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="271.0" layoutY="82.0" prefHeight="31.0" prefWidth="121.0" text="Destination:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="185.0" prefHeight="31.0" prefWidth="129.0" text="Adult Tickets:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="222.0" prefHeight="31.0" prefWidth="129.0" text="Baby Tickets:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="259.0" prefHeight="31.0" prefWidth="121.0" text="Child Tickets:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="271.0" layoutY="222.0" prefHeight="31.0" prefWidth="121.0" text="Place Rank:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="271.0" layoutY="259.0" prefHeight="31.0" prefWidth="121.0" text="Connection:" textFill="#bc1d1d">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="317.0" prefHeight="31.0" prefWidth="71.0" style="-fx-background-color: FF;" text="Price:" textFill="#791f1f" textOverrun="CENTER_ELLIPSIS" underline="true">
+         <font>
+            <Font name="Arial Black" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="394.0" layoutY="348.0" mnemonicParsing="false" onAction="#PurchaseRequest" text="Submit a purchase request" />
+       <Text fx:id="airline" fontSmoothingType="LCD" layoutX="122.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text  fx:id="flightDate" fontSmoothingType="LCD" layoutX="122.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="returnDate" fontSmoothingType="LCD" layoutX="123.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="adultTickets" fontSmoothingType="LCD" layoutX="124.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="babyTickets" fontSmoothingType="LCD" layoutX="124.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="childTickets" fontSmoothingType="LCD" layoutX="124.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="destination" fontSmoothingType="LCD" layoutX="380.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="includeReturn" fontSmoothingType="LCD" layoutX="459.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="vacationType" fontSmoothingType="LCD" layoutX="406.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="includeRoom" fontSmoothingType="LCD" layoutX="394.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="placeRank" fontSmoothingType="LCD" layoutX="380.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="withConnection" fontSmoothingType="LCD" layoutX="380.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="51.99999958276749">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="price" fontSmoothingType="LCD" layoutX="83.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="82.00000381469727">
+         <font>
+            <Font name="Arial Black" size="18.0" />
+         </font>
+      </Text>
+   </children>
 </AnchorPane>
