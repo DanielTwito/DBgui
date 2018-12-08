@@ -100,7 +100,7 @@ public class RegisterFormView {
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
         ArrayList<Pair> tmp1 = new ArrayList<>();
-        tmp1.add(new Pair<>(Fields.Username, userName.getText()));
+//        tmp1.add(new Pair<>(Fields.Username, userName.getText()));
         ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
@@ -129,14 +129,13 @@ public class RegisterFormView {
         String strImage = new String(bytePhoto);
         if (errortext.toString().length() == 0) {
             ArrayList<Pair> user = new ArrayList<>();
-            user.add(new Pair<>(Fields.Username, userName.getText().trim()));
-            user.add(new Pair<>(Fields.Password, password.getText().trim()));
-            user.add(new Pair<>(Fields.FirstName, firstName.getText().trim()));
-            user.add(new Pair<>(Fields.LastName, lastName.getText().trim()));
+            user.add(new Pair<>(Fields.userName, userName.getText().trim()));
+            user.add(new Pair<>(Fields.password, password.getText().trim()));
+            user.add(new Pair<>(Fields.firstName, firstName.getText().trim()));
+            user.add(new Pair<>(Fields.lastName, lastName.getText().trim()));
             user.add(new Pair<>(Fields.Email, email.getText().trim()));
             user.add(new Pair<>(Fields.city, city.getText().trim()));
             user.add(new Pair<>(Fields.image, strImage));
-            user.add(new Pair<>(Fields.Password, password.getText().trim()));
             System.out.println("adding user DONE");
             //control.AddEntry(user,Tables.Users);
         }

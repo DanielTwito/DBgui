@@ -31,7 +31,7 @@ public class Controller {
     public RESULT AddEntry(ArrayList<Pair> fieldsNvalues, Tables table){return  accessLayer.AddEntry(fieldsNvalues,table);}
     public ArrayList<HashMap<String, String>> ReadEntries(ArrayList<Pair> fieldsNvalues, Tables table){ return accessLayer.ReadEntries(fieldsNvalues,table);}
 
-    public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues){return accessLayer.UpdateEntries(table,fieldToUpdate,newValue,fieldsNvalues);}
-    public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return accessLayer.DeleteEntry(value,fields,table);}
+    public RESULT UpdateEntries(Tables table, Fields fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues){return accessLayer.UpdateEntries(table,fieldToUpdate,newValue,fieldsNvalues);}
+//    public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return accessLayer.DeleteEntry(value,fields,table);}
 }
 //TODO: WHEN GETTING DATA FROM

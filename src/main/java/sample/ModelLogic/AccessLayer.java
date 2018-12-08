@@ -64,54 +64,41 @@ public class AccessLayer {
 
         ArrayList<HashMap<String, String>> ans = new ArrayList<>();
         StringBuilder fields = new StringBuilder();
-        for (Pair fieldsNvalue : fieldsNvalues) fields.append(fieldsNvalue.getKey()).append("= ? and ");
-        String sql = "SELECT * FROM "+table+" WHERE "+fields;
-        sql=sql.substring(sql.length()-5);
+        String sql= null;
+        if(fieldsNvalues== null || fieldsNvalues.size()==0) {
+            fieldsNvalues = new ArrayList<>();
+            sql = "SELECT * FROM " + table;
+        }else {
+            for (Pair fieldsNvalue : fieldsNvalues) fields.append(fieldsNvalue.getKey()).append(" = ? and ");
+                sql = "SELECT * FROM "+table+" WHERE "+fields;
+                sql=sql.substring(0,sql.length()-5);
+        }
+
+//        sql=sql+";";
 
         try (PreparedStatement pstmt  = connection.prepareStatement(sql)){
 
-            for (int i = 1; i < fieldsNvalues.size(); i++)
-                pstmt.setString(1, (String) fieldsNvalues.get(i).getValue());
+            for (int i = 1; i <= fieldsNvalues.size(); i++)
+                pstmt.setString(i, (String) fieldsNvalues.get(i-1).getValue());
 
             ResultSet result  = pstmt.executeQuery();
             ResultSetMetaData meta=result.getMetaData();
             int columnCount = meta.getColumnCount();
 
-
-            // The column count starts from 1
-            for (int i = 1; i <= columnCount; i++ ) {
+            while (result.next()){
                 HashMap<String, String> map = new HashMap<String, String>();
-                String name = meta.getColumnName(i);
-                map.put(name,result.getString(name));
+                // The column count starts from 1
+                for (int i = 1; i <= columnCount; i++ ) {
+                    String name = meta.getColumnName(i);
+                    map.put(name,result.getString(name));
+                }
                 ans.add(map);
             }
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         }
-
-
-//        StringBuilder where = new StringBuilder();
-//        where.append(fieldsNvalues.get(0).getKey()).append("=").append(fieldsNvalues.get(0).getValue());
-//        for (int i = 1; i < fieldsNvalues.size(); i++) {
-//            where.append("and").append(fields.toString().get(i)).append("=").append(values.get(i));
-//        }
-//        try {
-//            Statement query = connection.createStatement();
-//            ResultSet result=query.executeQuery("SELECT * FROM "+table+" WHERE "+where+";");
-//            ResultSetMetaData meta=result.getMetaData();
-//            int columnCount = meta.getColumnCount();
-//
-//            // The column count starts from 1
-//            for (int i = 1; i <= columnCount; i++ ) {
-//                String name = meta.getColumnName(i);
-//                map.put(name,result.getString(name));
-//            }
-//        }
-//        catch (Exception e){
-//            System.out.println(e.getMessage());
-//        }
 
         return ans;
     }
@@ -124,18 +111,23 @@ public class AccessLayer {
      * @param fieldsNvalues- list of fields and their values to put in "WHERE" condition
      * @return RESULT whether the update succeeded
      */
-    public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues)
+    public RESULT UpdateEntries(Tables table, Fields fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues)
     {
         RESULT out=RESULT.Success;
         StringBuilder fields = new StringBuilder();
-        for (Pair fieldsNvalue : fieldsNvalues) fields.append(fieldsNvalue.getKey()).append(" = ? and ");
-        String sql = "UPDATE "+table+" SET "+fieldToUpdate+" = "+newValue+" WHERE "+fields;
-        sql=sql.substring(sql.length()-5);
-
+        String sql=null;
+        if(fieldsNvalues== null || fieldsNvalues.size()==0) {
+            fieldsNvalues = new ArrayList<>();
+            sql = "UPDATE "+table+" SET "+fieldToUpdate+" = "+newValue;
+        }else {
+            for (Pair fieldsNvalue : fieldsNvalues) fields.append(fieldsNvalue.getKey()).append(" = ? and ");
+            sql = "UPDATE " + table + " SET " + fieldToUpdate + " = " + newValue + " WHERE " + fields;
+            sql = sql.substring(0,sql.length() - 5);
+        }
         try (PreparedStatement pstmt  = connection.prepareStatement(sql)){
 
-            for (int i = 1; i < fieldsNvalues.size(); i++)
-                pstmt.setString(1, (String) fieldsNvalues.get(i).getValue());
+            for (int i = 1; i <= fieldsNvalues.size(); i++)
+                pstmt.setString(i, (String) fieldsNvalues.get(i-1).getValue());
 
             int res=pstmt.executeUpdate();
             if(res==0)
