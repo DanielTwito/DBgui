@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.ModelLogic.VacationListing;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -177,7 +178,7 @@ public class SearchPageView {
         table.setItems(list);
     }
 
-    public void OpenSignupForm(MouseEvent mouseEvent)
+    public void OpenSignupForm(ActionEvent Event)
     {
 //        Parent root;
 //        try {
@@ -197,8 +198,11 @@ public class SearchPageView {
 //        }
         Stage s = new Stage();
         RegisterFormView rfv = new RegisterFormView();
+        //rfv.setControl(control);
         try {
+            rfv.setControl(control);
             rfv.start(s);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -206,6 +210,13 @@ public class SearchPageView {
 
     public void openAddVacationForm(ActionEvent actionEvent)
     {
-
+        Stage s = new Stage();
+        AddVacationView avv = new AddVacationView();
+        avv.setControl(control);
+        try {
+            avv.start(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

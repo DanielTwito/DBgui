@@ -2,10 +2,8 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,50 +12,39 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Pair;
-import sample.Controller;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
-
-import static sample.Enums.Tables.Users;
 
 public class RegisterFormView  extends Application {
     private Controller control;
 
     //Controls in the javaFX
     @FXML
-    private TextField userNameTXT;
+    private TextField userName;
     @FXML
-    private PasswordField passwordTXT;
+    private PasswordField password;
     @FXML
-    private PasswordField confirm_passwordTXT;
+    private PasswordField confirm_password;
     @FXML
-    private TextField firstNameTXT;
+    private TextField firstName;
     @FXML
-    private TextField lastNameTXT;
+    private TextField lastName;
     @FXML
-    private TextField emailTXT;
+    private TextField email;
     @FXML
-    private TextField cityTXT;
+    private TextField city;
     @FXML
     private DatePicker birthdate;
     @FXML
@@ -80,25 +67,12 @@ public class RegisterFormView  extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("../RegisterForm.fxml"));
         Scene scene = new Scene(root, 800, 500);
         stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getResource("../RegisterForm.css").toExternalForm());
+
+    //    scene.getStylesheets().add(getClass().getResource("../RegisterForm.css").toExternalForm());
         stage.setTitle("Registration Form");
         stage.show();
         //list of all text fields
-        txtList.add(userNameTXT);
-        txtList.add(passwordTXT);
-        txtList.add(confirm_passwordTXT);
-        txtList.add(firstNameTXT);
-        txtList.add(lastNameTXT);
-        txtList.add(emailTXT);
-        txtList.add(cityTXT);
-        //birthdate.setOnAction((ActionEvent event) -> ld = birthdate.getValue());
-//        uploadImage.setOnAction((final ActionEvent e) -> {
-//            File file = fileChooser.showOpenDialog(stage);
-//            uploadImage = new Button("Choose user Image");
-//            if (file != null) {
-//                imageURL = file.toURI().toString();
-//            }
-//        });
+
     }
 
     /**
@@ -107,6 +81,7 @@ public class RegisterFormView  extends Application {
      * @param control
      */
     public void setControl(Controller control) {
+        if(control!=null)return;
         this.control = control;
     }
 
@@ -117,13 +92,21 @@ public class RegisterFormView  extends Application {
      */
     @FXML
     protected void SignUp(ActionEvent event)  throws IOException {
-        errorTxt.clear();
+       // errorTxt.clear();
         errortext = new StringBuilder();
         String missing = new String();
+        txtList.add(userName);
+        txtList.add(password);
+        txtList.add(confirm_password);
+        txtList.add(firstName);
+        txtList.add(lastName);
+        txtList.add(email);
+        txtList.add(city);
         for (TextField tx : txtList) {
             if (tx.getText().trim().isEmpty())
-                missing = missing + tx + ", ";
+                missing = missing + tx.getId() + ", ";
         }
+         missing =missing.substring(0,missing.length()-2);
         if (ld == null)// checks if no birth date was added
             errortext.append("please fill your date of birth \n");
         if (!missing.isEmpty())//checks if text fields are empty
@@ -132,25 +115,25 @@ public class RegisterFormView  extends Application {
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
         ArrayList<Pair> tmp1 = new ArrayList<>();
-        tmp1.add(new Pair<>(Fields.Username, userNameTXT.getText()));
+        tmp1.add(new Pair<>(Fields.Username, userName.getText()));
         ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
         ArrayList<Pair> tmp2 = new ArrayList<>();
-        tmp1.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
+        tmp1.add(new Pair<>(Fields.Email, email.getText().trim()));
         ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(tmp2, Tables.Users);
         if (ContainsEmail != null && ContainsEmail.size() == 0)
             errortext.append("email address already in the system please choose a different one.\n");
         // check if password confirm is legit
-        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {errortext.append("Password and confirm password are not the same\n");}
+        if (!password.getText().trim().equals(confirm_password.getText().trim())) {errortext.append("Password and confirm password are not the same\n");}
 
-        if(passwordTXT.getText().trim().length()<6){errortext.append("Password must be over 6 characters long\n");}
+        if(password.getText().trim().length()<6){errortext.append("Password must be over 6 characters long\n");}
         //check the email according to a regex
         String regexMail = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
         Pattern pattern;
         pattern = Pattern.compile(regexMail, Pattern.CASE_INSENSITIVE);
-        if (!pattern.matcher(emailTXT.getText().trim()).matches())
+        if (!pattern.matcher(email.getText().trim()).matches())
             errortext.append("please enter a real Email address\n");
 
         //turns the image url to a byte array
@@ -158,6 +141,7 @@ public class RegisterFormView  extends Application {
         ByteArrayOutputStream imageStream= new ByteArrayOutputStream();
         ImageIO.write(userImage, "jpg", imageStream);
         byte [] bytePhoto = imageStream.toByteArray();
+        String strImage = new String(bytePhoto);
 
                     //this is to get image from byte array to image
         /**
@@ -166,44 +150,28 @@ public class RegisterFormView  extends Application {
         ImageIO.write(final_buffered_image , "jpg", new File("final_file.jpg") );
         System.out.println("Converted Successfully!");
         **/
-
-        //if the length of the error messege is zero then it addes the user, else it prints the error messege on the screen
-//        if (errortext.toString().length() == 0)
-//            control.AddEntry(new ArrayList<String>(Arrays.asList(userNameTXT.getText().trim(), passwordTXT.getText().trim(), firstNameTXT.getText().trim(),
-//                    lastNameTXT.getText().trim(), emailTXT.getText().trim(), cityTXT.getText().trim(), imageURL)), Tables.Users);
-//        else {
-//            errorTxt.setText(errortext.toString());
-//            return;
-//
-//        }
+        if (errortext.toString().length() == 0) {
+            ArrayList<Pair> user = new ArrayList<>();
+            user.add(new Pair<>(Fields.Username, userName.getText().trim()));
+            user.add(new Pair<>(Fields.Password, password.getText().trim()));
+            user.add(new Pair<>(Fields.FirstName, firstName.getText().trim()));
+            user.add(new Pair<>(Fields.LastName, lastName.getText().trim()));
+            user.add(new Pair<>(Fields.Email, email.getText().trim()));
+            user.add(new Pair<>(Fields.city, city.getText().trim()));
+            user.add(new Pair<>(Fields.image, strImage));
+            user.add(new Pair<>(Fields.Password, password.getText().trim()));
+            System.out.println("adding user DONE");
+            //control.AddEntry(user,Tables.Users);
+        }
+        else {errorTxt.setText(errortext.toString());}
     }
 
-    public void OnAction(ActionEvent actionEvent)
-    {
-        ld = birthdate.getValue();
-    }
-
-    public void onUploadAction(ActionEvent actionEvent)
-    {
+    public void OnAction(ActionEvent actionEvent){ld = birthdate.getValue();}
+    public void onUploadAction(ActionEvent actionEvent){
         final FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(s);
         uploadImage = new Button("Choose user Image");
-        if (file != null) {
-            imageURL = file.toURI().toString();
-        if (errortext.toString().length() == 0) {
-            ArrayList<Pair> user = new ArrayList<>();
-            user.add(new Pair<>(Fields.Username, userNameTXT.getText().trim()));
-            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
-            user.add(new Pair<>(Fields.FirstName, firstNameTXT.getText().trim()));
-            user.add(new Pair<>(Fields.LastName, lastNameTXT.getText().trim()));
-            user.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
-            user.add(new Pair<>(Fields.city, cityTXT.getText().trim()));
-            user.add(new Pair<>(Fields.image, strImage));
-            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
-            control.AddEntry(user,Tables.Users);
-        }
-        else {
-            errorTxt.setText(errortext.toString());
-        }
+        if (file != null) {imageURL = file.toURI().toString();}
     }
 }
+
