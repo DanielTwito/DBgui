@@ -14,6 +14,7 @@ public class AccessLayer {
 
     private Connection connection;
 
+
     public void connectDB(String db_name){
 
         try {

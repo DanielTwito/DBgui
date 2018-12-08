@@ -1,8 +1,12 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,6 +28,8 @@ public class AddVacationView {
     TextField AirLineTXT;
     @FXML
     TextField destinationTXT;
+    @FXML
+    TextField Price;
     @FXML
     DatePicker startDate;
     @FXML
@@ -52,14 +58,16 @@ public class AddVacationView {
     private LocalDate endD;
 
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("AddVacation.fxml"));
+      //   assert LuggageType !=null :"fx:id=\"LuggageType\" was not injected: check your FXML file 'AddVacation.fxml'.";
+        Parent root = FXMLLoader.load(getClass().getResource("../AddVacation.fxml"));
         Scene scene = new Scene(root, 800, 500);
         stage.setScene(scene);
-        LuggageType.getItems().removeAll(LuggageType.getItems());
-        LuggageType.getItems().addAll("no luggage","hand luggage","Large suitcase","Large suitcase and hand luggage");
-        LuggageType.getSelectionModel().select("Option B");
-        startDate.setOnAction((ActionEvent event) -> startD = startDate.getValue());
-        endDate.setOnAction((ActionEvent event) -> endD = endDate.getValue());
+       // ComboBox<String> LuggageType = new ComboBox<String>();
+     //   LuggageType.getItems().addAll("no luggage","hand luggage","Large suitcase","Large suitcase and hand luggage");
+       // LuggageType.setValue("no luggage");
+       // Group roots = (Group) scene.getRoot();
+        //roots.getChildren().add(LuggageType);
+      //  LuggageType.getSelectionModel().select("Option B");
         // scene.getStylesheets().add(getClass().getResource("RegisterForm.css").toExternalForm());
         stage.setTitle("Add vacation");
         stage.show();
@@ -68,6 +76,7 @@ public class AddVacationView {
         this.control = control;
     }
     public void addVcation(ActionEvent event) {
+
         StringBuilder msg = new StringBuilder();
         if (vacationTypeTXT.getText().trim().isEmpty()) {
             msg.append("please add vacation type\n");
@@ -78,6 +87,19 @@ public class AddVacationView {
         if (AirLineTXT.getText().trim().isEmpty()) {
             msg.append("please add airline\n");
         }
+        Price.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    Price.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        if(Price.getText().trim().isEmpty()){
+            msg.append("please enter a price\n");
+        }
+        if(Price.getText().trim().isEmpty() && Integer.parseInt(Price.getText().trim())<=0){msg.append("please enter a price higher then zero\n");}
         if (startD == null || endD == null) {
             msg.append("please add vacation dates\n");
         }
@@ -98,9 +120,15 @@ public class AddVacationView {
             vac.add(new Pair<>(Fields.placeRank, roomRank.getValue()));
             vac.add(new Pair<>(Fields.includeRoom, withStuff.isSelected()));
             vac.add(new Pair<>(Fields.includeReturn, withReturn.isSelected()));
-            control.AddEntry(vac,Tables.ListingVacations);
+            vac.add(new Pair<>(Fields.price,Price.getText().trim()));
+            System.out.println("adding vacation DONE");
+            //control.AddEntry(vac,Tables.ListingVacations);
         } else {
             errorBoard.setText(msg.toString());
         }
     }
-}
+
+    public void addStart(ActionEvent event) { startD = startDate.getValue();}
+
+    public void addEnd(ActionEvent event) {endD = endDate.getValue();}
+    }
