@@ -25,12 +25,12 @@ public class AccessLayer {
         }
     }
 
-       public RESULT AddEntry(ArrayList<Pair> data, Tables table){
+       public RESULT AddEntry(ArrayList<Pair> data, Tables table)
+       {
             int size=data.size();
             if (size==0) {
                 return RESULT.Fail;
             }
-
             StringBuilder paramsFields= new StringBuilder(" (");
             StringBuilder paramsFValues= new StringBuilder(" VALUES (");
             String qry = "INSERT INTO "+table;
@@ -124,8 +124,8 @@ public class AccessLayer {
      * @param fieldsNvalues- list of fields and their values to put in "WHERE" condition
      * @return RESULT whether the update succeeded
      */
-    public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues){
-
+    public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues)
+    {
         RESULT out=RESULT.Success;
         StringBuilder fields = new StringBuilder();
         for (Pair fieldsNvalue : fieldsNvalues) fields.append(fieldsNvalue.getKey()).append(" = ? and ");
@@ -149,7 +149,8 @@ public class AccessLayer {
     }
 
 
-    public RESULT DeleteEntry (Tables table, ArrayList<Pair> fieldValues){
+    public RESULT DeleteEntry (Tables table, ArrayList<Pair> fieldValues)
+    {
         int size= fieldValues.size();
         StringBuilder whereParam=new StringBuilder();
         for (int i = 0; i < size-1 ; i++) {
