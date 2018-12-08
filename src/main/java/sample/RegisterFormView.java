@@ -2,8 +2,10 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,20 +14,31 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Pair;
+import sample.Controller;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import static sample.Enums.Tables.Users;
 
 public class RegisterFormView  extends Application {
     private Controller control;
@@ -124,18 +137,15 @@ public class RegisterFormView  extends Application {
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
-        ArrayList<Pair> l = new ArrayList<>();
-        l.add(new Pair(Fields.Email, emailTXT.getText()));
-        ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(l, Tables.Users);
+        ArrayList<Pair> tmp2 = new ArrayList<>();
+        tmp1.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
+        ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(tmp2, Tables.Users);
         if (ContainsEmail != null && ContainsEmail.size() == 0)
             errortext.append("email address already in the system please choose a different one.\n");
         // check if password confirm is legit
-        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {
-            errortext.append("Password and confirm password are not the same\n");
-        }
-        if(passwordTXT.getText().trim().length()<6){
-            errortext.append("Password must be over 6 characters long\n");
-        }
+        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {errortext.append("Password and confirm password are not the same\n");}
+
+        if(passwordTXT.getText().trim().length()<6){errortext.append("Password must be over 6 characters long\n");}
         //check the email according to a regex
         String regexMail = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
         Pattern pattern;
@@ -180,6 +190,20 @@ public class RegisterFormView  extends Application {
         uploadImage = new Button("Choose user Image");
         if (file != null) {
             imageURL = file.toURI().toString();
+        if (errortext.toString().length() == 0) {
+            ArrayList<Pair> user = new ArrayList<>();
+            user.add(new Pair<>(Fields.Username, userNameTXT.getText().trim()));
+            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
+            user.add(new Pair<>(Fields.FirstName, firstNameTXT.getText().trim()));
+            user.add(new Pair<>(Fields.LastName, lastNameTXT.getText().trim()));
+            user.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
+            user.add(new Pair<>(Fields.city, cityTXT.getText().trim()));
+            user.add(new Pair<>(Fields.image, strImage));
+            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
+            control.AddEntry(user,Tables.Users);
+        }
+        else {
+            errorTxt.setText(errortext.toString());
         }
     }
 }

@@ -25,7 +25,7 @@ public class AccessLayer {
     }
 
     //TODO:Twito
-    public RESULT AddEntry(List<String> data, Tables table){return  null;}
+    public RESULT AddEntry(ArrayList<Pair> fieldsNvalues, Tables table){return  null;}
 
 
     /**

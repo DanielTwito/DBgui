@@ -7,9 +7,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+import sample.Enums.Fields;
+import sample.Enums.Tables;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class AddVacationView {
     //Controls in the javaFX
@@ -24,11 +29,11 @@ public class AddVacationView {
     @FXML
     DatePicker endDate;
     @FXML
-    Spinner adultAmount;
+    Spinner<Integer> adultAmount;
     @FXML
-    Spinner ChildAmount;
+    Spinner<Integer> ChildAmount;
     @FXML
-    Spinner Babyamount;
+    Spinner<Integer> Babyamount;
     @FXML
     ComboBox<String> LuggageType;
     @FXML
@@ -55,7 +60,6 @@ public class AddVacationView {
         LuggageType.getSelectionModel().select("Option B");
         startDate.setOnAction((ActionEvent event) -> startD = startDate.getValue());
         endDate.setOnAction((ActionEvent event) -> endD = endDate.getValue());
-
         // scene.getStylesheets().add(getClass().getResource("RegisterForm.css").toExternalForm());
         stage.setTitle("Add vacation");
         stage.show();
@@ -63,15 +67,40 @@ public class AddVacationView {
     public void setControl(Controller control) {
         this.control = control;
     }
-public void addVcation(ActionEvent event){
+    public void addVcation(ActionEvent event) {
         StringBuilder msg = new StringBuilder();
-        if(vacationTypeTXT.getText().trim().isEmpty()){msg.append("please add vacation type\n");}
-        if(destinationTXT.getText().trim().isEmpty()){msg.append("please add destination\n");}
-        if(AirLineTXT.getText().trim().isEmpty()){msg.append("please add airline\n");}
-        if(startD==null ||endD==null){msg.append("please add vacation dates\n");}
-        if(startD!=null &&endD!=null&&Period.between(endD, startD).getDays() < 0){msg.append("vacation return date must be later then departure date \n");}
-        if(msg.length()==0){
-
+        if (vacationTypeTXT.getText().trim().isEmpty()) {
+            msg.append("please add vacation type\n");
         }
-}
+        if (destinationTXT.getText().trim().isEmpty()) {
+            msg.append("please add destination\n");
+        }
+        if (AirLineTXT.getText().trim().isEmpty()) {
+            msg.append("please add airline\n");
+        }
+        if (startD == null || endD == null) {
+            msg.append("please add vacation dates\n");
+        }
+        if (startD != null && endD != null && Period.between(endD, startD).getDays() < 0) {
+            msg.append("vacation return date must be later then departure date \n");
+        }
+        if (msg.length() == 0) {
+            ArrayList<Pair> vac = new ArrayList<>();
+            vac.add(new Pair<>(Fields.vacationType, vacationTypeTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.airport, AirLineTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.destination, destinationTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.Flydate, startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
+            vac.add(new Pair<>(Fields.Returndate, endD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
+            vac.add(new Pair<>(Fields.adultTickets, adultAmount.getValue().toString()));
+            vac.add(new Pair<>(Fields.childTickets, ChildAmount.getValue().toString()));
+            vac.add(new Pair<>(Fields.babyTickets, Babyamount.getValue().toString()));
+            vac.add(new Pair<>(Fields.baggage, LuggageType.getValue()));
+            vac.add(new Pair<>(Fields.placeRank, roomRank.getValue()));
+            vac.add(new Pair<>(Fields.includeRoom, withStuff.isSelected()));
+            vac.add(new Pair<>(Fields.includeReturn, withReturn.isSelected()));
+            control.AddEntry(vac,Tables.ListingVacations);
+        } else {
+            errorBoard.setText(msg.toString());
+        }
+    }
 }
