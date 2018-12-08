@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static sample.Enums.Tables.Users;
+
 public class RegisterFormView  extends Application {
     private Controller control;
 
@@ -129,7 +131,9 @@ public class RegisterFormView  extends Application {
         if (ld != null && Period.between(LocalDate.now(), ld).getYears() < 18)//checks if user age in null
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
-        ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(new ArrayList<Pair<Fields, String>>().add(new Pair<>(Fields.Username, userNameTXT.getText())), Tables.Users);
+        ArrayList<Pair> tmp1 = new ArrayList<>();
+        tmp1.add(new Pair<>(Fields.Username, userNameTXT.getText()));
+        ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
@@ -139,6 +143,9 @@ public class RegisterFormView  extends Application {
         // check if password confirm is legit
         if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {
             errortext.append("Password and confirm password are not the same\n");
+        }
+        if(passwordTXT.getText().trim().length()<6){
+            errortext.append("Password must be over 6 characters long\n");
         }
         //check the email according to a regex
         String regexMail = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
