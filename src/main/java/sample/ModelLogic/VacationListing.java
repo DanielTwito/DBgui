@@ -10,11 +10,26 @@ public class VacationListing {
     private IntegerProperty price;
     private BooleanProperty isConnection;
 
-    public VacationListing(StringProperty dest, StringProperty date, IntegerProperty price, BooleanProperty isConnection) {
+    public void setVacID(String vacID) {
+        this.VacID.set(vacID);
+    }
+
+    public String getVacID() {
+        return VacID.get();
+    }
+
+    public StringProperty vacIDProperty() {
+        return VacID;
+    }
+
+    private StringProperty VacID;
+
+    public VacationListing(StringProperty dest, StringProperty date, IntegerProperty price, BooleanProperty isConnection, StringProperty VacID) {
         this.dest = dest;
         this.date = date;
         this.price = price;
         this.isConnection = isConnection;
+        this.VacID = VacID;
     }
 
     @Override
@@ -24,7 +39,7 @@ public class VacationListing {
                 ", date=" + date +
                 ", price=" + price +
                 ", isConnection=" + isConnection +
-                '}';
+                ", VacID="+VacID+'}';
     }
 
     public void setDest(String dest) {
