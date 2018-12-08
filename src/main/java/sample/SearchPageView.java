@@ -6,13 +6,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Pair;
+import sample.Enums.Fields;
+import sample.Enums.Tables;
 import sample.ModelLogic.VacationListing;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,12 +27,13 @@ public class SearchPageView {
 
     public ImageView logo;
     public TableView table;
+    public TextField simpleSearch;
 
     int r;
     @FXML
     public void initialize(){
         logo.setImage(new Image(getClass().getClassLoader().getResourceAsStream("vacation_logo.JPG")));
-        r = 0;
+        r = 1;
         TableColumn<VacationListing, String> logos
                 = new TableColumn<VacationListing, String>("");
 
@@ -45,15 +52,23 @@ public class SearchPageView {
         TableColumn<VacationListing, String> buttons
                 = new TableColumn<VacationListing, String>("");
 
+        logos.setPrefWidth(114);
         dests.setCellValueFactory(new PropertyValueFactory<>("dest"));
+        dests.setPrefWidth(114);
         dates.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dates.setPrefWidth(114);
         connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
+        connections.setPrefWidth(114);
         prices.setCellValueFactory(new PropertyValueFactory<>("price"));
+        prices.setPrefWidth(114);
+        buttons.setCellValueFactory(new PropertyValueFactory<>("view"));
+        buttons.setPrefWidth(114);
 
         prices.setSortType(TableColumn.SortType.DESCENDING);
         dates.setSortType(TableColumn.SortType.DESCENDING);
 
         table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
+
     }//end initialize
     public void setControl(Controller control){this.control=control;}
 
@@ -117,6 +132,9 @@ public class SearchPageView {
 
 
     public void OnTextChanged(KeyEvent keyEvent) {
+        ArrayList<Pair> read = new ArrayList<>();
+        read.add(new Pair(Fields.destination, simpleSearch.getText()));
+        ArrayList<HashMap<String, String>> res = control.ReadEntries(read, Tables.ListingVacations);
         ObservableList<VacationListing> list;
         List<VacationListing> l = new LinkedList<>();
         table.getItems().clear();

@@ -1,16 +1,21 @@
 package sample.ModelLogic;
 
+import javafx.scene.control.Button;
+
 public class VacationListing {
-    String dest;
-    String date;
-    String price;
-    Boolean isConnection;
+    private String dest;
+    private String date;
+    private String price;
+    private Boolean isConnection;
+    private Button view;
 
     public VacationListing(String dest, String date, String price, Boolean isConnection) {
         this.dest = dest;
         this.date = date;
         this.price = price;
         this.isConnection = isConnection;
+        this.view = new Button("View");
+        this.view.setStyle("-fx-background-color: #0865F1");
     }
 
     public void setDest(String dest) {

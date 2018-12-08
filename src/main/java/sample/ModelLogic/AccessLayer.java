@@ -124,7 +124,7 @@ public class AccessLayer {
         return out;
     }
 
-    
+
     public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return null;}
 
     public void discoonetDB(){
@@ -135,4 +135,25 @@ public class AccessLayer {
         }
     }
 
+    //    DDL FOR ListingVacation TABLE:
+    //
+    //    CREATE TABLE ListingVacation (
+    //            VacID      INT (16) PRIMARY KEY,
+    //    airline    STRING(24),
+    //    FlightDate    STRING(16) NOT NULL,
+    //    ReturnDate    STRING(16),
+    //    Baggage    STRING(16),
+    //    adultTickets    INT(10),
+    //    childTickets    INT(10),
+    //    babyTickets    INT(10),
+    //    destination    STRING(24) NOT NULL,
+    //    includeReturn    BOOLEAN NOT NULL,
+    //    vacationType    STRING(24),
+    //    includeRoom    BOOLEAN,
+    //    placeRank    INT(3)
+    //);
+
+    // ADD RECORD TO ListingVacation query
+    // INSERT INTO ListingVacation (VacID, airline, FlightDate, ReturnDate, Baggage, adultTickets, childTickets, babyTickets, destination, includeReturn, vacationType, includeRoom, placeRank)
+    //     VALUES (1,"Air1", "1/1/2091", "1/1/2092", "Hand", 2, 2, 2, "TLV", true, "idk", 1, 3);
 }

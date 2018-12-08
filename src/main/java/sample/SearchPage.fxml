@@ -41,11 +41,11 @@
                   <Insets left="220.0" top="37.0" />
                </GridPane.margin>
             </Hyperlink>
-            <AnchorPane prefHeight="351.0" prefWidth="606.0" GridPane.rowIndex="2">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="616.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="66.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="338.0" prefWidth="554.0">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="-28.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="351.0" prefWidth="504.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <TableView fx:id="table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="350.0" prefWidth="542.0">
+                        <TableView fx:id="table" prefHeight="350.0" prefWidth="625.0">
                         </TableView>
                      </content>
                   </ScrollPane>
