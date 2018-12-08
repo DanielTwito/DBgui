@@ -20,16 +20,16 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Controller control=new Controller();
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("SearchPage.fxml").openStream());
+        Parent root = fxmlLoader.load(getClass().getResource("../SearchPage.fxml").openStream());
 
         primaryStage.setTitle("Vacation4u");
         Scene scene = new Scene(root, 1000, 780);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../style.css").toExternalForm());
         primaryStage.setScene(scene);
 
-        SearchPageView searcgPageView = fxmlLoader.getController();     //getting the controller for the FXML
+        SearchPageView searchPageView = fxmlLoader.getController();     //getting the controller for the FXML
 
-        searcgPageView.setControl(control);
+        searchPageView.setControl(control);
         control.setModel(new Model("Database/projectdb.db"));//setting a Model for it
 
         primaryStage.show();

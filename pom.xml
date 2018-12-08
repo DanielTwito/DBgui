@@ -32,6 +32,7 @@
                     <include>**/*.fxml</include>
                     <include>**/*.css</include>
                     <include>**/*.png</include>
+                    <include>**/*.JPG</include>
                 </includes>
             </resource>
         </resources>

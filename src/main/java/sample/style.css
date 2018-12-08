@@ -1,17 +1,18 @@
-#query_output{
-    -fx-background-image:url("logo_vacation.png");
-    -fx-background-repeat: stretch;
-    -fx-background-position: center center;
-}
-.text-area .scroll-pane {
-    -fx-background-color: transparent;
+.register-button {
+    -fx-border: 6px solid transparent;
+    -fx-border-color: linear-gradient(to right, #0865F1 0%, #C704F6 100%);
+    -fx-border-color-slice: 1;
+
+    -fx-color: #000;
+    -fx-font-size: 2em;
+    -fx-padding: 10px 40px;
+    -fx-text-decoration: none;
+    -fx-font-weight: bold;
+    -fx-text-transform: uppercase;
 }
 
-.text-area .scroll-pane .viewport{
-    -fx-background-color: transparent;
-}
-
-
-.text-area .scroll-pane .content{
-    -fx-background-color: transparent;
+.register-button:hover {
+    -fx-background-color: white;
+    -fx-background-color: linear-gradient(to right, #0865F1, #C704F6);
+    -fx-color: #fff;
 }
