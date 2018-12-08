@@ -10,13 +10,13 @@ import sample.Enums.Tables;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 //TODO: Nethanel, implement this please
 public class ViewVacation {
 
     private Controller control;
     private String VacID;
+    private String seller;
 
     @FXML
     private Text airline;
@@ -80,6 +80,7 @@ public class ViewVacation {
         placeRank.setText(vacationDetails.get("placeRank"));
         price.setText(vacationDetails.get("price"));
         withConnection.setText(vacationDetails.get("withConnection"));
+        seller =vacationDetails.get("seller");
 
     }
 
@@ -87,7 +88,7 @@ public class ViewVacation {
     //supposed to send a message to the seller
     protected void PurchaseRequest(ActionEvent event) {
 
-
+//        control.sendPurchaseRequest(seller,buyer);
 
     }
 }
