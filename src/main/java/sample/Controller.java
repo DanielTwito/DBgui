@@ -25,7 +25,7 @@ public class Controller {
         if(this.model != null) return;                      // Model can only be set once
         this.model = model;
     }
-    public RESULT AddEntry(List<String> data, Tables table){return  null;}
+    public RESULT AddEntry(ArrayList<Pair> fieldsNvalues, Tables table){return  null;}
     public ArrayList<HashMap<String, String>> ReadEntries(ArrayList<Pair> fieldsNvalues, Tables table){return  null;}
     public RESULT UpdateEntries(Tables table, String fieldToUpdate, String newValue, ArrayList<Pair> fieldsNvalues){return null;}
     public RESULT DeleteEntry (List<String> value,List<Fields> fields,Tables table){return null;}

@@ -132,21 +132,20 @@ public class RegisterFormView  extends Application {
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
         ArrayList<Pair> tmp1 = new ArrayList<>();
-        tmp1.add(new Pair<>(Fields.Username, userNameTXT.getText()));
+        tmp1.add(new Pair<>(Fields.Username, userNameTXT.getText().trim()));
         ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
-        ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(new ArrayList<Pair<Fields, String>>().add(new Pair<>(Fields.Email, emailTXT.getText())), Tables.Users);
+        ArrayList<Pair> tmp2 = new ArrayList<>();
+        tmp1.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
+        ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(tmp2, Tables.Users);
         if (ContainsEmail != null && ContainsEmail.size() == 0)
             errortext.append("email address already in the system please choose a different one.\n");
         // check if password confirm is legit
-        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {
-            errortext.append("Password and confirm password are not the same\n");
-        }
-        if(passwordTXT.getText().trim().length()<6){
-            errortext.append("Password must be over 6 characters long\n");
-        }
+        if (!passwordTXT.getText().trim().equals(confirm_passwordTXT.getText().trim())) {errortext.append("Password and confirm password are not the same\n");}
+
+        if(passwordTXT.getText().trim().length()<6){errortext.append("Password must be over 6 characters long\n");}
         //check the email according to a regex
         String regexMail = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
         Pattern pattern;
@@ -159,6 +158,7 @@ public class RegisterFormView  extends Application {
         ByteArrayOutputStream imageStream= new ByteArrayOutputStream();
         ImageIO.write(userImage, "jpg", imageStream);
         byte [] bytePhoto = imageStream.toByteArray();
+        String strImage = new String(bytePhoto);
 
                     //this is to get image from byte array to image
         /**
@@ -169,13 +169,20 @@ public class RegisterFormView  extends Application {
         **/
 
         //if the length of the error messege is zero then it addes the user, else it prints the error messege on the screen
-        if (errortext.toString().length() == 0)
-            control.AddEntry(new ArrayList<String>(Arrays.asList(userNameTXT.getText().trim(), passwordTXT.getText().trim(), firstNameTXT.getText().trim(),
-                    lastNameTXT.getText().trim(), emailTXT.getText().trim(), cityTXT.getText().trim(), imageURL)), Tables.Users);
+        if (errortext.toString().length() == 0) {
+            ArrayList<Pair> user = new ArrayList<>();
+            user.add(new Pair<>(Fields.Username, userNameTXT.getText().trim()));
+            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
+            user.add(new Pair<>(Fields.FirstName, firstNameTXT.getText().trim()));
+            user.add(new Pair<>(Fields.LastName, lastNameTXT.getText().trim()));
+            user.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
+            user.add(new Pair<>(Fields.city, cityTXT.getText().trim()));
+            user.add(new Pair<>(Fields.image, strImage));
+            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
+            control.AddEntry(user,Tables.Users);
+        }
         else {
             errorTxt.setText(errortext.toString());
-            return;
-
         }
     }
 }
