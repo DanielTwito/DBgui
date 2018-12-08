@@ -1,46 +1,29 @@
 package sample;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Pair;
-import sample.Controller;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
 
-import static sample.Enums.Tables.Users;
-
-public class RegisterFormView  extends Application {
+public class RegisterFormView {
     private Controller control;
 
     //Controls in the javaFX
@@ -74,16 +57,9 @@ public class RegisterFormView  extends Application {
     //data for the user
     public String imageURL = null;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        s = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("../RegisterForm.fxml"));
-        Scene scene = new Scene(root, 800, 500);
-        stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getResource("../RegisterForm.css").toExternalForm());
-        stage.setTitle("Registration Form");
-        stage.show();
-        //list of all text fields
+    @FXML
+    public void initialize()
+    {
         txtList.add(userNameTXT);
         txtList.add(passwordTXT);
         txtList.add(confirm_passwordTXT);
@@ -91,14 +67,6 @@ public class RegisterFormView  extends Application {
         txtList.add(lastNameTXT);
         txtList.add(emailTXT);
         txtList.add(cityTXT);
-        //birthdate.setOnAction((ActionEvent event) -> ld = birthdate.getValue());
-//        uploadImage.setOnAction((final ActionEvent e) -> {
-//            File file = fileChooser.showOpenDialog(stage);
-//            uploadImage = new Button("Choose user Image");
-//            if (file != null) {
-//                imageURL = file.toURI().toString();
-//            }
-//        });
     }
 
     /**
@@ -117,7 +85,6 @@ public class RegisterFormView  extends Application {
      */
     @FXML
     protected void SignUp(ActionEvent event)  throws IOException {
-        errorTxt.clear();
         errortext = new StringBuilder();
         String missing = new String();
         for (TextField tx : txtList) {
@@ -190,20 +157,6 @@ public class RegisterFormView  extends Application {
         uploadImage = new Button("Choose user Image");
         if (file != null) {
             imageURL = file.toURI().toString();
-        if (errortext.toString().length() == 0) {
-            ArrayList<Pair> user = new ArrayList<>();
-            user.add(new Pair<>(Fields.Username, userNameTXT.getText().trim()));
-            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
-            user.add(new Pair<>(Fields.FirstName, firstNameTXT.getText().trim()));
-            user.add(new Pair<>(Fields.LastName, lastNameTXT.getText().trim()));
-            user.add(new Pair<>(Fields.Email, emailTXT.getText().trim()));
-            user.add(new Pair<>(Fields.city, cityTXT.getText().trim()));
-            user.add(new Pair<>(Fields.image, strImage));
-            user.add(new Pair<>(Fields.Password, passwordTXT.getText().trim()));
-            control.AddEntry(user,Tables.Users);
-        }
-        else {
-            errorTxt.setText(errortext.toString());
         }
     }
 }

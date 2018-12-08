@@ -154,6 +154,8 @@ public class AccessLayer {
     //);
 
     // ADD RECORD TO ListingVacation query
-    // INSERT INTO ListingVacation (VacID, airline, FlightDate, ReturnDate, Baggage, adultTickets, childTickets, babyTickets, destination, includeReturn, vacationType, includeRoom, placeRank)
-    //     VALUES (1,"Air1", "1/1/2091", "1/1/2092", "Hand", 2, 2, 2, "TLV", true, "idk", 1, 3);
+//     INSERT INTO ListingVacation (VacID, airline, FlightDate, ReturnDate, Baggage, adultTickets, childTickets, babyTickets, destination, includeReturn, vacationType, includeRoom, placeRank)
+//          VALUES (4,"Air1", "1/1/2091", "1/1/2092", "Hand", 5, 2, 2, "HAIFA", true, "idk", 1, 3);
+//         INSERT INTO ListingVacation (VacID, airline, FlightDate, ReturnDate, Baggage, adultTickets, childTickets, babyTickets, destination, includeReturn, vacationType, includeRoom, placeRank)
+//          VALUES (4,\"Air1\", \"1/1/2091\", \"1/1/2092\", \"Hand\", 5, 2, 2, \"HAIFA\", true, \"idk\", 1, 3);
 }

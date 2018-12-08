@@ -30,10 +30,10 @@
         <TextField id="EmailTXT" fx:id="emailTXT" layoutX="422.0" layoutY="201.0" />
         <Label id="cof" layoutX="327.0" layoutY="240.0" prefHeight="30.0" prefWidth="98.0" text="City of residence:" />
         <TextField id="cityTXT" fx:id="cityTXT" layoutX="423.0" layoutY="242.0" />
-        <Button id="imageButton" layoutX="109.0" layoutY="258.0" mnemonicParsing="false" stylesheets="@RegisterForm.css" text="Upload Image" />
+        <Button id="imageButton" fx:id="uploadImage" onAction="#onUploadAction" layoutX="109.0" layoutY="258.0" mnemonicParsing="false" stylesheets="@RegisterForm.css" text="Upload Image" />
         <Button id="sign_up" fx:id="submit" layoutX="268.0" layoutY="319.0" mnemonicParsing="false" onAction="#SignUp" stylesheets="@RegisterForm.css" text="Sumbit" />
         <Text id="errorTXT" layoutX="21.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.33667373657227" />
-      <DatePicker id="birthDate" fx:id="birthdate" layoutX="425.0" layoutY="280.0" prefHeight="26.0" prefWidth="149.0" stylesheets="@RegisterForm.css" />
+      <DatePicker id="birthDate" fx:id="birthdate" layoutX="425.0" layoutY="280.0" prefHeight="26.0" prefWidth="149.0" stylesheets="@RegisterForm.css" onAction="#OnAction" />
       <Label id="cof" layoutX="346.0" layoutY="278.0" prefHeight="30.0" prefWidth="98.0" text="Date of Birth:" />
     </children>
 </AnchorPane>

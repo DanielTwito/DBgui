@@ -1,9 +1,17 @@
 package sample;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -15,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.ModelLogic.VacationListing;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,6 +67,37 @@ public class SearchPageView {
         dates.setCellValueFactory(new PropertyValueFactory<>("date"));
         dates.setPrefWidth(114);
         connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
+//        connections.setCellFactory(tc -> new TableCell<VacationListing, Boolean>() {
+//            @Override
+//            protected void updateItem(Boolean item, boolean empty) {
+//                super.updateItem(item, empty);
+//                setText(empty ? null :
+//                        item.booleanValue() ? "Yes" : "No");
+//            }
+//        });
+//        connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
+        connections.setCellFactory(col -> new TableCell<VacationListing, Boolean>() {
+            ImageView im = new ImageView();
+            {
+                // initialize ImageView + set as graphic
+                im.setFitWidth(20);
+                im.setFitHeight(20);
+                setGraphic(im);
+                //im.setImage(new Image(getClass().getClassLoader().getResourceAsStream("yes.JPG")));
+            }
+
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                if (empty || item == null) {
+                    // no image for empty cells
+                    im.setImage(null);
+                } else {
+                    // set image for non-empty cell
+                    im.setImage(item ? new Image(getClass().getClassLoader().getResourceAsStream("yes.JPG")) :
+                            new Image(getClass().getClassLoader().getResourceAsStream("no.JPG")));
+                }
+            }
+        });
         connections.setPrefWidth(114);
         prices.setCellValueFactory(new PropertyValueFactory<>("price"));
         prices.setPrefWidth(114);
@@ -144,7 +184,7 @@ public class SearchPageView {
 //        list = FXCollections.observableArrayList(l);
 //        r++;
 //        table.setItems(list);
-
+        String toSreach = simpleSearch.getText()+keyEvent.getCharacter();
         Connection connection = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:Database/projectdb.db");
@@ -153,7 +193,7 @@ public class SearchPageView {
             System.out.println("could not establish a connection to database");
             return;
         }
-        String sql = "SELECT * FROM ListingVacation";
+        String sql = "SELECT * FROM ListingVacation WHERE destination=\'"+toSreach+"\'";
         PreparedStatement st = null;
         List<VacationListing> l = new LinkedList<>();
         try
@@ -162,10 +202,10 @@ public class SearchPageView {
             ResultSet rs = st.executeQuery();
             while(rs.next())
             {
-                l.add(new VacationListing(rs.getString("destination"),
-                        rs.getString("FlightDate"),
-                        rs.getInt("price"),
-                        rs.getBoolean("Connection")));
+                l.add(new VacationListing(new SimpleStringProperty(rs.getString("destination")),
+                        new SimpleStringProperty(rs.getString("FlightDate")),
+                        new SimpleIntegerProperty(rs.getInt("price")),
+                        new SimpleBooleanProperty(rs.getBoolean("Connection"))));
             }
         }
         catch(Exception e)
@@ -173,33 +213,28 @@ public class SearchPageView {
             System.out.println(e.getMessage());
             return;
         }
+        for(VacationListing v : l)
+            System.out.println(v.toString());
         ObservableList<VacationListing> list = FXCollections.observableArrayList(l);
         table.setItems(list);
     }
 
-    public void OpenSignupForm(MouseEvent mouseEvent)
+    public void OpenSignupForm(ActionEvent mouseEvent)
     {
-//        Parent root;
-//        try {
-//            FXMLLoader fxmlLoader = new FXMLLoader();
-//            root = fxmlLoader.load(getClass().getResource("../RegisterForm.fxml").openStream());
-//            Stage stage = new Stage();
-//            stage.setTitle("Sign Up");
-//            stage.setScene(new Scene(root, 400, 600));
-//            RegisterFormView rfv = fxmlLoader.getController();
-//
-//            stage.show();
-//            // Hide this current window (if this is what you want)
-//            ((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        Stage s = new Stage();
-        RegisterFormView rfv = new RegisterFormView();
+        Parent root;
         try {
-            rfv.start(s);
-        } catch (Exception e) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            root = fxmlLoader.load(getClass().getResource("../RegisterForm.fxml").openStream());
+            Stage stage = new Stage();
+            stage.setTitle("Sign Up");
+            stage.setScene(new Scene(root, 650, 400));
+            RegisterFormView rfv = fxmlLoader.getController();
+            rfv.setControl(control);
+            stage.show();
+            // Hide this current window (if this is what you want)
+            ((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

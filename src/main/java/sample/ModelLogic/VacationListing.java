@@ -1,52 +1,77 @@
 package sample.ModelLogic;
 
-import javafx.scene.control.Button;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 
 public class VacationListing {
-    private String dest;
-    private String date;
-    private int price;
-    private Boolean isConnection;
-    private Button view;
+    private StringProperty dest;
+    private StringProperty date;
+    private IntegerProperty price;
+    private BooleanProperty isConnection;
 
-    public VacationListing(String dest, String date, int price, Boolean isConnection) {
+    public VacationListing(StringProperty dest, StringProperty date, IntegerProperty price, BooleanProperty isConnection) {
         this.dest = dest;
         this.date = date;
         this.price = price;
         this.isConnection = isConnection;
-        this.view = new Button("View");
-        this.view.setStyle("-fx-background-color: #0865F1");
+    }
+
+    @Override
+    public String toString() {
+        return "VacationListing{" +
+                "dest=" + dest +
+                ", date=" + date +
+                ", price=" + price +
+                ", isConnection=" + isConnection +
+                '}';
     }
 
     public void setDest(String dest) {
-        this.dest = dest;
+        this.dest.set(dest);
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date.set(date);
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.price.set(price);
     }
 
-    public void setConnection(Boolean connection) {
-        isConnection = connection;
+    public void setIsConnection(boolean isConnection) {
+        this.isConnection.set(isConnection);
     }
 
     public String getDest() {
+        return dest.get();
+    }
+
+    public StringProperty destProperty() {
         return dest;
     }
 
     public String getDate() {
+        return date.get();
+    }
+
+    public StringProperty dateProperty() {
         return date;
     }
 
     public int getPrice() {
+        return price.get();
+    }
+
+    public IntegerProperty priceProperty() {
         return price;
     }
 
-    public Boolean getConnection() {
+    public boolean isIsConnection() {
+        return isConnection.get();
+    }
+
+    public BooleanProperty isConnectionProperty() {
         return isConnection;
     }
 }
