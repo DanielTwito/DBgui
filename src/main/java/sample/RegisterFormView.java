@@ -2,44 +2,30 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Pair;
-import sample.Controller;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
-
-import static sample.Enums.Tables.Users;
 
 public class RegisterFormView  extends Application {
     private Controller control;
@@ -68,6 +54,7 @@ public class RegisterFormView  extends Application {
     @FXML
     private TextField errorTxt;
     public String date = null;
+    private Stage s;
     StringBuilder errortext;
     public LocalDate ld;
     ArrayList<TextField> txtList = new ArrayList<>();
@@ -76,10 +63,11 @@ public class RegisterFormView  extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("RegisterForm.fxml"));
+        s = stage;
+        Parent root = FXMLLoader.load(getClass().getResource("../RegisterForm.fxml"));
         Scene scene = new Scene(root, 800, 500);
         stage.setScene(scene);
-        scene.getStylesheets().add(getClass().getResource("RegisterForm.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../RegisterForm.css").toExternalForm());
         stage.setTitle("Registration Form");
         stage.show();
         //list of all text fields
@@ -90,15 +78,14 @@ public class RegisterFormView  extends Application {
         txtList.add(lastNameTXT);
         txtList.add(emailTXT);
         txtList.add(cityTXT);
-        final FileChooser fileChooser = new FileChooser();
-        birthdate.setOnAction((ActionEvent event) -> ld = birthdate.getValue());
-        uploadImage.setOnAction((final ActionEvent e) -> {
-            File file = fileChooser.showOpenDialog(stage);
-            uploadImage = new Button("Choose user Image");
-            if (file != null) {
-                imageURL = file.toURI().toString();
-            }
-        });
+        //birthdate.setOnAction((ActionEvent event) -> ld = birthdate.getValue());
+//        uploadImage.setOnAction((final ActionEvent e) -> {
+//            File file = fileChooser.showOpenDialog(stage);
+//            uploadImage = new Button("Choose user Image");
+//            if (file != null) {
+//                imageURL = file.toURI().toString();
+//            }
+//        });
     }
 
     /**
@@ -137,7 +124,9 @@ public class RegisterFormView  extends Application {
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
-        ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(new ArrayList<Pair<Fields, String>>().add(new Pair<>(Fields.Email, emailTXT.getText())), Tables.Users);
+        ArrayList<Pair> l = new ArrayList<>();
+        l.add(new Pair(Fields.Email, emailTXT.getText()));
+        ArrayList<HashMap<String, String>> ContainsEmail = control.ReadEntries(l, Tables.Users);
         if (ContainsEmail != null && ContainsEmail.size() == 0)
             errortext.append("email address already in the system please choose a different one.\n");
         // check if password confirm is legit
@@ -169,13 +158,28 @@ public class RegisterFormView  extends Application {
         **/
 
         //if the length of the error messege is zero then it addes the user, else it prints the error messege on the screen
-        if (errortext.toString().length() == 0)
-            control.AddEntry(new ArrayList<String>(Arrays.asList(userNameTXT.getText().trim(), passwordTXT.getText().trim(), firstNameTXT.getText().trim(),
-                    lastNameTXT.getText().trim(), emailTXT.getText().trim(), cityTXT.getText().trim(), imageURL)), Tables.Users);
-        else {
-            errorTxt.setText(errortext.toString());
-            return;
+//        if (errortext.toString().length() == 0)
+//            control.AddEntry(new ArrayList<String>(Arrays.asList(userNameTXT.getText().trim(), passwordTXT.getText().trim(), firstNameTXT.getText().trim(),
+//                    lastNameTXT.getText().trim(), emailTXT.getText().trim(), cityTXT.getText().trim(), imageURL)), Tables.Users);
+//        else {
+//            errorTxt.setText(errortext.toString());
+//            return;
+//
+//        }
+    }
 
+    public void OnAction(ActionEvent actionEvent)
+    {
+        ld = birthdate.getValue();
+    }
+
+    public void onUploadAction(ActionEvent actionEvent)
+    {
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(s);
+        uploadImage = new Button("Choose user Image");
+        if (file != null) {
+            imageURL = file.toURI().toString();
         }
     }
 }

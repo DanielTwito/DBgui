@@ -12,13 +12,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Pair;
-import sample.Enums.Fields;
-import sample.Enums.Tables;
+import javafx.stage.Stage;
 import sample.ModelLogic.VacationListing;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -132,16 +132,80 @@ public class SearchPageView {
 
 
     public void OnTextChanged(KeyEvent keyEvent) {
-        ArrayList<Pair> read = new ArrayList<>();
-        read.add(new Pair(Fields.destination, simpleSearch.getText()));
-        ArrayList<HashMap<String, String>> res = control.ReadEntries(read, Tables.ListingVacations);
-        ObservableList<VacationListing> list;
+//        ArrayList<Pair> read = new ArrayList<>();
+//        read.add(new Pair(Fields.destination, simpleSearch.getText()));
+//        ArrayList<HashMap<String, String>> res = control.ReadEntries(read, Tables.ListingVacations);
+//        ObservableList<VacationListing> list;
+//        List<VacationListing> l = new LinkedList<>();
+//        table.getItems().clear();
+//
+//        for(int i = 0; i < r; i++)
+//            l.add(new VacationListing(i+"",i+"",i+"",true));
+//        list = FXCollections.observableArrayList(l);
+//        r++;
+//        table.setItems(list);
+
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:Database/projectdb.db");
+        }
+        catch(Exception e) {
+            System.out.println("could not establish a connection to database");
+            return;
+        }
+        String sql = "SELECT * FROM ListingVacation";
+        PreparedStatement st = null;
         List<VacationListing> l = new LinkedList<>();
-        table.getItems().clear();
-        for(int i = 0; i < r; i++)
-            l.add(new VacationListing(i+"",i+"",i+"",true));
-        list = FXCollections.observableArrayList(l);
-        r++;
+        try
+        {
+            st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+            {
+                l.add(new VacationListing(rs.getString("destination"),
+                        rs.getString("FlightDate"),
+                        rs.getInt("price"),
+                        rs.getBoolean("Connection")));
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            return;
+        }
+        ObservableList<VacationListing> list = FXCollections.observableArrayList(l);
         table.setItems(list);
+    }
+
+    public void OpenSignupForm(MouseEvent mouseEvent)
+    {
+//        Parent root;
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader();
+//            root = fxmlLoader.load(getClass().getResource("../RegisterForm.fxml").openStream());
+//            Stage stage = new Stage();
+//            stage.setTitle("Sign Up");
+//            stage.setScene(new Scene(root, 400, 600));
+//            RegisterFormView rfv = fxmlLoader.getController();
+//
+//            stage.show();
+//            // Hide this current window (if this is what you want)
+//            ((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        Stage s = new Stage();
+        RegisterFormView rfv = new RegisterFormView();
+        try {
+            rfv.start(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openAddVacationForm(ActionEvent actionEvent)
+    {
+
     }
 }

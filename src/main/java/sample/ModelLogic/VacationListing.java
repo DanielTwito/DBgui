@@ -5,11 +5,11 @@ import javafx.scene.control.Button;
 public class VacationListing {
     private String dest;
     private String date;
-    private String price;
+    private int price;
     private Boolean isConnection;
     private Button view;
 
-    public VacationListing(String dest, String date, String price, Boolean isConnection) {
+    public VacationListing(String dest, String date, int price, Boolean isConnection) {
         this.dest = dest;
         this.date = date;
         this.price = price;
@@ -26,7 +26,7 @@ public class VacationListing {
         this.date = date;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -42,7 +42,7 @@ public class VacationListing {
         return date;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
