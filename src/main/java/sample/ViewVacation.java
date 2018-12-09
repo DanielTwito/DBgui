@@ -56,7 +56,7 @@ public class ViewVacation {
     }
 
     public void setVacID(String vacID) {
-        VacID = vacID;
+        this.VacID = vacID;
         setTexts();
     }
 
