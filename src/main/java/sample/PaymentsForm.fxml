@@ -17,7 +17,7 @@
             </font>
         </Label>
         <TextField fx:id="cardId" layoutX="72.0" layoutY="83.0" prefHeight="25.0" prefWidth="157.0" promptText="Credit Card" />
-        <PasswordField fx:id="security" layoutX="72.0" layoutY="150.0" prefHeight="25.0" prefWidth="157.0" promptText="3 digit Security Number" />
+        <TextField fx:id="security" layoutX="72.0" layoutY="150.0" prefHeight="25.0" prefWidth="157.0" promptText="3 digit Security Number" />
         <Button fx:id="pay" layoutX="111.0" layoutY="215.0" mnemonicParsing="false" onAction="#payAction" text="Click to Pay" />
         <Text fx:id="errorText" layoutX="2.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.33667373657227" AnchorPane.bottomAnchor="24.98828125" />
       <Text fx:id="totalPrice" layoutX="97.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" textOrigin="CENTER" wrappingWidth="106.33667373657227" />
