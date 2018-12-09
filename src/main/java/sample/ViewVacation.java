@@ -2,6 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -69,7 +70,7 @@ public class ViewVacation {
         ArrayList<Pair> whereCondition = new ArrayList<>();
         whereCondition.add(new Pair<>(Fields.VacID, VacID));
         HashMap<String,String> vacationDetails= control.ReadEntries(whereCondition, Tables.ListingVacation).get(0);
-        sendRequest.setVisible(true);
+
         airline.setText(vacationDetails.get("airline"));
         flightDate.setText(vacationDetails.get("FlightDate"));
         returnDate.setText(vacationDetails.get("ReturnDate"));
@@ -94,12 +95,18 @@ public class ViewVacation {
     @FXML
     protected void PurchaseRequest(ActionEvent event) {
 
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        if(buyer == null){
+            a.setContentText("You must to login in order to send a request");
+            a.show();
+            return;
+        }
+
         ArrayList<Pair> fields= new ArrayList<>();
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
         fields.add(new Pair<>("vacId",VacID));
-        control.AddEntry(fields,Tables.PurchaseRequest);
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        control.AddEntry(fields,Tables.PurchaseRequests);
         a.setContentText("Your request has been sent");
         a.show();
     }
