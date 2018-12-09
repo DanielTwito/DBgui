@@ -59,10 +59,7 @@ public class AddVacationView {
                                 String newValue) {
                 if (!newValue.matches("\\d*")) {
                     Price.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
-    }
+                }}});}
     public void setControl(Controller control) {
         this.control = control;
     }
@@ -103,9 +100,9 @@ public class AddVacationView {
         if (msg.length() == 0) {
             ArrayList<Pair> vac = new ArrayList<>();
             vac.add(new Pair<>(Fields.vacationType, vacationTypeTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.airport, AirLineTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.airline, AirLineTXT.getText().trim()));
             vac.add(new Pair<>(Fields.destination, destinationTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.FlightDate, startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
+            vac.add(new Pair<>(Fields.Flydate, startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
             vac.add(new Pair<>(Fields.Returndate, retunD));
             vac.add(new Pair<>(Fields.adultTickets, adultAmount.getValue().toString()));
             vac.add(new Pair<>(Fields.childTickets, ChildAmount.getValue().toString()));

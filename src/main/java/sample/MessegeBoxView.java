@@ -25,7 +25,7 @@ public class MessegeBoxView {
     ArrayList<String> messeges=null;
     private Controller control;
     public TableView table;
-    TableColumn<Messege,String> IDS;
+    TableColumn<Messege,String> vacationID;
     TableColumn<Messege,String> messege;
     TableColumn<Messege, String> choicebox;
     TableColumn<Messege, String> buttons;
@@ -34,18 +34,18 @@ public class MessegeBoxView {
         this.control = control;}
     private void iniTable(){
 
-        IDS=new TableColumn<Messege,String>("IDS");
-        messege=new TableColumn<Messege,String>("messege");
+        vacationID=new TableColumn<Messege,String>("IDS");
+        //messege=new TableColumn<Messege,String>("messege");
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
-        IDS.setPrefWidth(100);
+        vacationID.setPrefWidth(100);
         messege.setPrefWidth(100);
         choicebox.setPrefWidth(140);
         buttons.setPrefWidth(140);
-        IDS.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+        vacationID.setCellValueFactory(new PropertyValueFactory<>("VacID"));
         messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
         buttons.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        choicebox.setCellValueFactory(new PropertyValueFactory<>("approve/decline"));
+        choicebox.setCellValueFactory(new PropertyValueFactory<>("VacID"));
         buttons.setCellFactory(col -> new TableCell<Messege, String>(){
             Button button = new Button("Buy");
             {
@@ -85,46 +85,52 @@ public class MessegeBoxView {
                     FXCollections.observableArrayList(
                                 "Approve",//1
                             "Decline");//0
-//            ChoiceBox<String> choiceBox= new ChoiceBox<String>(options);
-//            @Override
-//            protected void updateItem(String item, boolean empty)
-//            {
-//                if(empty || item == null) {
-//                    setGraphic(null);
-//                }
-//                else {
-//                    choiceBox.setOnAction(new EventHandler<ActionEvent>() {
-//                        @Override
-//                        public void handle(ActionEvent e) {
-//                            Parent root;
-//                            try {
-//                                FXMLLoader fxmlLoader = new FXMLLoader();
-//                                root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
-//                                Stage stage = new Stage();
-//                                stage.setScene(new Scene(root, 650, 400));
-//                                if(choiceBox.getValue().equals("Approve")) {
-//                                    control.UpdateEntries(Tables.PurchaseRequests,Fields.approved,1)
-//                                }
-//                                PaymentsForm paymentsForm = fxmlLoader.getController();
-//                                paymentsForm.setController(control);
-//                                stage.show();
-//                                ArrayList<Pair> tmp = new ArrayList<>();
-//                                tmp.add(new Pair<>(Fields.VacID, item));
-//                                paymentsForm.setVacPrice(Double.parseDouble(item));
-//                            } catch (IOException x) {
-//                                x.printStackTrace();
-//                            }}});setGraphic(button);}}});
-//
-//
-//        }
-//        buttons.setPrefWidth(140);
-//        prices.setSortType(TableColumn.SortType.DESCENDING);
-//        dates.setSortType(TableColumn.SortType.DESCENDING);
-//        table.setMaxWidth(650);
-//        table.setPrefWidth(650);
-////        table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
-////    }
-//    public void getMesseges(ArrayList<String> messeges){
-//        this.messeges=messeges;
-//    }
+            ChoiceBox<String> choiceBox= new ChoiceBox<String>(options);
+            @Override
+            protected void updateItem(String item, boolean empty)
+            {
+                if(empty || item == null) {
+                    setGraphic(null);
+                }
+                else {
+                    choiceBox.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent e) {
+                            Parent root;
+                            try {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
+                                Stage stage = new Stage();
+                                stage.setScene(new Scene(root, 650, 400));
+                                if(choiceBox.getValue().equals("Approve")) {
+                                    ArrayList<Pair> updating = new ArrayList<>();
+                                    updating.add(new Pair<>(Fields.VacID, item));
+                                    control.UpdateEntries(Tables.PurchaseRequest,Fields.approved,"1",updating);
+                                }
+                                else if(choiceBox.getValue().equals("Decline")){
+                                    ArrayList<Pair> updating = new ArrayList<>();
+                                    updating.add(new Pair<>(Fields.VacID, item));
+                                    control.UpdateEntries(Tables.PurchaseRequest,Fields.approved,"0",updating);
+                                }
+                                else{
+                                    ArrayList<Pair> updating = new ArrayList<>();
+                                    updating.add(new Pair<>(Fields.VacID, item));
+                                    control.UpdateEntries(Tables.PurchaseRequest,Fields.approved,"2",updating);
+                                }
+                                PaymentsForm paymentsForm = fxmlLoader.getController();
+                                paymentsForm.setController(control);
+                                stage.show();
+                                ArrayList<Pair> tmp = new ArrayList<>();
+                                tmp.add(new Pair<>(Fields.VacID, item));
+                                paymentsForm.setVacPrice(Double.parseDouble(item));
+                            } catch (IOException x) {
+                                x.printStackTrace();
+                            }}});setGraphic(choiceBox);}}});
+
+
+        }
+
+    public void getMesseges(ArrayList<String> messeges){
+        this.messeges=messeges;
+    }
 }
