@@ -30,5 +30,8 @@ public class LoggedUser {
         messages = new ArrayList<>();
     }
 
-
+    public boolean isMailboxEmpty()
+    {
+        return messages.size() == 0;
+    }
 }
