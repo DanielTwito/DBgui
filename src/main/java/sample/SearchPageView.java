@@ -279,7 +279,7 @@ public class SearchPageView {
             rfv.setControl(control);
             stage.show();
             // Hide this current window (if this is what you want)
-            ((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
+            //((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
         }
         catch (IOException e) {
             e.printStackTrace();
