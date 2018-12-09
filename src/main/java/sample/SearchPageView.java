@@ -19,6 +19,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+import sample.Enums.Fields;
+import sample.Enums.Tables;
 import sample.ModelLogic.VacationListing;
 
 import java.io.IOException;
@@ -26,12 +29,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SearchPageView {
+    public TextField logUsername;
+    public PasswordField logPassword;
+    public Button AddVacation;
+    public Button signup;
+    public Button login;
+    public ButtonBar buttonbar;
     private Controller control;
-
+    StringBuilder errortext;
     public ImageView logo;
     public TableView table;
     public TextField simpleSearch;
@@ -291,6 +302,30 @@ public class SearchPageView {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void Login(ActionEvent event) {
+        errortext=new StringBuilder();
+        if(logPassword.getText().trim().isEmpty() || logUsername.getText().trim().isEmpty() ){
+            errortext.append("please fill user name and password\n");
+         return;}
+        ArrayList<Pair> tmp = new ArrayList<>();
+        tmp.add(new Pair<>(Fields.userName,logUsername.getText().trim()));
+        ArrayList<HashMap<String, String>> userCheck = control.ReadEntries(tmp, Tables.Users);
+        if (userCheck == null || userCheck.size() == 0){
+            errortext.append("user not register, please register \n");
+            return;}
+        if(!userCheck.get(0).get("password").equals(logPassword.getText().trim())){
+            errortext.append("wrong password, try again\n");
+            return;}
+        else{AddVacation.setDisable(false);
+            signup.setDisable(true);
+            login.setDisable(true);
+            login.setVisible(false);
+            signup.setVisible(false);
+            logUsername.setVisible(false);
+            logPassword.setVisible(false);
         }
     }
 }

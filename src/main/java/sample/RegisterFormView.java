@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -15,10 +16,12 @@ import sample.Enums.Tables;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -48,7 +51,7 @@ public class RegisterFormView {
     @FXML
     private Button uploadImage;
     @FXML
-    private TextField errorTxt;
+    Text errorBoard;
     public String date = null;
     private Stage s;
     StringBuilder errortext;
@@ -85,22 +88,27 @@ public class RegisterFormView {
      */
     @FXML
     protected void SignUp(ActionEvent event)  throws IOException {
+        errorBoard.setText("");
         errortext = new StringBuilder();
         String missing = new String();
         for (TextField tx : txtList) {
             if (tx.getText().trim().isEmpty())
                 missing = missing + tx.getId() + ", ";
         }
-        missing=missing.substring(0,missing.length()-2);
+        if(missing.length()>0) missing=missing.substring(0,missing.length()-2);
         if (ld == null)// checks if no birth date was added
             errortext.append("please fill your date of birth \n");
-        if (!missing.isEmpty())//checks if text fields are empty
+        if (!missing.isEmpty()) {//checks if text fields are empty
             errortext.append("Please fill all the required fieids in the form. missing: " + missing + ".\n");
-        if (ld != null && Period.between(LocalDate.now(), ld).getYears() < 18)//checks if user age in null
+            errorBoard.setText(errortext.toString());
+            return;
+        }
+
+        if (ld != null && Period.between(LocalDate.now(), ld).getYears() > 18)//checks if user age in null
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
         ArrayList<Pair> tmp1 = new ArrayList<>();
-//        tmp1.add(new Pair<>(Fields.Username, userName.getText()));
+        tmp1.add(new Pair<>(Fields.userName, userName.getText()));
         ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
         if (ContainsUser != null && ContainsUser.size() == 0)
             errortext.append("user name already in the system please choose a different one.\n");
@@ -122,11 +130,13 @@ public class RegisterFormView {
             errortext.append("please enter a real Email address\n");
 
         //turns the image url to a byte array
-        BufferedImage userImage= ImageIO.read(new File(imageURL));
-        ByteArrayOutputStream imageStream= new ByteArrayOutputStream();
-        ImageIO.write(userImage, "jpg", imageStream);
-        byte [] bytePhoto = imageStream.toByteArray();
-        String strImage = new String(bytePhoto);
+        if(!(imageURL==null)) {
+            BufferedImage userImage = ImageIO.read(new File(imageURL));
+            ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+            ImageIO.write(userImage, "jpg", imageStream);
+            byte[] bytePhoto = imageStream.toByteArray();
+            String strImage = new String(bytePhoto);
+        }
         if (errortext.toString().length() == 0) {
             ArrayList<Pair> user = new ArrayList<>();
             user.add(new Pair<>(Fields.userName, userName.getText().trim()));
@@ -135,11 +145,11 @@ public class RegisterFormView {
             user.add(new Pair<>(Fields.lastName, lastName.getText().trim()));
             user.add(new Pair<>(Fields.Email, email.getText().trim()));
             user.add(new Pair<>(Fields.city, city.getText().trim()));
-            user.add(new Pair<>(Fields.image, strImage));
+           // user.add(new Pair<>(Fields.image, strImage));
             System.out.println("adding user DONE");
             //control.AddEntry(user,Tables.Users);
         }
-        else {errorTxt.setText(errortext.toString());}
+        else {errorBoard.setText(errortext.toString());}
     }
 
 

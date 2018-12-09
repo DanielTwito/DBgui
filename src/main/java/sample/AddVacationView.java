@@ -57,11 +57,23 @@ public class AddVacationView {
     private Controller control;
     private LocalDate startD;
     private LocalDate endD;
+    @FXML
+    public void initialize() {
+        Price.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    Price.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+    }
     public void setControl(Controller control) {
         this.control = control;
     }
     public void addVacation(ActionEvent event) {
-
+        errorBoard.setText("");
         StringBuilder msg = new StringBuilder();
         if (vacationTypeTXT.getText().trim().isEmpty()) {
             msg.append("please add vacation type\n");
@@ -72,15 +84,9 @@ public class AddVacationView {
         if (AirLineTXT.getText().trim().isEmpty()) {
             msg.append("please add airline\n");
         }
-        Price.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    Price.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
+        if(LuggageType.getValue()==null){
+            msg.append("please choose included baggage\n");
+        }
         if(Price.getText().trim().isEmpty()){
             msg.append("please enter a price\n");
         }
@@ -88,8 +94,11 @@ public class AddVacationView {
         if (startD == null || endD == null) {
             msg.append("please add vacation dates\n");
         }
-        if (startD != null && endD != null && Period.between(endD, startD).getDays() < 0) {
+        if (startD != null && endD != null && Period.between(endD, startD).getDays() > 0) {
             msg.append("vacation return date must be later then departure date \n");
+        }
+        if(Babyamount.getValue()+ChildAmount.getValue()+adultAmount.getValue()==0){
+            msg.append("there must be at least 1 passanger \n");
         }
         if (msg.length() == 0) {
             ArrayList<Pair> vac = new ArrayList<>();
