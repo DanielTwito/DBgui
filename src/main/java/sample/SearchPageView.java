@@ -17,13 +17,13 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
 import sample.ModelLogic.LoggedUser;
+import sample.ModelLogic.Messege;
 import sample.ModelLogic.VacationListing;
 
 import java.io.IOException;
@@ -276,15 +276,9 @@ public class SearchPageView {
 
     private void CheckMessages()
     {
-        ArrayList<HashMap<String, String>> messagesList;
-        ArrayList<Pair> searchMessages = new ArrayList<>();
-        searchMessages.add(new Pair(Fields.Seller, user.getUserName()));
-        ArrayList<HashMap<String, String>> res = control.ReadEntries(searchMessages, Tables.PurchaseRequest);
-        writeMessages(res);
-        searchMessages = new ArrayList<>();
-        searchMessages.add(new Pair(Fields.Buyer, user.getUserName()));
-        res = control.ReadEntries(searchMessages, Tables.PurchaseRequest);
-        writeMessages(res);
+        user.getMessages().clear();
+        getMessages(Fields.Seller);
+        getMessages(Fields.Buyer);
 
         if(user.isMailboxEmpty())
         {
@@ -298,12 +292,20 @@ public class SearchPageView {
         }
     }
 
-    private void writeMessages(ArrayList<HashMap<String, String>> res)
+    private void getMessages(Fields field)
     {
+        ArrayList<Pair> searchMessages = new ArrayList<>();
+        searchMessages.add(new Pair(field, user.getUserName()));
+        ArrayList<HashMap<String, String>> res = control.ReadEntries(searchMessages, Tables.PurchaseRequest);
         for(HashMap<String, String> resEntry : res)
         {
-            String msg = resEntry.get("Seller")+","+resEntry.get("Buyer")+","+resEntry.get("VacID")+","+resEntry.get("approved");
-            user.addToMailBox(msg);
+            if(field.equals(Fields.Seller) && !resEntry.get("approved").equals("2")) continue;
+            if(field.equals(Fields.Buyer) && resEntry.get("approved").equals("2")) continue;
+            //String msg = resEntry.get("Seller")+","+resEntry.get("Buyer")+","+resEntry.get("VacID")+","+resEntry.get("approved");
+            user.addToMailBox(new Messege(new SimpleIntegerProperty(Integer.parseInt(resEntry.get("approved"))),
+                    new SimpleStringProperty(resEntry.get("VacID")),
+                    new SimpleStringProperty(resEntry.get("Buyer")),
+                    new SimpleStringProperty(resEntry.get("Seller"))));
         }
     }
 
@@ -326,6 +328,7 @@ public class SearchPageView {
 
     public void MessagesHandler(ActionEvent actionEvent)
     {
+        CheckMessages();
         if(user.isMailboxEmpty())
         {
             CheckMessages();
@@ -335,21 +338,19 @@ public class SearchPageView {
             Parent root;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
+                root = fxmlLoader.load(getClass().getResource("../MessegeBox.fxml").openStream());
                 Stage stage = new Stage();
                 stage.setTitle("MailBox");
-                stage.setScene(new Scene(root, 600, 500));
-                ViewVacation viewvacation = fxmlLoader.getController();
-                viewvacation.setControl(control);
+                stage.setScene(new Scene(root, 400, 600));
+                MessegeBoxView msgbox = fxmlLoader.getController();
+                msgbox.setControl(control);
                 stage.show();
+                msgbox.setMesseges(user.getMessages());
                 // Hide this current window (if this is what you want)
                 //((Node) (e.getSource())).getScene().getWindow().hide();
             } catch (IOException x) {
                 x.printStackTrace();
             }
         }
-    }
-
-    public void OnEnter(MouseDragEvent mouseDragEvent) {
     }
 }

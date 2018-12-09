@@ -12,17 +12,17 @@ public class LoggedUser {
         return UserName;
     }
 
-    public List<String> getMessages() {
+    public List<Messege> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<String> messages) {
+    public void setMessages(List<Messege> messages) {
         this.messages = messages;
     }
 
     String name;
     String UserName;
-    List<String> messages;
+    List<Messege> messages;
 
     public LoggedUser(String name, String userName) {
         this.name = name;
@@ -35,7 +35,7 @@ public class LoggedUser {
         return messages.size() == 0;
     }
 
-    public void addToMailBox(String message)
+    public void addToMailBox(Messege message)
     {
         messages.add(message);
     }
