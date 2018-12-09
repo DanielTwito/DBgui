@@ -2,8 +2,8 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -48,6 +48,8 @@ public class ViewVacation {
     private Text withConnection;
     @FXML
     private Text price;
+    @FXML
+    private Button sendRequest;
 
     private ArrayList<Text> txtList = new ArrayList<>();
     public void setControl(Controller control)
@@ -67,7 +69,7 @@ public class ViewVacation {
         ArrayList<Pair> whereCondition = new ArrayList<>();
         whereCondition.add(new Pair<>(Fields.VacID, VacID));
         HashMap<String,String> vacationDetails= control.ReadEntries(whereCondition, Tables.ListingVacation).get(0);
-
+        sendRequest.setVisible(true);
         airline.setText(vacationDetails.get("airline"));
         flightDate.setText(vacationDetails.get("FlightDate"));
         returnDate.setText(vacationDetails.get("ReturnDate"));
@@ -96,8 +98,9 @@ public class ViewVacation {
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
         fields.add(new Pair<>("vacId",VacID));
-        control.AddEntry(fields,Tables.PurchaseRequests);
+        control.AddEntry(fields,Tables.PurchaseRequest);
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setContentText("Your request has been sent");
+        a.show();
     }
 }
