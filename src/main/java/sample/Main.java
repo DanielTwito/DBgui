@@ -30,7 +30,7 @@ public class Main extends Application {
         Controller control=new Controller();
         AccessLayer accessLayer = new AccessLayer();
         accessLayer.connectDB("D:\\DBgui\\Database\\projectdb.db");
-        control.setAc(accessLayer);
+//        control.setAc(accessLayer);
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
