@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,13 +21,10 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
+import sample.ModelLogic.LoggedUser;
 import sample.ModelLogic.VacationListing;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,14 +34,19 @@ public class SearchPageView {
     public TextField logUsername;
     public PasswordField logPassword;
     public Button AddVacation;
-    public Button signup;
-    public Button login;
+    public Hyperlink signup;
+    public Hyperlink login;
     public ButtonBar buttonbar;
     private Controller control;
     StringBuilder errortext;
     public ImageView logo;
     public TableView table;
     public TextField simpleSearch;
+    public Label logged;
+    public Hyperlink messages;
+    public Hyperlink disconnect;
+
+    private LoggedUser user;
 
     TableColumn<VacationListing, String> logos;
     TableColumn<VacationListing, String> dests;
@@ -64,6 +65,7 @@ public class SearchPageView {
 
     private void iniTable()
     {
+        logged.setText("guest user");
         logos = new TableColumn<VacationListing, String>("ID");
 
         dests = new TableColumn<VacationListing, String>("Destination");
@@ -148,7 +150,7 @@ public class SearchPageView {
                                 viewvacation.setControl(control);
                                 stage.show();
                                 // Hide this current window (if this is what you want)
-                                ((Node) (e.getSource())).getScene().getWindow().hide();
+                                //((Node) (e.getSource())).getScene().getWindow().hide();
                                 viewvacation.setVacID(item);
                             } catch (IOException x) {
                                 x.printStackTrace();
@@ -231,38 +233,19 @@ public class SearchPageView {
 
     public void OnTextChanged(KeyEvent keyEvent) {
         String toSreach = simpleSearch.getText()+keyEvent.getCharacter();
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:Database/projectdb.db");
-        }
-        catch(Exception e) {
-            System.out.println("could not establish a connection to database");
-            return;
-        }
-        String sql = "SELECT * FROM ListingVacation WHERE destination=\'"+toSreach+"\'";
-        PreparedStatement st = null;
+        ArrayList<Pair> searchqry = new ArrayList<>();
+        searchqry.add(new Pair(Fields.destination, toSreach));
+        ArrayList<HashMap<String, String>> ResList = control.ReadEntries(searchqry, Tables.ListingVacation);
         List<VacationListing> l = new LinkedList<>();
-        try
+        for(HashMap<String, String> paired : ResList)
         {
-            st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while(rs.next())
-            {
-                l.add(new VacationListing(new SimpleStringProperty(rs.getString("destination")),
-                        new SimpleStringProperty(rs.getString("FlightDate")),
-                        new SimpleIntegerProperty(rs.getInt("price")),
-                        new SimpleBooleanProperty(rs.getBoolean("Connection")),
-                        new SimpleStringProperty(rs.getString("VacID"))));
-            }
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.getMessage());
-            return;
+            l.add(new VacationListing(new SimpleStringProperty(paired.get("destination")),
+                    new SimpleStringProperty(paired.get("FlightDate")),
+                    new SimpleIntegerProperty(Integer.parseInt(paired.get("price"))),
+                    new SimpleBooleanProperty(paired.get("Connection").equals("1")?true:false),
+                    new SimpleStringProperty(paired.get("VacID"))));
         }
         ObservableList<VacationListing> list = FXCollections.observableArrayList(l);
-        //table.getColumns().clear();
-        //table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
         table.setItems(list);
     }
 
@@ -279,7 +262,7 @@ public class SearchPageView {
             rfv.setControl(control);
             stage.show();
             // Hide this current window (if this is what you want)
-            ((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
+            //((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -298,7 +281,7 @@ public class SearchPageView {
             AddVacationView rfv = fxmlLoader.getController();
             rfv.setControl(control);
             stage.show();
-            ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
+            //((Node)(actionEvent.getSource())).getScene().getWindow().hide();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -326,6 +309,36 @@ public class SearchPageView {
             signup.setVisible(false);
             logUsername.setVisible(false);
             logPassword.setVisible(false);
+            user = new LoggedUser(userCheck.get(0).get("firstName"), userCheck.get(0).get("userName"));
+            disconnect.setVisible(true);
+            logged.setText("Welcome "+user.getName());
+            messages.setText("(No Messages)");
+            messages.setVisible(true);
+            CheckMessages();
         }
+    }
+
+    private void CheckMessages()
+    {
+        ArrayList<HashMap<String, String>> messagesList;
+        ArrayList<Pair> searchMessages;
+
+    }
+
+    public void DisconnectUser(ActionEvent actionEvent) {
+        user = null;
+        AddVacation.setDisable(true);
+        signup.setDisable(false);
+        login.setDisable(false);
+        login.setVisible(true);
+        signup.setVisible(true);
+        logUsername.setVisible(true);
+        logPassword.setVisible(true);
+        disconnect.setVisible(false);
+        messages.setVisible(false);
+        messages.setVisible(false);
+        logged.setText("guest user");
+        logPassword.clear();
+        logUsername.clear();
     }
 }

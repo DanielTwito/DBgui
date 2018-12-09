@@ -2,16 +2,10 @@ package sample;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
@@ -103,7 +97,7 @@ public class AddVacationView {
         if (msg.length() == 0) {
             ArrayList<Pair> vac = new ArrayList<>();
             vac.add(new Pair<>(Fields.vacationType, vacationTypeTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.airport, AirLineTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.airline, AirLineTXT.getText().trim()));
             vac.add(new Pair<>(Fields.destination, destinationTXT.getText().trim()));
             vac.add(new Pair<>(Fields.Flydate, startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
             vac.add(new Pair<>(Fields.Returndate, endD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
@@ -116,7 +110,7 @@ public class AddVacationView {
             vac.add(new Pair<>(Fields.includeReturn, withReturn.isSelected()));
             vac.add(new Pair<>(Fields.price,Price.getText().trim()));
             System.out.println("adding vacation DONE");
-            //control.AddEntry(vac,Tables.ListingVacations);Username
+            control.AddEntry(vac, Tables.ListingVacation);
         } else {
             errorBoard.setText(msg.toString());
         }

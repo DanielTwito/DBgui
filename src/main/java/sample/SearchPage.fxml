@@ -4,8 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Reflection?>
@@ -15,24 +15,24 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SearchPageView">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SearchPageView">
    <children>
-      <GridPane alignment="CENTER" layoutY="7.0" prefHeight="600.0" prefWidth="686.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
+      <GridPane alignment="CENTER" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="194.79999389648438" minHeight="10.0" prefHeight="44.600012969970706" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="378.0000118255615" minHeight="10.0" prefHeight="179.99998779296874" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="452.80002441406253" minHeight="10.0" prefHeight="374.4000122070312" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="194.79999389648438" minHeight="9.600004196166992" prefHeight="42.80001106262207" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="378.0000118255615" minHeight="10.0" prefHeight="231.5999889373779" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="540.0000183105468" minHeight="10.0" prefHeight="499.19999999999993" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="simpleSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#OnTextChanged" prefHeight="30.0" prefWidth="323.0" promptText="Where would you like to travel?" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <TextField fx:id="simpleSearch" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#OnTextChanged" prefHeight="30.0" prefWidth="323.0" promptText="Where would you like to travel?" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets top="90.0" />
                </GridPane.margin>
                <effect>
-                  <Reflection bottomOpacity="0.07" fraction="0.67" topOpacity="0.41" />
+                  <Reflection bottomOpacity="0.22" fraction="0.6" topOpacity="0.32" />
                </effect>
             </TextField>
             <ImageView fx:id="logo" fitHeight="84.0" fitWidth="295.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
@@ -46,19 +46,40 @@
             </Hyperlink>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="687.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <children>
-                  <TableView fx:id="table" layoutX="4.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="678.0">
+                  <TableView fx:id="table" layoutX="4.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="678.0">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </TableView>
                </children></AnchorPane>
             <ButtonBar fx:id="buttonbar" prefHeight="40.0" prefWidth="200.0">
-              <buttons>
-                <Button fx:id="login" id="Login" minWidth="54.0" mnemonicParsing="false" onAction="#Login" prefHeight="26.0" text="Log in" />
-                  <Button fx:id="signup" id="signup" alignment="CENTER" contentDisplay="RIGHT" minWidth="54.0" mnemonicParsing="false" onAction="#OpenSignupForm" prefHeight="26.0" prefWidth="134.0" text="Sign up" />
-                  <TextField fx:id="logUsername" minWidth="-Infinity" prefHeight="26.0" promptText="user name" />
-                  <PasswordField fx:id="logPassword" minWidth="52.0" prefHeight="26.0" promptText="password" />
-              </buttons>
+               <buttons>
+                  <GridPane prefHeight="88.0" prefWidth="1026.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="635.1999755859375" minWidth="10.0" prefWidth="627.9999877929688" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="601.1999816894531" minWidth="10.0" prefWidth="62.599987792968705" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="601.1999816894531" minWidth="10.0" prefWidth="62.60001220703123" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="601.1999816894531" minWidth="10.0" prefWidth="114.79996337890628" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="331.60003662109375" minWidth="10.0" prefWidth="121.0000122070312" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField fx:id="logUsername" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="110.0" promptText="Username" GridPane.columnIndex="3" />
+                        <Hyperlink fx:id="login" onAction="#Login" text="Login" textFill="#004dff" GridPane.columnIndex="2" />
+                        <Hyperlink fx:id="signup" alignment="CENTER" contentDisplay="RIGHT" onAction="#OpenSignupForm" prefHeight="23.0" prefWidth="69.0" text="Sign Up" textFill="#004eff" GridPane.columnIndex="1" />
+                        <PasswordField fx:id="logPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="110.0" promptText="Password" GridPane.columnIndex="4" />
+                        <AnchorPane prefHeight="88.0" prefWidth="303.0">
+                           <children>
+                              <Label fx:id="logged" layoutX="238.0" layoutY="13.0" prefHeight="23.0" prefWidth="159.0" />
+                              <Hyperlink fx:id="disconnect" layoutX="14.0" layoutY="11.0" prefHeight="18.0" prefWidth="99.0" text="Disconnect" visible="false" onAction="#DisconnectUser" />
+                              <Hyperlink fx:id="messages" layoutX="112.0" layoutY="11.0" prefHeight="23.0" prefWidth="126.0" text="(No Messages)" visible="false" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
+               </buttons>
             </ButtonBar>
             <Button fx:id="AddVacation" disable="true" mnemonicParsing="false" onAction="#openAddVacationForm" prefHeight="26.0" prefWidth="134.0" text="Add Vacation" GridPane.rowIndex="1" />
          </children>
