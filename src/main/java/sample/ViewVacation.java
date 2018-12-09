@@ -3,6 +3,7 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.scene.control.Alert;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -17,6 +18,7 @@ public class ViewVacation {
     private Controller control;
     private String VacID;
     private String seller;
+    private String buyer;
 
     @FXML
     private Text airline;
@@ -79,16 +81,23 @@ public class ViewVacation {
         includeRoom.setText(vacationDetails.get("includeRoom"));
         placeRank.setText(vacationDetails.get("placeRank"));
         price.setText(vacationDetails.get("price"));
-        withConnection.setText(vacationDetails.get("withConnection"));
+        withConnection.setText(vacationDetails.get("Connection"));
         seller =vacationDetails.get("seller");
+
 
     }
 
 
     //supposed to send a message to the seller
+    @FXML
     protected void PurchaseRequest(ActionEvent event) {
 
-//        control.sendPurchaseRequest(seller,buyer);
-
+        ArrayList<Pair> fields= new ArrayList<>();
+        fields.add(new Pair<>("Seller",seller));
+        fields.add(new Pair<>("Buyer",buyer));
+        fields.add(new Pair<>("vacId",VacID));
+        control.AddEntry(fields,Tables.PurchaseRequests);
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setContentText("Your request has been sent");
     }
 }
