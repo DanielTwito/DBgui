@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewVacation">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewVacation">
    <children>
       <Label layoutX="14.0" layoutY="82.0" prefHeight="31.0" prefWidth="71.0" text="Airline:" textFill="#41ba1e">
          <font>
@@ -78,10 +78,6 @@
             <Font name="Arial Rounded MT Bold" size="26.0" />
          </font>
       </Label>
-      <Button layoutX="251.0" layoutY="407.0" mnemonicParsing="false" mouseTransparent="true" onAction="#PurchaseRequest" text="Submit a purchase request" textFill="#0d0314">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="20.0" />
-         </font></Button>
        <Text fx:id="airline" fontSmoothingType="LCD" layoutX="80.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="157.99999237060547">
          <font>
             <Font name="Arial" size="18.0" />
@@ -157,5 +153,9 @@
             <Font name="Arial" size="18.0" />
          </font>
       </Text>
+      <Button layoutX="262.0" layoutY="407.0" mnemonicParsing="false" onAction="#PurchaseRequest" text="Submit a purchase request">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font></Button>
    </children>
 </AnchorPane>

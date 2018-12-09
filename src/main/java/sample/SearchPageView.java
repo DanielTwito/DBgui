@@ -136,7 +136,7 @@ public class SearchPageView {
                                 root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
                                 Stage stage = new Stage();
                                 stage.setTitle("View Vacation Offer");
-                                stage.setScene(new Scene(root, 650, 400));
+                                stage.setScene(new Scene(root, 650, 500));
                                 ViewVacation viewvacation = fxmlLoader.getController();
                                 viewvacation.setControl(control);
                                 stage.show();

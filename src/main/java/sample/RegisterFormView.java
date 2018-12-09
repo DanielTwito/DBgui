@@ -40,6 +40,8 @@ public class RegisterFormView {
     private TextField lastName;
     @FXML
     private TextField email;
+    public String date = null;
+    private Stage s;
     @FXML
     private TextField city;
     @FXML
@@ -50,8 +52,6 @@ public class RegisterFormView {
     private Button uploadImage;
     @FXML
     Text errorBoard;
-    public String date = null;
-    private Stage s;
     StringBuilder errortext;
     public LocalDate ld;
     ArrayList<TextField> txtList = new ArrayList<>();

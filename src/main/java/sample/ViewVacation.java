@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -48,6 +49,8 @@ public class ViewVacation {
     private Text withConnection;
     @FXML
     private Text price;
+    @FXML
+    private Button sendRequest;
 
     private ArrayList<Text> txtList = new ArrayList<>();
     public void setControl(Controller control)
@@ -92,12 +95,19 @@ public class ViewVacation {
     @FXML
     protected void PurchaseRequest(ActionEvent event) {
 
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        if(buyer == null){
+            a.setContentText("You must to login in order to send a request");
+            a.show();
+            return;
+        }
+
         ArrayList<Pair> fields= new ArrayList<>();
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
         fields.add(new Pair<>("vacId",VacID));
         control.AddEntry(fields,Tables.PurchaseRequests);
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setContentText("Your request has been sent");
+        a.show();
     }
 }
