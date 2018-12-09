@@ -106,7 +106,7 @@ public class ViewVacation {
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
         fields.add(new Pair<>("vacId",VacID));
-        control.AddEntry(fields,Tables.PurchaseRequests);
+        control.AddEntry(fields,Tables.PurchaseRequest);
         a.setContentText("Your request has been sent");
         a.show();
     }

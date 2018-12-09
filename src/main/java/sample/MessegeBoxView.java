@@ -20,9 +20,10 @@ import sample.ModelLogic.VacationListing;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MessegeBoxView {
-    ArrayList<String> messeges=null;
+    List<Messege> messeges=null;
     private Controller control;
     public TableView table;
     TableColumn<Messege,String> vacationID;
@@ -30,12 +31,15 @@ public class MessegeBoxView {
     TableColumn<Messege, String> choicebox;
     TableColumn<Messege, String> buttons;
 
+
+    public void initialize(){
+        iniTable();
+    }
     public void setControl(Controller control) {
         this.control = control;}
     private void iniTable(){
 
         vacationID=new TableColumn<Messege,String>("IDS");
-        //messege=new TableColumn<Messege,String>("messege");
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
         vacationID.setPrefWidth(100);
@@ -127,10 +131,11 @@ public class MessegeBoxView {
                                 x.printStackTrace();
                             }}});setGraphic(choiceBox);}}});
 
-
+        ObservableList<Messege> list = FXCollections.observableArrayList(messeges);
+        table.setItems(list);
         }
 
-    public void getMesseges(ArrayList<String> messeges){
+    public void getMesseges(List<Messege> messeges){
         this.messeges=messeges;
     }
 }
