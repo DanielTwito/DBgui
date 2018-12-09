@@ -303,7 +303,7 @@ public class SearchPageView {
             if(field.equals(Fields.Buyer) && resEntry.get("approved").equals("2")) continue;
             //String msg = resEntry.get("Seller")+","+resEntry.get("Buyer")+","+resEntry.get("VacID")+","+resEntry.get("approved");
             user.addToMailBox(new Messege(new SimpleIntegerProperty(Integer.parseInt(resEntry.get("approved"))),
-                    new SimpleStringProperty(resEntry.get("VacID")),
+                    new SimpleStringProperty(resEntry.get("VacId")),
                     new SimpleStringProperty(resEntry.get("Buyer")),
                     new SimpleStringProperty(resEntry.get("Seller"))));
         }
@@ -341,11 +341,11 @@ public class SearchPageView {
                 root = fxmlLoader.load(getClass().getResource("../MessegeBox.fxml").openStream());
                 Stage stage = new Stage();
                 stage.setTitle("MailBox");
-                stage.setScene(new Scene(root, 400, 600));
+                stage.setScene(new Scene(root, 600, 400));
                 MessegeBoxView msgbox = fxmlLoader.getController();
                 msgbox.setControl(control);
-                stage.show();
                 msgbox.setMesseges(user.getMessages());
+                stage.show();
                 // Hide this current window (if this is what you want)
                 //((Node) (e.getSource())).getScene().getWindow().hide();
             } catch (IOException x) {

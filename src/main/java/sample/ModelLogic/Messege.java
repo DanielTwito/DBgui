@@ -5,6 +5,23 @@ import javafx.beans.property.StringProperty;
 
 public class Messege {
     private IntegerProperty messege;
+
+    public String getBuyer() {
+        return buyer.get();
+    }
+
+    public StringProperty buyerProperty() {
+        return buyer;
+    }
+
+    public String getSeller() {
+        return seller.get();
+    }
+
+    public StringProperty sellerProperty() {
+        return seller;
+    }
+
     private StringProperty SID;
     private StringProperty buyer;
     private StringProperty seller;

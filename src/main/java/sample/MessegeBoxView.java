@@ -43,13 +43,13 @@ public class MessegeBoxView {
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
         vacationID.setPrefWidth(100);
-        messege.setPrefWidth(100);
+        //messege.setPrefWidth(100);
         choicebox.setPrefWidth(140);
         buttons.setPrefWidth(140);
-        vacationID.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        buttons.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        choicebox.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+        vacationID.setCellValueFactory(new PropertyValueFactory<>("SID"));
+        //messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+        buttons.setCellValueFactory(new PropertyValueFactory<>("SID"));
+        choicebox.setCellValueFactory(new PropertyValueFactory<>("SID"));
         buttons.setCellFactory(col -> new TableCell<Messege, String>(){
             Button button = new Button("Buy");
             {
@@ -130,12 +130,12 @@ public class MessegeBoxView {
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }}});setGraphic(choiceBox);}}});
-
-        ObservableList<Messege> list = FXCollections.observableArrayList(messeges);
-        table.setItems(list);
+        table.getColumns().addAll(vacationID, buttons, choicebox);
     }
 
     public void setMesseges(List<Messege> messeges){
-        this.messeges=messeges;
+        this.messeges = messeges;
+        ObservableList<Messege> list = FXCollections.observableArrayList(this.messeges);
+        table.setItems(list);
     }
 }
