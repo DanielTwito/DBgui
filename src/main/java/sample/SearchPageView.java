@@ -85,15 +85,6 @@ public class SearchPageView {
         dates.setCellValueFactory(new PropertyValueFactory<>("date"));
         dates.setPrefWidth(100);
         connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
-//        connections.setCellFactory(tc -> new TableCell<VacationListing, Boolean>() {
-//            @Override
-//            protected void updateItem(Boolean item, boolean empty) {
-//                super.updateItem(item, empty);
-//                setText(empty ? null :
-//                        item.booleanValue() ? "Yes" : "No");
-//            }
-//        });
-//        connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
         connections.setCellFactory(col -> new TableCell<VacationListing, Boolean>() {
             ImageView im = new ImageView();
             {

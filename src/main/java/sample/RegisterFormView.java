@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -145,9 +146,14 @@ public class RegisterFormView {
             user.add(new Pair<>(Fields.lastName, lastName.getText().trim()));
             user.add(new Pair<>(Fields.Email, email.getText().trim()));
             user.add(new Pair<>(Fields.city, city.getText().trim()));
+            user.add(new Pair<>(Fields.birthDate, ld.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
            // user.add(new Pair<>(Fields.image, strImage));
             System.out.println("adding user DONE");
-            //control.AddEntry(user,Tables.Users);
+            control.AddEntry(user,Tables.Users);
+            ArrayList<Pair> user2 = new ArrayList<>();
+            user.add(new Pair<>(Fields.userName, userName.getText().trim()));
+            user.add(new Pair<>(Fields.balance,"99999999999999"));
+            control.AddEntry(user2,Tables.PayPal);
         }
         else {errorBoard.setText(errortext.toString());}
     }
