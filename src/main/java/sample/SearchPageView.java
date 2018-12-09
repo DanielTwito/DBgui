@@ -13,9 +13,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -136,7 +138,7 @@ public class SearchPageView {
                                 root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
                                 Stage stage = new Stage();
                                 stage.setTitle("View Vacation Offer");
-                                stage.setScene(new Scene(root, 650, 400));
+                                stage.setScene(new Scene(root, 600, 500));
                                 ViewVacation viewvacation = fxmlLoader.getController();
                                 viewvacation.setControl(control);
                                 stage.show();
@@ -148,6 +150,23 @@ public class SearchPageView {
                             }
                         }
                     });
+                    button.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                            new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent e) {
+                                    button.setEffect(new DropShadow());
+                                    button.setStyle("-fx-background-color: cyan");
+                                }
+                            });
+                    button.addEventHandler(MouseEvent.MOUSE_EXITED,
+                            new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent e) {
+                                    button.setEffect(null);
+                                    button.setStyle("-fx-background-color: deepskyblue");
+                                }
+                            });
+
                     setGraphic(button);
                 }
             }
@@ -162,60 +181,6 @@ public class SearchPageView {
         table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
     }
     public void setControl(Controller control){this.control=control;}
-
-    /**
-     * this method handles the event of clicking the CREATE button
-     * it will show a success of failure in the output text area
-     * @param mouseEvent
-     */
-    public void CreateHandler(MouseEvent mouseEvent)
-    {
-//        String entery = "";
-//        RESULT res=RESULT.Success;
-//        for (Node n : stackpanel.getChildren())              // Iterate though the fields to collect the data
-//        {
-//            if(n instanceof TextField)                      // only collect data from the text fields on the cell
-//                entery += ((TextField) n).getText().equals("") ? " ," : ((TextField) n).getText() + ",";
-//        }
-//        try {// for easier handling, the empty data is converted to " "
-//            res = control.addEntry(entery, "USERS");
-//            if(res==RESULT.Success)// calling the add method at the Model and gets the result
-//                    clearFields();
-//            query_output.setText("Create "+res.toString());
-//        }catch (SQLException e){
-//            query_output.setText("user already exist");// output the result to the output text area
-//        }
-//        catch (NullPointerException e){
-//            query_output.setText("need to fill all fields to create new user");
-//        }
-    }
-
-    private void clearFields() {
-//
-//        for (Node n : stackpanel.getChildren())              // Iterate though the fields to collect the data
-//        {
-//            if(n instanceof TextField)                      // only collect data from the text fields on the cell
-//                ((TextField) n).setText("");
-//        }
-//
-//        ID_remove.setText("");
-//        value_Update.setText("");
-//        ID_search.setText("");
-//        ID_update.setText("");
-    }
-
-    /**
-     * this method handles the event of clicking the REMOVE button
-     * it will show a success of failure in the output text area
-     * @param mouseEvent
-     */
-    public void deleteHandler(MouseEvent mouseEvent)
-    {
-//        RESULT res = control.deleteEntry(ID_remove.getText());
-//        if(res==RESULT.Success)
-//            clearFields();
-//        query_output.setText("Delete "+res.toString()+"!");// output the result to the output text area
-    }
 
     public void AdvancedSearchHandler(ActionEvent actionEvent) {
 
@@ -312,8 +277,34 @@ public class SearchPageView {
     private void CheckMessages()
     {
         ArrayList<HashMap<String, String>> messagesList;
-        ArrayList<Pair> searchMessages;
+        ArrayList<Pair> searchMessages = new ArrayList<>();
+        searchMessages.add(new Pair(Fields.Seller, user.getUserName()));
+        ArrayList<HashMap<String, String>> res = control.ReadEntries(searchMessages, Tables.PurchaseRequest);
+        writeMessages(res);
+        searchMessages = new ArrayList<>();
+        searchMessages.add(new Pair(Fields.Buyer, user.getUserName()));
+        res = control.ReadEntries(searchMessages, Tables.PurchaseRequest);
+        writeMessages(res);
 
+        if(user.isMailboxEmpty())
+        {
+            messages.setText("(No Messages)");
+            messages.setStyle("-fx-text-fill: #004eff");
+        }
+        else
+        {
+            messages.setText("("+user.MessagesCount()+") New Messages");
+            messages.setStyle("-fx-text-fill: crimson");
+        }
+    }
+
+    private void writeMessages(ArrayList<HashMap<String, String>> res)
+    {
+        for(HashMap<String, String> resEntry : res)
+        {
+            String msg = resEntry.get("Seller")+","+resEntry.get("Buyer")+","+resEntry.get("VacID")+","+resEntry.get("approved");
+            user.addToMailBox(msg);
+        }
     }
 
     public void DisconnectUser(ActionEvent actionEvent) {
@@ -331,5 +322,34 @@ public class SearchPageView {
         logged.setText("guest user");
         logPassword.clear();
         logUsername.clear();
+    }
+
+    public void MessagesHandler(ActionEvent actionEvent)
+    {
+        if(user.isMailboxEmpty())
+        {
+            CheckMessages();
+        }
+        else
+        {
+            Parent root;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
+                Stage stage = new Stage();
+                stage.setTitle("MailBox");
+                stage.setScene(new Scene(root, 600, 500));
+                ViewVacation viewvacation = fxmlLoader.getController();
+                viewvacation.setControl(control);
+                stage.show();
+                // Hide this current window (if this is what you want)
+                //((Node) (e.getSource())).getScene().getWindow().hide();
+            } catch (IOException x) {
+                x.printStackTrace();
+            }
+        }
+    }
+
+    public void OnEnter(MouseDragEvent mouseDragEvent) {
     }
 }

@@ -30,5 +30,18 @@ public class LoggedUser {
         messages = new ArrayList<>();
     }
 
+    public boolean isMailboxEmpty()
+    {
+        return messages.size() == 0;
+    }
 
+    public void addToMailBox(String message)
+    {
+        messages.add(message);
+    }
+
+    public int MessagesCount()
+    {
+        return messages.size();
+    }
 }

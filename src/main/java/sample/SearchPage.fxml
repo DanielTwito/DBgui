@@ -72,9 +72,9 @@
                         <PasswordField fx:id="logPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="110.0" promptText="Password" GridPane.columnIndex="4" />
                         <AnchorPane prefHeight="88.0" prefWidth="303.0">
                            <children>
-                              <Label fx:id="logged" layoutX="238.0" layoutY="13.0" prefHeight="23.0" prefWidth="159.0" />
-                              <Hyperlink fx:id="disconnect" layoutX="14.0" layoutY="11.0" prefHeight="18.0" prefWidth="99.0" text="Disconnect" visible="false" onAction="#DisconnectUser" />
-                              <Hyperlink fx:id="messages" layoutX="112.0" layoutY="11.0" prefHeight="23.0" prefWidth="126.0" text="(No Messages)" visible="false" />
+                              <Label fx:id="logged" layoutX="263.0" layoutY="13.0" prefHeight="23.0" prefWidth="150.0" />
+                              <Hyperlink fx:id="disconnect" layoutX="14.0" layoutY="11.0" onAction="#DisconnectUser" prefHeight="18.0" prefWidth="99.0" text="Disconnect" textFill="#004eff" visible="false" />
+                              <Hyperlink fx:id="messages" layoutX="112.0" layoutY="11.0" prefHeight="23.0" prefWidth="150.0" text="(No Messages)" textAlignment="CENTER" textFill="#004eff" visible="false" />
                            </children>
                         </AnchorPane>
                      </children>
