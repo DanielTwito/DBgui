@@ -36,34 +36,41 @@ public class SearchPageView {
     public TableView table;
     public TextField simpleSearch;
 
+    TableColumn<VacationListing, String> logos;
+    TableColumn<VacationListing, String> dests;
+    TableColumn<VacationListing, String> dates;
+    TableColumn<VacationListing, Boolean> connections;
+    TableColumn<VacationListing, String> prices;
+    TableColumn<VacationListing, String> buttons;
+
     int r;
     @FXML
     public void initialize(){
         logo.setImage(new Image(getClass().getClassLoader().getResourceAsStream("vacation_logo.JPG")));
         r = 1;
-        TableColumn<VacationListing, String> logos
-                = new TableColumn<VacationListing, String>("");
+        iniTable();
+    }//end initialize
 
-        TableColumn<VacationListing, String> dests
-                = new TableColumn<VacationListing, String>("Destination");
+    private void iniTable()
+    {
+        logos = new TableColumn<VacationListing, String>("ID");
 
-        TableColumn<VacationListing, String> dates
-                = new TableColumn<VacationListing, String>("Date");
+        dests = new TableColumn<VacationListing, String>("Destination");
 
-        TableColumn<VacationListing, Boolean> connections
-                = new TableColumn<VacationListing, Boolean>("Connection");
+        dates = new TableColumn<VacationListing, String>("Date");
 
-        TableColumn<VacationListing, String> prices
-                = new TableColumn<VacationListing, String>("Price");
+        connections = new TableColumn<VacationListing, Boolean>("Connection");
 
-        TableColumn<VacationListing, String> buttons
-                = new TableColumn<VacationListing, String>("VacID");
+        prices = new TableColumn<VacationListing, String>("Price");
 
-        logos.setPrefWidth(114);
+        buttons = new TableColumn<VacationListing, String>("View Offer");
+
+        logos.setPrefWidth(100);
+        logos.setCellValueFactory(new PropertyValueFactory<>("VacID"));
         dests.setCellValueFactory(new PropertyValueFactory<>("dest"));
-        dests.setPrefWidth(114);
+        dests.setPrefWidth(100);
         dates.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dates.setPrefWidth(114);
+        dates.setPrefWidth(100);
         connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
 //        connections.setCellFactory(tc -> new TableCell<VacationListing, Boolean>() {
 //            @Override
@@ -96,52 +103,60 @@ public class SearchPageView {
                 }
             }
         });
-        connections.setPrefWidth(114);
+        connections.setPrefWidth(100);
         prices.setCellValueFactory(new PropertyValueFactory<>("price"));
-        prices.setPrefWidth(114);
-        buttons.setCellValueFactory(new PropertyValueFactory<>("view"));
+        prices.setPrefWidth(100);
+        buttons.setCellValueFactory(new PropertyValueFactory<>("VacID"));
         buttons.setCellFactory(col -> new TableCell<VacationListing, String>(){
             Button button = new Button("View");
             {
-                button.setMaxHeight(20);
-                button.setMaxWidth(100);
+                button.setMaxHeight(17);
+                button.setMaxWidth(130);
+                button.setStyle("-fx-background-color: deepskyblue");
                 setGraphic(button);
             }
 
             @Override
             protected void updateItem(String item, boolean empty)
             {
-                button.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
-                        Parent root;
-                        try {
-                            FXMLLoader fxmlLoader = new FXMLLoader();
-                            root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
-                            Stage stage = new Stage();
-                            stage.setTitle("View Vacation Offer");
-                            stage.setScene(new Scene(root, 650, 400));
-                            ViewVacation viewvacation = fxmlLoader.getController();
-                            viewvacation.setControl(control);
-                            stage.show();
-                            // Hide this current window (if this is what you want)
-                            ((Node)(e.getSource())).getScene().getWindow().hide();
-                            viewvacation.setVacID(item);
+                if(empty || item == null) {
+                    setGraphic(null);
+                }
+                else {
+                    button.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent e) {
+                            Parent root;
+                            try {
+                                FXMLLoader fxmlLoader = new FXMLLoader();
+                                root = fxmlLoader.load(getClass().getResource("../ViewVacation.fxml").openStream());
+                                Stage stage = new Stage();
+                                stage.setTitle("View Vacation Offer");
+                                stage.setScene(new Scene(root, 650, 400));
+                                ViewVacation viewvacation = fxmlLoader.getController();
+                                viewvacation.setControl(control);
+                                stage.show();
+                                // Hide this current window (if this is what you want)
+                                ((Node) (e.getSource())).getScene().getWindow().hide();
+                                viewvacation.setVacID(item);
+                            } catch (IOException x) {
+                                x.printStackTrace();
+                            }
                         }
-                        catch (IOException x) {
-                            x.printStackTrace();
-                        }
-                    }
-                });
+                    });
+                    setGraphic(button);
+                }
             }
         });
-        buttons.setPrefWidth(114);
+        buttons.setPrefWidth(140);
 
         prices.setSortType(TableColumn.SortType.DESCENDING);
         dates.setSortType(TableColumn.SortType.DESCENDING);
 
+        table.setMaxWidth(650);
+        table.setPrefWidth(650);
         table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
-
-    }//end initialize
+    }
     public void setControl(Controller control){this.control=control;}
 
     /**
@@ -204,18 +219,6 @@ public class SearchPageView {
 
 
     public void OnTextChanged(KeyEvent keyEvent) {
-//        ArrayList<Pair> read = new ArrayList<>();
-//        read.add(new Pair(Fields.destination, simpleSearch.getText()));
-//        ArrayList<HashMap<String, String>> res = control.ReadEntries(read, Tables.ListingVacations);
-//        ObservableList<VacationListing> list;
-//        List<VacationListing> l = new LinkedList<>();
-//        table.getItems().clear();
-//
-//        for(int i = 0; i < r; i++)
-//            l.add(new VacationListing(i+"",i+"",i+"",true));
-//        list = FXCollections.observableArrayList(l);
-//        r++;
-//        table.setItems(list);
         String toSreach = simpleSearch.getText()+keyEvent.getCharacter();
         Connection connection = null;
         try {
@@ -246,9 +249,9 @@ public class SearchPageView {
             System.out.println(e.getMessage());
             return;
         }
-        for(VacationListing v : l)
-            System.out.println(v.toString());
         ObservableList<VacationListing> list = FXCollections.observableArrayList(l);
+        //table.getColumns().clear();
+        //table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
         table.setItems(list);
     }
 

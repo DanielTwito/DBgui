@@ -54,7 +54,7 @@ public class ViewVacation {
     }
 
     public void setVacID(String vacID) {
-        VacID = vacID;
+        this.VacID = vacID;
         setTexts();
     }
 
@@ -86,7 +86,7 @@ public class ViewVacation {
 
 
     //supposed to send a message to the seller
-    protected void PurchaseRequest(ActionEvent event) {
+    public void PurchaseRequest(ActionEvent event) {
 
 //        control.sendPurchaseRequest(seller,buyer);
 

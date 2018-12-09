@@ -8,7 +8,6 @@ import sample.Enums.Tables;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class AccessLayer {
 
