@@ -19,6 +19,7 @@ public class ViewVacation {
     private Controller control;
     private String VacID;
     private String seller;
+
     private String buyer;
 
     @FXML
@@ -64,6 +65,9 @@ public class ViewVacation {
     }
 
 
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
+    }
 
     private void setTexts() {
 
@@ -97,6 +101,7 @@ public class ViewVacation {
 
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if(buyer == null){
+            a.setTitle("Plase Login or Sign Up");
             a.setContentText("You must to login in order to send a request");
             a.show();
             return;
@@ -106,6 +111,7 @@ public class ViewVacation {
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
         fields.add(new Pair<>("vacId",VacID));
+        fields.add(new Pair<>("approved","2"));
         control.AddEntry(fields,Tables.PurchaseRequest);
         a.setContentText("Your request has been sent");
         a.show();
