@@ -28,6 +28,10 @@ public class MessegeBoxView {
     TableColumn<Messege, String> choicebox;
     TableColumn<Messege, String> buttons;
 
+
+    public void initialize(){
+        iniTable();
+    }
     public void setControl(Controller control) {
         this.control = control;
     }
@@ -35,6 +39,7 @@ public class MessegeBoxView {
     private void iniTable(){
 
         vacationID=new TableColumn<Messege,String>("IDS");
+        //messege=new TableColumn<Messege,String>("messege");
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
         vacationID.setPrefWidth(100);
