@@ -145,6 +145,7 @@ public class SearchPageView {
                                 // Hide this current window (if this is what you want)
                                 //((Node) (e.getSource())).getScene().getWindow().hide();
                                 viewvacation.setVacID(item);
+//                                viewvacation.setBuyer();
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }
