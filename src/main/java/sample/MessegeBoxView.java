@@ -87,7 +87,7 @@ public class MessegeBoxView {
                                 stage.show();
                                 ArrayList<Pair> tmp = new ArrayList<>();
                                 tmp.add(new Pair<>(Fields.VacID, item));
-                                paymentsForm.setVacPrice(Double.parseDouble(item));
+                                paymentsForm.setVacID(Integer.parseInt(item));
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }}});setGraphic(button);}}});
@@ -132,7 +132,7 @@ public class MessegeBoxView {
                                     stage.show();
                                     ArrayList<Pair> tmp = new ArrayList<>();
                                     tmp.add(new Pair<>(Fields.VacID, item));
-                                    paymentsForm.setVacPrice(Double.parseDouble(item));
+                                    paymentsForm.setVacID(Integer.parseInt(item));
                                 } catch (IOException x) {
                                     x.printStackTrace();
                                 }
