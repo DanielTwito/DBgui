@@ -31,6 +31,7 @@ public class Main extends Application {
         SearchPageView searchPageView = fxmlLoader.getController();     //getting the controller for the FXML
         searchPageView.setControl(control);
         control.setModel(new Model("Database/projectdb.db"));//setting a Model for it
+        searchPageView.setRecommendedListings();
         primaryStage.setOnCloseRequest((WindowEvent event1) -> {
             searchPageView.exit();
         });

@@ -84,6 +84,11 @@ public class MessegeBoxView {
                     Messege m = getMsgByID(item);
                     if(m.getBuyer().equals(user))
                     {
+                        if(m.getMessege() == 0)
+                        {
+                            setGraphic(new Label("Request Declined"));
+                            return;
+                        }
                         //System.out.println("Seller: "+m.getBuyer()+", Buyer: "+user+" message: "+indexMessege2);
                         button.setOnAction(new EventHandler<ActionEvent>() {
                             @Override

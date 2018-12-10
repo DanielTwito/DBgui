@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="mainpane" prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PaymentsForm">
+<AnchorPane id="mainpane" prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PaymentsForm">
     <children>
         <TextField fx:id="cardId" layoutX="72.0" layoutY="83.0" prefHeight="25.0" prefWidth="157.0" promptText="Credit Card" />
         <TextField fx:id="security" layoutX="72.0" layoutY="150.0" prefHeight="25.0" prefWidth="157.0" promptText="3 digit Security Number" />
@@ -18,11 +18,7 @@
         <Text fx:id="errorText" layoutX="2.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.33667373657227" AnchorPane.bottomAnchor="24.98828125" />
       <Text fx:id="totalPrice" layoutX="97.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" textOrigin="CENTER" wrappingWidth="106.33667373657227" />
       <DatePicker fx:id="exp" layoutX="72.0" layoutY="115.0" prefHeight="25.0" prefWidth="157.0" promptText="experaation date" />
-      <ImageView fitHeight="151.0" fitWidth="149.0" layoutX="275.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Paypal-logo.png" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="payp" fitHeight="151.0" fitWidth="149.0" layoutX="275.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true"/>
       <Label fx:id="approved" contentDisplay="CENTER" layoutX="28.0" layoutY="157.0" prefHeight="142.0" prefWidth="402.0" text="your payment Accepted" textOverrun="WORD_ELLIPSIS" visible="false">
          <font>
             <Font size="36.0" />
