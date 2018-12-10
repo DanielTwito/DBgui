@@ -129,19 +129,13 @@ public class MessegeBoxView {
                                         updating.add(new Pair<>(Fields.VacID, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
                                     }
-                                    PaymentsForm paymentsForm = fxmlLoader.getController();
-                                    paymentsForm.setController(control);
-                                    stage.show();
-                                    ArrayList<Pair> tmp = new ArrayList<>();
-                                    tmp.add(new Pair<>(Fields.VacID, item));
-                                    paymentsForm.setVacID(Integer.parseInt(item));
                                 } catch (IOException x) {
                                     x.printStackTrace();
                                 }
                             }
                         });
 
-                      //  cb.style;
+                        cb.setStyle("-fx-background-color: #00b286");
                         setGraphic(cb);
                     }
                 }
