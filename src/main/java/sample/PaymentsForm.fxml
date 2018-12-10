@@ -2,25 +2,24 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="mainpane" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PaymentsForm">
+<AnchorPane id="mainpane" prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PaymentsForm">
     <children>
-        <Label id="PayTXT" alignment="CENTER" contentDisplay="CENTER" layoutX="72.0" layoutY="39.0" prefHeight="44.0" prefWidth="157.0" text="PayPal">
-            <font>
-                <Font size="24.0" />
-            </font>
-        </Label>
         <TextField fx:id="cardId" layoutX="72.0" layoutY="83.0" prefHeight="25.0" prefWidth="157.0" promptText="Credit Card" />
         <TextField fx:id="security" layoutX="72.0" layoutY="150.0" prefHeight="25.0" prefWidth="157.0" promptText="3 digit Security Number" />
         <Button fx:id="pay" layoutX="111.0" layoutY="215.0" mnemonicParsing="false" onAction="#payAction" text="Click to Pay" />
         <Text fx:id="errorText" layoutX="2.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.33667373657227" AnchorPane.bottomAnchor="24.98828125" />
       <Text fx:id="totalPrice" layoutX="97.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" textOrigin="CENTER" wrappingWidth="106.33667373657227" />
       <DatePicker fx:id="exp" layoutX="72.0" layoutY="115.0" prefHeight="25.0" prefWidth="157.0" promptText="experaation date" />
+      <ImageView fitHeight="151.0" fitWidth="149.0" layoutX="275.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Paypal-logo.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>
