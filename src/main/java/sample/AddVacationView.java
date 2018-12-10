@@ -60,7 +60,7 @@ public class AddVacationView {
     private LocalDate endD;
     private String user;
 
-    static int VacID = 10000;
+    public static double VacID = 10000;
     @FXML
     public void initialize() {
         Price.textProperty().addListener(new ChangeListener<String>() {
@@ -77,6 +77,12 @@ public class AddVacationView {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         mainSignUp.setBackground(new Background(myBI));
+
+    }
+    public void setVacID(double id)
+    {
+        if(VacID < id + 1) VacID = id + 1;
+        System.out.println(VacID);
     }
     public void setControl(Controller control) {
         this.control = control;
@@ -122,11 +128,11 @@ public class AddVacationView {
         if (msg.length() == 0) {
             ArrayList<Pair> vac = new ArrayList<>();
             vac.add(new Pair(Fields.Connection, isConnection.isSelected()?"1":"0"));
-            vac.add(new Pair(Fields.VacId, (VacID++)+""));
+            vac.add(new Pair(Fields.VacId, (VacID)+""));
             vac.add(new Pair<>(Fields.Seller, user));
             vac.add(new Pair<>(Fields.vacationType+"", vacationTypeTXT.getText().trim()));
             vac.add(new Pair<>(Fields.airline+"", AirLineTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.destination+"", destinationTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.destination+"", destinationTXT.getText().trim().toLowerCase()));
             vac.add(new Pair<>(Fields.FlightDate+"", startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
             vac.add(new Pair<>(Fields.Returndate+"", retunD));
             vac.add(new Pair<>(Fields.adultTickets+"", adultAmount.getValue().toString()));
@@ -156,6 +162,7 @@ public class AddVacationView {
         } else {
             errorBoard.setText(msg.toString());
         }
+        VacID++;
     }
 
     public void setUser(String username)

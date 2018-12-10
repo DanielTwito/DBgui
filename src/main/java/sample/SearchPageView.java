@@ -52,6 +52,7 @@ public class SearchPageView {
 
     private String toSreach;
     private LoggedUser user = null;
+    private static double vacid = 0;
 
     TableColumn<VacationListing, String> logos;
     TableColumn<VacationListing, String> dests;
@@ -97,6 +98,7 @@ public class SearchPageView {
         List<VacationListing> l = new LinkedList<>();
         for(HashMap<String, String> paired : ResList)
         {
+            if(Double.parseDouble(paired.get("VacID")) > vacid) vacid = Double.parseDouble(paired.get("VacID"));
             if(ToRandom && new Random().nextInt(10) < 5) continue;
             l.add(new VacationListing(new SimpleStringProperty(paired.get("destination").toString().toUpperCase(Locale.US)),
                     new SimpleStringProperty(paired.get("FlightDate")),
@@ -104,6 +106,7 @@ public class SearchPageView {
                     new SimpleBooleanProperty(paired.get("Connection").equals("1")?true:false),
                     new SimpleStringProperty(paired.get("VacID"))));
         }
+        //vacid = Double.parseDouble(ResList.get(ResList.size()-1).get("VacID"));
         return l;
     }
     private void AutoMessageCheck() {
@@ -278,6 +281,7 @@ public class SearchPageView {
             AddVacationView rfv = fxmlLoader.getController();
             rfv.setControl(control);
             rfv.setUser(user.getUserName());
+            rfv.setVacID(vacid);
             stage.show();
             //((Node)(actionEvent.getSource())).getScene().getWindow().hide();
         }
