@@ -132,13 +132,15 @@ public class RegisterFormView {
         byte[] bytePhoto=null;
         //turns the image url to a byte array
         if(!(imageURL==null)) {
-            imageURL=imageURL.replace("file:\\","");
-            File f =new File(imageURL);
-            BufferedImage userImage = ImageIO.read(f);
-            ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
-            ImageIO.write(userImage, "jpg", imageStream);
-            bytePhoto = imageStream.toByteArray();
-            strImage = new String(bytePhoto);
+            imageURL = imageURL.replace("file:/", "");
+            try {
+                File f = new File(imageURL);
+                BufferedImage userImage = ImageIO.read(f);
+                ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+                ImageIO.write(userImage, "jpg", imageStream);
+                bytePhoto = imageStream.toByteArray();
+                strImage = new String(bytePhoto);
+            }catch (Exception e){}
         }
         else{errortext.append("please add a picture\n");}
         if (errortext.toString().length() == 0) {
