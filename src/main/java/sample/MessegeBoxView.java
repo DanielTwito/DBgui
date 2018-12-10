@@ -9,6 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -26,12 +29,16 @@ public class MessegeBoxView {
     public Messege msg;
     public TableView table;
     TableColumn<Messege,String> vacationID;
-    TableColumn<Messege,String> messege;
+    TableColumn<Messege,String> SellerID;
+    TableColumn<Messege, String> BuyerID;
     TableColumn<Messege, String> choicebox;
     TableColumn<Messege, String> buttons;
-
+    int indexMessege;
+    int indexMessege2;
     public void initialize(){
         iniTable();
+        indexMessege = 0;
+        indexMessege2 = 0;
     }
     public void setControl(Controller control) {
         this.control = control;
@@ -42,27 +49,32 @@ public class MessegeBoxView {
 
     private void iniTable(){
 
-        vacationID=new TableColumn<Messege,String>("VacationID");
-        //messege=new TableColumn<Messege,String>("messege");
-        choicebox=new TableColumn<Messege,String>("approve/decline");
-        buttons=new TableColumn<Messege,String>("purchase Now");
+        vacationID = new TableColumn<Messege,String>("VacationID");
+        SellerID = new TableColumn<Messege,String>("Seller");
+        BuyerID = new TableColumn<>("Buyer");
+        buttons = new TableColumn<Messege,String>("Action");
         vacationID.setPrefWidth(100);
-        //messege.setPrefWidth(100);
-        choicebox.setPrefWidth(140);
         buttons.setPrefWidth(140);
 
         vacationID.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
-        //messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+        BuyerID.setCellValueFactory(new PropertyValueFactory<>("buyer"));
+        SellerID.setCellValueFactory(new PropertyValueFactory<>("seller"));
         buttons.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
-        choicebox.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
-      //  if(user.equals(msg.getBuyer())){
         buttons.setCellFactory(col -> new TableCell<Messege, String>(){
             Button button = new Button("Buy");
+            ObservableList<String> options =
+                    FXCollections.observableArrayList(
+                            "Approve",//1
+                            "Decline");//0
+            ChoiceBox<String> cb = new ChoiceBox<String>(options);
             {
                 button.setMaxHeight(17);
                 button.setMaxWidth(130);
-               // button.setStyle("-fx-background-color: firebrick");
-                setGraphic(button);
+                cb.setMaxHeight(17);
+                cb.setMaxWidth(130);
+                cb.setTooltip(new Tooltip("Action, Approve or Decline"));
+                button.setStyle("-fx-background-color: deepskyblue");
+                button.setEffect(new DropShadow());
             }
             @Override
             protected void updateItem(String item, boolean empty)
@@ -70,17 +82,14 @@ public class MessegeBoxView {
                 if(empty || item == null) {
                     setGraphic(null);}
                 else {
-                    for (Messege msg : messeges) {
-                        if (msg.getBuyer().equals(user)) {
-                            choicebox.setEditable(false);choicebox.setVisible(false);
-                        } else {
-                            button.setDisable(true);button.setVisible(false);
-                        }
-                    }
-                    button.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent e) {
-                            Parent root;
+                    Messege m = getMsgByID(item);
+                    if(m.getBuyer().equals(user))
+                    {
+                        //System.out.println("Seller: "+m.getBuyer()+", Buyer: "+user+" message: "+indexMessege2);
+                        button.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent e) {
+                                Parent root;
                             try {
                                 FXMLLoader fxmlLoader = new FXMLLoader();
                                 root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
@@ -94,19 +103,29 @@ public class MessegeBoxView {
                                 paymentsForm.setVacID(Integer.parseInt(item));
                             } catch (IOException x) {
                                 x.printStackTrace();
-                            }}});setGraphic(button);}}});
-            choicebox.setCellFactory(col -> new TableCell<Messege, String>() {
-                ObservableList<String> options =
-                        FXCollections.observableArrayList(
-                                "Approve",//1
-                                "Decline");//0
-                ChoiceBox<String> cb = new ChoiceBox<String>(options);
-
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    if (empty || item == null) {
-                        setGraphic(null);
-                    } else {
+                            }}
+                    }
+                    );
+                        button.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                                new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                        button.setEffect(new DropShadow());
+                                        button.setStyle("-fx-background-color: cyan");
+                                    }
+                                });
+                        button.addEventHandler(MouseEvent.MOUSE_EXITED,
+                                new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                        button.setEffect(null);
+                                        button.setStyle("-fx-background-color: deepskyblue");
+                                    }
+                                });
+                    setGraphic(button);
+                    }
+                else
+                    {
                         cb.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent e) {
@@ -134,15 +153,20 @@ public class MessegeBoxView {
                                 }
                             }
                         });
-
                         cb.setStyle("-fx-background-color: #00b286");
                         setGraphic(cb);
                     }
-                }
-            });
-        buttons.setEditable(false);buttons.setEditable(false);
+                }}});
+        table.getColumns().addAll(BuyerID, SellerID, buttons, vacationID);
+    }
 
-        table.getColumns().addAll(vacationID, buttons, choicebox);
+    private Messege getMsgByID(String id)
+    {
+        for(Messege m : messeges)
+        {
+            if(m.getVacationID().equals(id)) return m;
+        }
+        return null;
     }
 
     public void setMesseges(List<Messege> messeges){

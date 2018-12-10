@@ -353,6 +353,7 @@ public class SearchPageView {
                 MessegeBoxView msgbox = fxmlLoader.getController();
                 msgbox.setControl(control);
                 msgbox.setMesseges(user.getMessages());
+                msgbox.setuser(user.getUserName());
                 stage.show();
                 // Hide this current window (if this is what you want)
                 //((Node) (e.getSource())).getScene().getWindow().hide();

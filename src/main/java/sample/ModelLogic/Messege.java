@@ -1,6 +1,7 @@
 package sample.ModelLogic;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Messege {
@@ -25,6 +26,15 @@ public class Messege {
     private StringProperty VacationID;
     private StringProperty buyer;
     private StringProperty seller;
+    private StringProperty VacIDnSeller;
+
+    public String getVacIDnSeller() {
+        return VacIDnSeller.get();
+    }
+
+    public StringProperty vacIDnSellerProperty() {
+        return VacIDnSeller;
+    }
 
     public Messege() { }
 
@@ -33,6 +43,7 @@ public class Messege {
         this.VacationID = VacationID;
         this.buyer = buyer;
         this.seller = seller;
+        this.VacIDnSeller = new SimpleStringProperty(VacationID.toString()+","+seller.toString());
     }
 
     public int getMessege() {
