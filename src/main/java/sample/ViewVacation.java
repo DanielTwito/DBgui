@@ -51,6 +51,8 @@ public class ViewVacation {
     @FXML
     private Text price;
     @FXML
+    private Text sellerName;
+    @FXML
     private Button sendRequest;
 
     private ArrayList<Text> txtList = new ArrayList<>();
@@ -89,7 +91,10 @@ public class ViewVacation {
         placeRank.setText(vacationDetails.get("placeRank"));
         price.setText(vacationDetails.get("price"));
         withConnection.setText(vacationDetails.get("Connection"));
-        seller =vacationDetails.get("seller");
+        seller =vacationDetails.get("Seller");
+        sellerName.setText(seller);
+        sendRequest.setStyle("-fx-background-color: deepskyblue");
+
 
 
     }
@@ -115,5 +120,6 @@ public class ViewVacation {
         control.AddEntry(fields,Tables.PurchaseRequest);
         a.setContentText("Your request has been sent");
         a.show();
+        sendRequest.setDisable(true);
     }
 }
