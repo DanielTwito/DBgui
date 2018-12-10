@@ -140,7 +140,7 @@ public class RegisterFormView {
                 ImageIO.write(userImage, "jpg", imageStream);
                 bytePhoto = imageStream.toByteArray();
                 strImage = new String(bytePhoto);
-            }catch (Exception e){}
+            }catch (Exception e){errortext.append("sorry picture not available\n");}
         }
         else{errortext.append("please add a picture\n");}
         if (errortext.toString().length() == 0) {
