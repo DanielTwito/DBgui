@@ -98,7 +98,7 @@ public class SearchPageView {
         for(HashMap<String, String> paired : ResList)
         {
             if(ToRandom && new Random().nextInt(10) < 5) continue;
-            l.add(new VacationListing(new SimpleStringProperty(paired.get("destination")),
+            l.add(new VacationListing(new SimpleStringProperty(paired.get("destination").toString().toUpperCase(Locale.US)),
                     new SimpleStringProperty(paired.get("FlightDate")),
                     new SimpleIntegerProperty(Integer.parseInt(paired.get("price"))),
                     new SimpleBooleanProperty(paired.get("Connection").equals("1")?true:false),
@@ -243,6 +243,7 @@ public class SearchPageView {
     }
     public void OnTextChanged() {
         ArrayList<Pair> searchqry = new ArrayList<>();
+        toSreach = toSreach.toLowerCase();
         searchqry.add(new Pair(Fields.destination, toSreach));
         ArrayList<HashMap<String, String>> ResList = control.ReadEntries(searchqry, Tables.ListingVacation);
         ObservableList<VacationListing> list = FXCollections.observableArrayList(getVacationList(ResList, false));

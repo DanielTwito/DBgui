@@ -172,9 +172,10 @@ public class RegisterFormView {
                 a.show();
                 return;
             }
+            //r = control.AddEntry()
             ArrayList<Pair> user2 = new ArrayList<>();
-            user.add(new Pair<>(Fields.userName, userName.getText().trim()));
-            user.add(new Pair<>(Fields.balance,"99999999999999"));
+            user2.add(new Pair<>(Fields.userName, userName.getText().trim()));
+            user2.add(new Pair<>(Fields.balance,"99999999999999"));
             control.AddEntry(user2,Tables.PayPal);
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setTitle("Success");

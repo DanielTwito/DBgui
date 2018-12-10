@@ -105,6 +105,7 @@ public class MessegeBoxView {
                                 ArrayList<Pair> tmp = new ArrayList<>();
                                 tmp.add(new Pair<>(Fields.VacId, item));
                                 paymentsForm.setVacID(Integer.parseInt(item));
+                                button.setDisable(true);
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }}
