@@ -1,8 +1,11 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,8 +19,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -33,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SearchPageView {
+    public AnchorPane backPane;
     public TextField logUsername;
     public PasswordField logPassword;
     public Button AddVacation;
@@ -48,6 +52,7 @@ public class SearchPageView {
     public Hyperlink messages;
     public Hyperlink disconnect;
 
+    private String toSreach;
     private LoggedUser user = null;
 
     TableColumn<VacationListing, String> logos;
@@ -57,16 +62,46 @@ public class SearchPageView {
     TableColumn<VacationListing, String> prices;
     TableColumn<VacationListing, String> buttons;
 
-    int r;
+    Thread t = null;
+    boolean messagesService = false;
+
     @FXML
     public void initialize(){
+        toSreach = "";
         logo.setImage(new Image(getClass().getClassLoader().getResourceAsStream("vacation_logo.JPG")));
-        r = 1;
+        BackgroundImage myBI= new BackgroundImage(
+                new Image(getClass().getClassLoader().getResourceAsStream("background.JPG"),
+                        1000,780,
+                        false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        backPane.setBackground(new Background(myBI));
+        simpleSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+
+                toSreach = newValue;
+                OnTextChanged();
+            }
+        });
         iniTable();
     }//end initialize
 
-    private void iniTable()
+    private void AutoMessageCheck()
     {
+        while(messagesService) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(user == null) continue;
+            CheckMessages();
+        }
+    }
+
+    private void iniTable() {
         logged.setText("guest user");
         logos = new TableColumn<VacationListing, String>("ID");
 
@@ -182,6 +217,7 @@ public class SearchPageView {
         table.setPrefWidth(650);
         table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
     }
+
     public void setControl(Controller control){this.control=control;}
 
     public void AdvancedSearchHandler(ActionEvent actionEvent) {
@@ -192,9 +228,7 @@ public class SearchPageView {
         a.show();
     }
 
-
-    public void OnTextChanged(KeyEvent keyEvent) {
-        String toSreach = simpleSearch.getText()+keyEvent.getCharacter();
+    public void OnTextChanged() {
         ArrayList<Pair> searchqry = new ArrayList<>();
         searchqry.add(new Pair(Fields.destination, toSreach));
         ArrayList<HashMap<String, String>> ResList = control.ReadEntries(searchqry, Tables.ListingVacation);
@@ -279,25 +313,33 @@ public class SearchPageView {
             messages.setText("(No Messages)");
             messages.setVisible(true);
             CheckMessages();
+            messagesService = true;
+            t = new Thread( () -> AutoMessageCheck());
+            t.start();
         }
     }
 
     private void CheckMessages()
     {
-        user.getMessages().clear();
-        getMessages(Fields.Seller);
-        getMessages(Fields.Buyer);
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                user.getMessages().clear();
+            getMessages(Fields.Seller);
+            getMessages(Fields.Buyer);
 
-        if(user.isMailboxEmpty())
-        {
-            messages.setText("(No Messages)");
-            messages.setStyle("-fx-text-fill: #004eff");
+                if(user.isMailboxEmpty())
+            {
+                messages.setText("(No Messages)");
+                messages.setStyle("-fx-text-fill: #004eff");
+            }
+                else
+            {
+                messages.setText("("+user.MessagesCount()+") New Messages");
+                messages.setStyle("-fx-text-fill: crimson");
+            }
+                System.out.println("checking messages "+"("+user.MessagesCount()+")");
         }
-        else
-        {
-            messages.setText("("+user.MessagesCount()+") New Messages");
-            messages.setStyle("-fx-text-fill: crimson");
-        }
+        });
     }
 
     private void getMessages(Fields field)
@@ -318,6 +360,8 @@ public class SearchPageView {
     }
 
     public void DisconnectUser(ActionEvent actionEvent) {
+        messagesService = false;
+        t = null;
         user = null;
         AddVacation.setDisable(true);
         signup.setDisable(false);
@@ -361,5 +405,10 @@ public class SearchPageView {
                 x.printStackTrace();
             }
         }
+    }
+
+    public void exit()
+    {
+        messagesService = false;
     }
 }

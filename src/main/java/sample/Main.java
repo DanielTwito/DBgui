@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sample.ModelLogic.Model;
 
 import java.io.File;
@@ -30,6 +31,9 @@ public class Main extends Application {
         SearchPageView searchPageView = fxmlLoader.getController();     //getting the controller for the FXML
         searchPageView.setControl(control);
         control.setModel(new Model("Database/projectdb.db"));//setting a Model for it
+        primaryStage.setOnCloseRequest((WindowEvent event1) -> {
+            searchPageView.exit();
+        });
         primaryStage.show();
     }
 

@@ -74,7 +74,7 @@ public class ViewVacation {
     private void setTexts() {
 
         ArrayList<Pair> whereCondition = new ArrayList<>();
-        whereCondition.add(new Pair<>(Fields.VacID, VacID));
+        whereCondition.add(new Pair<>(Fields.VacId, VacID));
         HashMap<String,String> vacationDetails= control.ReadEntries(whereCondition, Tables.ListingVacation).get(0);
 
         airline.setText(vacationDetails.get("airline"));

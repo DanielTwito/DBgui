@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -99,7 +98,7 @@ public class MessegeBoxView {
                                 paymentsForm.setController(control);
                                 stage.show();
                                 ArrayList<Pair> tmp = new ArrayList<>();
-                                tmp.add(new Pair<>(Fields.VacID, item));
+                                tmp.add(new Pair<>(Fields.VacId, item));
                                 paymentsForm.setVacID(Integer.parseInt(item));
                             } catch (IOException x) {
                                 x.printStackTrace();
@@ -137,15 +136,15 @@ public class MessegeBoxView {
                                     stage.setScene(new Scene(root, 650, 400));
                                     if (cb.getValue().equals("Approve")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
-                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        updating.add(new Pair<>(Fields.VacId, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
                                     } else if (cb.getValue().equals("Decline")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
-                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        updating.add(new Pair<>(Fields.VacId, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "0", updating);
                                     } else {
                                         ArrayList<Pair> updating = new ArrayList<>();
-                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        updating.add(new Pair<>(Fields.VacId, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
                                     }
                                 } catch (IOException x) {
