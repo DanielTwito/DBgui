@@ -110,7 +110,7 @@ public class RegisterFormView {
         ArrayList<Pair> tmp1 = new ArrayList<>();
         tmp1.add(new Pair<>(Fields.userName, userName.getText()));
         ArrayList<HashMap<String, String>> ContainsUser = control.ReadEntries(tmp1, Tables.Users);
-        if (ContainsUser != null && ContainsUser.size() == 0)
+        if (ContainsUser != null && ContainsUser.size() != 0)
             errortext.append("user name already in the system please choose a different one.\n");
         // checks if Email already in db
         ArrayList<Pair> tmp2 = new ArrayList<>();
@@ -144,9 +144,9 @@ public class RegisterFormView {
             user.add(new Pair<>(Fields.firstName, firstName.getText().trim()));
             user.add(new Pair<>(Fields.lastName, lastName.getText().trim()));
             user.add(new Pair<>(Fields.Email, email.getText().trim()));
-            user.add(new Pair<>(Fields.city, city.getText().trim()));
+            user.add(new Pair<>(Fields.hometown, city.getText().trim()));
             user.add(new Pair<>(Fields.birthDate, ld.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-           // user.add(new Pair<>(Fields.image, strImage));
+          // user.add(new Pair<>(Fields.image));
             System.out.println("adding user DONE");
             control.AddEntry(user,Tables.Users);
             ArrayList<Pair> user2 = new ArrayList<>();

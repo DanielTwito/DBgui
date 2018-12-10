@@ -106,8 +106,14 @@ public class ViewVacation {
 
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if(buyer == null){
-            a.setTitle("Plase Login or Sign Up");
+            a.setHeaderText("Please Login or Sign Up");
             a.setContentText("You must to login in order to send a request");
+            a.show();
+            return;
+        }
+        if(seller.equals(buyer)){
+            a.setHeaderText("Error");
+            a.setContentText("You can't buy a vacation from yourself!");
             a.show();
             return;
         }
@@ -115,10 +121,17 @@ public class ViewVacation {
         ArrayList<Pair> fields= new ArrayList<>();
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
-        fields.add(new Pair<>("vacId",VacID));
+        fields.add(new Pair<>("VacId",VacID));
         fields.add(new Pair<>("approved","2"));
-        control.AddEntry(fields,Tables.PurchaseRequest);
-        a.setContentText("Your request has been sent");
+        if(control.ReadEntries(fields,Tables.PurchaseRequest).size() != 0) {
+            a.setHeaderText("Error!");
+            a.setContentText("You already submitted a purchase  request for this vacation\n Please be patient until the seller will send you a response.");
+        }else{
+            a.setHeaderText("Succeeded! :)");
+            control.AddEntry(fields,Tables.PurchaseRequest);
+            a.setContentText("Your request has been sent");
+        }
+
         a.show();
         sendRequest.setDisable(true);
     }

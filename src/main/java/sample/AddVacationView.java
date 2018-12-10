@@ -51,6 +51,7 @@ public class AddVacationView {
     private Controller control;
     private LocalDate startD;
     private LocalDate endD;
+
     @FXML
     public void initialize() {
         Price.textProperty().addListener(new ChangeListener<String>() {
@@ -94,25 +95,28 @@ public class AddVacationView {
         if(Babyamount.getValue()+ChildAmount.getValue()+adultAmount.getValue()==0){
             msg.append("there must be at least 1 passanger \n");}
 
-        if(withReturn.isSelected()){
-            retunD="";
-        }else{retunD=endD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim();}
+        if(!withReturn.isSelected()){
+            retunD=" ";
+        }
+        int stuff; int toreturn;
+        if(withStuff.isSelected()){stuff=1;}else{stuff=0;}
+        if(withReturn.isSelected()){toreturn=1;}else{toreturn=0;}
+        if(withReturn.isSelected()){retunD=endD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim();}
         if (msg.length() == 0) {
             ArrayList<Pair> vac = new ArrayList<>();
-            vac.add(new Pair<>(Fields.vacationType, vacationTypeTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.airline, AirLineTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.destination, destinationTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.Flydate, startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
-            vac.add(new Pair<>(Fields.Returndate, retunD));
-            vac.add(new Pair<>(Fields.adultTickets, adultAmount.getValue().toString()));
-            vac.add(new Pair<>(Fields.childTickets, ChildAmount.getValue().toString()));
-            vac.add(new Pair<>(Fields.babyTickets, Babyamount.getValue().toString()));
-            vac.add(new Pair<>(Fields.baggage, LuggageType.getValue()));
-            vac.add(new Pair<>(Fields.placeRank, roomRank.getValue()));
-            vac.add(new Pair<>(Fields.includeRoom, withStuff.isSelected()));
-            vac.add(new Pair<>(Fields.includeReturn, withReturn.isSelected()));
-            vac.add(new Pair<>(Fields.price,Price.getText().trim()));
-            System.out.println("adding vacation DONE");
+            vac.add(new Pair<>(Fields.vacationType+"", vacationTypeTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.airline+"", AirLineTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.destination+"", destinationTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.FlightDate+"", startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
+            vac.add(new Pair<>(Fields.Returndate+"", retunD));
+            vac.add(new Pair<>(Fields.adultTickets+"", adultAmount.getValue().toString()));
+            vac.add(new Pair<>(Fields.childTickets+"", ChildAmount.getValue().toString()));
+            vac.add(new Pair<>(Fields.babyTickets+"", Babyamount.getValue().toString()));
+            vac.add(new Pair<>(Fields.baggage+"", LuggageType.getValue()+""));
+            vac.add(new Pair<>(Fields.placeRank+"", roomRank.getValue()+""));
+            vac.add(new Pair<>(Fields.includeRoom+"", stuff+""));
+            vac.add(new Pair<>(Fields.includeReturn+"", toreturn+""));
+            vac.add(new Pair<>(Fields.price+"",Price.getText().trim()));
             control.AddEntry(vac, Tables.ListingVacation);
         } else {
             errorBoard.setText(msg.toString());

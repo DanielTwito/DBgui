@@ -30,20 +30,19 @@ public class MessegeBoxView {
     TableColumn<Messege, String> choicebox;
     TableColumn<Messege, String> buttons;
 
-
     public void initialize(){
         iniTable();
     }
     public void setControl(Controller control) {
         this.control = control;
     }
-    public void getuser(String user){
+    public void setuser(String user){
         this.user=user;
     }
-    public void getmsg(Messege msg){this.msg=msg;}
+
     private void iniTable(){
 
-        vacationID=new TableColumn<Messege,String>("IDS");
+        vacationID=new TableColumn<Messege,String>("VacationID");
         //messege=new TableColumn<Messege,String>("messege");
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
@@ -52,26 +51,32 @@ public class MessegeBoxView {
         choicebox.setPrefWidth(140);
         buttons.setPrefWidth(140);
 
-        vacationID.setCellValueFactory(new PropertyValueFactory<>("SID"));
+        vacationID.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
         //messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        buttons.setCellValueFactory(new PropertyValueFactory<>("SID"));
-        choicebox.setCellValueFactory(new PropertyValueFactory<>("SID"));
-        if(user.equals(msg.getBuyer())){
+        buttons.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
+        choicebox.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
+      //  if(user.equals(msg.getBuyer())){
         buttons.setCellFactory(col -> new TableCell<Messege, String>(){
             Button button = new Button("Buy");
             {
                 button.setMaxHeight(17);
                 button.setMaxWidth(130);
-                button.setStyle("-fx-background-color: firebrick");
+               // button.setStyle("-fx-background-color: firebrick");
                 setGraphic(button);
             }
             @Override
             protected void updateItem(String item, boolean empty)
             {
                 if(empty || item == null) {
-                    setGraphic(null);
-                }
+                    setGraphic(null);}
                 else {
+                    for (Messege msg : messeges) {
+                        if (msg.getBuyer().equals(user)) {
+                            choicebox.setEditable(false);choicebox.setVisible(false);
+                        } else {
+                            button.setDisable(true);button.setVisible(false);
+                        }
+                    }
                     button.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent e) {
@@ -80,7 +85,6 @@ public class MessegeBoxView {
                                 FXMLLoader fxmlLoader = new FXMLLoader();
                                 root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
                                 Stage stage = new Stage();
-                                //stage.setTitle("we accept all major cards");
                                 stage.setScene(new Scene(root, 650, 400));
                                 PaymentsForm paymentsForm = fxmlLoader.getController();
                                 paymentsForm.setController(control);
@@ -91,21 +95,19 @@ public class MessegeBoxView {
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }}});setGraphic(button);}}});
-        choicebox.setVisible(false);choicebox.setEditable(false); }
-        if(user.equals(msg.getSeller())) {
             choicebox.setCellFactory(col -> new TableCell<Messege, String>() {
                 ObservableList<String> options =
                         FXCollections.observableArrayList(
                                 "Approve",//1
                                 "Decline");//0
-                ChoiceBox<String> choiceBox = new ChoiceBox<String>(options);
+                ChoiceBox<String> cb = new ChoiceBox<String>(options);
 
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     if (empty || item == null) {
                         setGraphic(null);
                     } else {
-                        choiceBox.setOnAction(new EventHandler<ActionEvent>() {
+                        cb.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent e) {
                                 Parent root;
@@ -114,11 +116,11 @@ public class MessegeBoxView {
                                     root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
                                     Stage stage = new Stage();
                                     stage.setScene(new Scene(root, 650, 400));
-                                    if (choiceBox.getValue().equals("Approve")) {
+                                    if (cb.getValue().equals("Approve")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacID, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
-                                    } else if (choiceBox.getValue().equals("Decline")) {
+                                    } else if (cb.getValue().equals("Decline")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacID, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "0", updating);
@@ -127,24 +129,19 @@ public class MessegeBoxView {
                                         updating.add(new Pair<>(Fields.VacID, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
                                     }
-                                    PaymentsForm paymentsForm = fxmlLoader.getController();
-                                    paymentsForm.setController(control);
-                                    stage.show();
-                                    ArrayList<Pair> tmp = new ArrayList<>();
-                                    tmp.add(new Pair<>(Fields.VacID, item));
-                                    paymentsForm.setVacID(Integer.parseInt(item));
                                 } catch (IOException x) {
                                     x.printStackTrace();
                                 }
                             }
                         });
-                        setGraphic(choiceBox);
+
+                        cb.setStyle("-fx-background-color: #00b286");
+                        setGraphic(cb);
                     }
                 }
             });
         buttons.setEditable(false);buttons.setEditable(false);
 
-        }
         table.getColumns().addAll(vacationID, buttons, choicebox);
     }
 

@@ -201,6 +201,8 @@ public class SearchPageView {
         List<VacationListing> l = new LinkedList<>();
         for(HashMap<String, String> paired : ResList)
         {
+            if(user != null && user.getUserName().equals(paired.get("Seller")))
+                continue;
             l.add(new VacationListing(new SimpleStringProperty(paired.get("destination")),
                     new SimpleStringProperty(paired.get("FlightDate")),
                     new SimpleIntegerProperty(Integer.parseInt(paired.get("price"))),
