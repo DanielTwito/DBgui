@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.ModelLogic.AccessLayer;
 import sample.ModelLogic.Model;
 
 import java.io.File;
@@ -20,7 +19,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Controller control=new Controller();
-        AccessLayer accessLayer = new AccessLayer();
+        Model m = new Model("Database/projectdb.db");
+        control.setModel(m);
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("../SearchPage.fxml").openStream());
         primaryStage.setTitle("Vacation4u");
@@ -30,7 +30,6 @@ public class Main extends Application {
         SearchPageView searchPageView = fxmlLoader.getController();     //getting the controller for the FXML
         searchPageView.setControl(control);
         control.setModel(new Model("Database/projectdb.db"));//setting a Model for it
-        accessLayer.connectDB("projectdb.db");
         primaryStage.show();
     }
 
