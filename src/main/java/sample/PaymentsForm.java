@@ -1,28 +1,30 @@
 package sample;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
-import org.sqlite.util.StringUtils;
 import sample.Enums.Tables;
 import sample.Enums.Fields;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.regex.Pattern;
+import java.util.SplittableRandom;
 
 public class PaymentsForm {
 
-
-    private Controller controller =new Controller();
+    private Paypal paypal;
+    private Controller controller ;
     //Controls in the javaFX
     @FXML
     private DatePicker exp;
@@ -36,63 +38,68 @@ public class PaymentsForm {
     private Text errorText;
     @FXML
     private Text totalPrice;
-    private double vacPrice;
 
-    public void initialize() {
-        cardId.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    cardId.setText(newValue.replaceAll("[^\\d]", ""));
-                }}});
-        security.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    security.setText(newValue.replaceAll("[^\\d]", ""));}}});
-    }
-    public void setVacPrice(double vacPrice) {
-        this.vacPrice = vacPrice;
-        totalPrice.setText("Total Price: "+this.vacPrice);
+    private double vacPrice;
+    private int vacId;
+    private String seller;
+    private String buyer;
+
+    public void setVacID(int vacId) {
+        this.vacId = vacId;
+        ArrayList<Pair> data = new ArrayList<>();
+        data.add(new Pair<String, String>(Fields.VacID + "", vacId + ""));
+        ArrayList<HashMap<String, String>> ans = controller.ReadEntries(data, Tables.ListingVacation);
+        totalPrice.setText("Total Price: " + ans.get(0).get(Fields.price + ""));
+        this.vacPrice= Double.parseDouble(ans.get(0).get(Fields.price+""));
+        this.seller = ans.get(0).get(Fields.Seller + "");
+        data = new ArrayList<>();
+        data.add(new Pair<String, String>(Fields.VacID + "", vacId + ""));
+        data.add(new Pair<String, String>(Fields.Seller + "", seller + ""));
+        data.add(new Pair<String, String>(Fields.approved + "", 1 + ""));
+        ans = controller.ReadEntries(data, Tables.PurchaseRequest);
+        this.buyer = ans.get(0).get("Buyer");
+
     }
 
     public void setController(Controller controller) {
+
         this.controller = controller;
+        this.paypal=new Paypal(controller);
     }
 
     public void payAction(ActionEvent actionEvent) {
-        String date="";
+        String date = "";
         try {
-            date = exp.getValue().getDayOfMonth()+"/"+exp.getValue().getMonthValue()+"/"+exp.getValue().getYear();
-        }catch (Exception e){
+            date = exp.getValue().getDayOfMonth() + "/" + exp.getValue().getMonthValue() + "/" + exp.getValue().getYear();
+        } catch (Exception e) {
             errorText.setText("Expiration date is a must!");
             return;
         }
         errorText.setText("");
         StringBuilder message = new StringBuilder("missing:\n");
-        boolean missingFlag=false;
-        if (cardId.getText().trim().isEmpty()){
+        boolean missingFlag = false;
+        if (cardId.getText().trim().isEmpty()) {
             message.append("Credit Card\n");
-            missingFlag=true;
+            missingFlag = true;
         }
-        if (date.equals("")){
+
+        if (date.equals("")) {
             message.append("Experation Date\n");
-            missingFlag=true;
+            missingFlag = true;
         }
-        if (security.getText().trim().isEmpty()){
-            message.append("cerdit card\n");
-            missingFlag=true;
-        }else{
-            if(security.getText().length()!=3) {
+
+        if (security.getText().trim().isEmpty()) {
+            message.append("Security Number card\n");
+            missingFlag = true;
+        } else {
+            if (security.getText().length() != 3) {
                 message.append("security Must be 3 digit long");
                 missingFlag = true;
-            }else {
+            } else {
                 String s = security.getText().trim();
-                for (int i = 0; i < security.getText().length() ; i++) {
-                    if(s.charAt(i)<'0' && s.charAt(i)>'9' ){
-                        message.append("security Must contain only numbers");
+                for (int i = 0; i < security.getText().length(); i++) {
+                    if (s.charAt(i) < '0' && s.charAt(i) > '9') {
+                        message.append("security Must be 3 digit long");
                     }
 
                 }
@@ -100,35 +107,52 @@ public class PaymentsForm {
 
         }
 
-        if(!missingFlag){
-            //check credit card
-            ArrayList<Pair> data = new ArrayList<>();
-            data.add(new Pair<String,String>(Fields.creditCard+"",cardId.getText()));
-            data.add(new Pair<String,String>(Fields.expirationDate+"",date));
-            data.add(new Pair<String,String>(Fields.security+"",security.getText()));
-            ArrayList<HashMap<String, String>> ans= controller.ReadEntries(data,Tables.PayPal);
-            if(ans.size()>0){
-                double b=Double.parseDouble(ans.get(0).get("balance"));
-                if(b-this.vacPrice>0){
-                    System.out.println("you can buy");
-                    //take money from the account
-                    ArrayList<Pair> dat = new ArrayList<>();
-                    Pair<String,String> x = new Pair<>(Fields.creditCard+"",cardId.getText());
-                    dat.add(x);
-                    controller.UpdateEntries(Tables.PayPal,Fields.balance,(b-this.vacPrice)+"",dat);
+        if (!missingFlag) {
+                boolean resualt = this.paypal.exsecuteTrans(seller,buyer,vacId,vacPrice);
+                if (resualt){
+                    documentTransaction();
+                    deleteVactionFromTheBoard();
                 }else{
-                    errorText.setText("you dont have enough money in your account");
+                    errorText.setText("cant complete the deal!");
                 }
-            }else {
-                errorText.setText("credit card detail are wrong");
-            }
-        }else{
+
+
+
+        } else {
             errorText.setText(message.toString());
         }
 
 
     }
 
+    private void documentTransaction() {
+        ArrayList<Pair> toAdd = new ArrayList<>();
+        toAdd.add(new Pair<String,String>(Fields.Seller+"",seller));
+        toAdd.add(new Pair<String,String>(Fields.Buyer+"",buyer));
+        toAdd.add(new Pair<String,String>(Fields.price+"",vacPrice+""));
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String dateIncludeTime=dtf.format(now);
+        String[] splited = dateIncludeTime.split("\\s+");
+        String date = splited[0];
+        String time = splited[1];
+        toAdd.add(new Pair<String,String>(Fields.transactionDate+"",date));
+        toAdd.add(new Pair<String,String>(Fields.transactionTime+"",time));
+        controller.AddEntry(toAdd,Tables.Transactions);
+    }
+
+    private void deleteVactionFromTheBoard() {
+        ArrayList<Pair> toDelete = new ArrayList<>();
+        toDelete.add(new Pair<String,String>(Fields.VacID+"",vacId+""));
+        controller.DeleteEntry(Tables.PurchaseRequest,toDelete);
+        controller.DeleteEntry(Tables.ListingVacation,toDelete);
+
 
     }
+
+}
+
+
+
+
 

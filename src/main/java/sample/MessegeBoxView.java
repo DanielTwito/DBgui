@@ -91,7 +91,7 @@ public class MessegeBoxView {
                                 stage.show();
                                 ArrayList<Pair> tmp = new ArrayList<>();
                                 tmp.add(new Pair<>(Fields.VacID, item));
-                                paymentsForm.setVacPrice(Double.parseDouble(item));
+                                paymentsForm.setVacID(Integer.parseInt(item));
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }}});setGraphic(button);}}});
@@ -129,6 +129,12 @@ public class MessegeBoxView {
                                         updating.add(new Pair<>(Fields.VacID, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
                                     }
+                                    PaymentsForm paymentsForm = fxmlLoader.getController();
+                                    paymentsForm.setController(control);
+                                    stage.show();
+                                    ArrayList<Pair> tmp = new ArrayList<>();
+                                    tmp.add(new Pair<>(Fields.VacID, item));
+                                    paymentsForm.setVacID(Integer.parseInt(item));
                                 } catch (IOException x) {
                                     x.printStackTrace();
                                 }
