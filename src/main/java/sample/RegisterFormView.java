@@ -132,7 +132,7 @@ public class RegisterFormView {
         byte[] bytePhoto=null;
         //turns the image url to a byte array
         if(!(imageURL==null)) {
-            imageURL=imageURL.substring(6,imageURL.length());
+            imageURL=imageURL.replace("file:\\","");
             File f =new File(imageURL);
             BufferedImage userImage = ImageIO.read(f);
             ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
