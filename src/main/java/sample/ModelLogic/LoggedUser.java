@@ -1,6 +1,6 @@
 package sample.ModelLogic;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LoggedUser {
@@ -12,22 +12,22 @@ public class LoggedUser {
         return UserName;
     }
 
-    public List<String> getMessages() {
+    public List<Messege> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<String> messages) {
+    public void setMessages(List<Messege> messages) {
         this.messages = messages;
     }
 
     String name;
     String UserName;
-    List<String> messages;
+    List<Messege> messages;
 
     public LoggedUser(String name, String userName) {
         this.name = name;
         UserName = userName;
-        messages = new ArrayList<>();
+        messages = new LinkedList<>();
     }
 
     public boolean isMailboxEmpty()
@@ -35,7 +35,7 @@ public class LoggedUser {
         return messages.size() == 0;
     }
 
-    public void addToMailBox(String message)
+    public void addToMailBox(Messege message)
     {
         messages.add(message);
     }

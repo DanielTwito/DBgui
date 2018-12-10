@@ -14,17 +14,16 @@ import javafx.util.Pair;
 import sample.Enums.Fields;
 import sample.Enums.Tables;
 import sample.ModelLogic.Messege;
-import sample.ModelLogic.VacationListing;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MessegeBoxView {
     List<Messege> messeges=null;
     private Controller control;
+    public String user;
+    public Messege msg;
     public TableView table;
     TableColumn<Messege,String> vacationID;
     TableColumn<Messege,String> messege;
@@ -36,20 +35,28 @@ public class MessegeBoxView {
         iniTable();
     }
     public void setControl(Controller control) {
-        this.control = control;}
+        this.control = control;
+    }
+    public void getuser(String user){
+        this.user=user;
+    }
+    public void getmsg(Messege msg){this.msg=msg;}
     private void iniTable(){
 
         vacationID=new TableColumn<Messege,String>("IDS");
+        //messege=new TableColumn<Messege,String>("messege");
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
         vacationID.setPrefWidth(100);
-        messege.setPrefWidth(100);
+        //messege.setPrefWidth(100);
         choicebox.setPrefWidth(140);
         buttons.setPrefWidth(140);
-        vacationID.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        buttons.setCellValueFactory(new PropertyValueFactory<>("VacID"));
-        choicebox.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+
+        vacationID.setCellValueFactory(new PropertyValueFactory<>("SID"));
+        //messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+        buttons.setCellValueFactory(new PropertyValueFactory<>("SID"));
+        choicebox.setCellValueFactory(new PropertyValueFactory<>("SID"));
+        if(user.equals(msg.getBuyer())){
         buttons.setCellFactory(col -> new TableCell<Messege, String>(){
             Button button = new Button("Buy");
             {
@@ -57,7 +64,7 @@ public class MessegeBoxView {
                 button.setMaxWidth(130);
                 button.setStyle("-fx-background-color: firebrick");
                 setGraphic(button);
-        }
+            }
             @Override
             protected void updateItem(String item, boolean empty)
             {
@@ -84,58 +91,66 @@ public class MessegeBoxView {
                             } catch (IOException x) {
                                 x.printStackTrace();
                             }}});setGraphic(button);}}});
-        choicebox.setCellFactory(col -> new TableCell<Messege, String>(){
-            ObservableList<String> options =
-                    FXCollections.observableArrayList(
+        choicebox.setVisible(false);choicebox.setEditable(false); }
+        if(user.equals(msg.getSeller())) {
+            choicebox.setCellFactory(col -> new TableCell<Messege, String>() {
+                ObservableList<String> options =
+                        FXCollections.observableArrayList(
                                 "Approve",//1
-                            "Decline");//0
-            ChoiceBox<String> choiceBox= new ChoiceBox<String>(options);
-            @Override
-            protected void updateItem(String item, boolean empty)
-            {
-                if(empty || item == null) {
-                    setGraphic(null);
+                                "Decline");//0
+                ChoiceBox<String> choiceBox = new ChoiceBox<String>(options);
+
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    if (empty || item == null) {
+                        setGraphic(null);
+                    } else {
+                        choiceBox.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent e) {
+                                Parent root;
+                                try {
+                                    FXMLLoader fxmlLoader = new FXMLLoader();
+                                    root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
+                                    Stage stage = new Stage();
+                                    stage.setScene(new Scene(root, 650, 400));
+                                    if (choiceBox.getValue().equals("Approve")) {
+                                        ArrayList<Pair> updating = new ArrayList<>();
+                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
+                                    } else if (choiceBox.getValue().equals("Decline")) {
+                                        ArrayList<Pair> updating = new ArrayList<>();
+                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "0", updating);
+                                    } else {
+                                        ArrayList<Pair> updating = new ArrayList<>();
+                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
+                                    }
+                                    PaymentsForm paymentsForm = fxmlLoader.getController();
+                                    paymentsForm.setController(control);
+                                    stage.show();
+                                    ArrayList<Pair> tmp = new ArrayList<>();
+                                    tmp.add(new Pair<>(Fields.VacID, item));
+                                    paymentsForm.setVacPrice(Double.parseDouble(item));
+                                } catch (IOException x) {
+                                    x.printStackTrace();
+                                }
+                            }
+                        });
+                        setGraphic(choiceBox);
+                    }
                 }
-                else {
-                    choiceBox.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent e) {
-                            Parent root;
-                            try {
-                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(root, 650, 400));
-                                if(choiceBox.getValue().equals("Approve")) {
-                                    ArrayList<Pair> updating = new ArrayList<>();
-                                    updating.add(new Pair<>(Fields.VacID, item));
-                                    control.UpdateEntries(Tables.PurchaseRequest,Fields.approved,"1",updating);
-                                }
-                                else if(choiceBox.getValue().equals("Decline")){
-                                    ArrayList<Pair> updating = new ArrayList<>();
-                                    updating.add(new Pair<>(Fields.VacID, item));
-                                    control.UpdateEntries(Tables.PurchaseRequest,Fields.approved,"0",updating);
-                                }
-                                else{
-                                    ArrayList<Pair> updating = new ArrayList<>();
-                                    updating.add(new Pair<>(Fields.VacID, item));
-                                    control.UpdateEntries(Tables.PurchaseRequest,Fields.approved,"2",updating);
-                                }
-                                PaymentsForm paymentsForm = fxmlLoader.getController();
-                                paymentsForm.setController(control);
-                                stage.show();
-                                ArrayList<Pair> tmp = new ArrayList<>();
-                                tmp.add(new Pair<>(Fields.VacID, item));
-                                paymentsForm.setVacPrice(Double.parseDouble(item));
-                            } catch (IOException x) {
-                                x.printStackTrace();
-                            }}});setGraphic(choiceBox);}}});
+            });
+        buttons.setEditable(false);buttons.setEditable(false);
 
-        ObservableList<Messege> list = FXCollections.observableArrayList(messeges);
-        table.setItems(list);
         }
+        table.getColumns().addAll(vacationID, buttons, choicebox);
+    }
 
-    public void getMesseges(List<Messege> messeges){
-        this.messeges=messeges;
+    public void setMesseges(List<Messege> messeges){
+        this.messeges = messeges;
+        ObservableList<Messege> list = FXCollections.observableArrayList(this.messeges);
+        table.setItems(list);
     }
 }

@@ -74,7 +74,7 @@
                            <children>
                               <Label fx:id="logged" layoutX="263.0" layoutY="13.0" prefHeight="23.0" prefWidth="150.0" />
                               <Hyperlink fx:id="disconnect" layoutX="14.0" layoutY="11.0" onAction="#DisconnectUser" prefHeight="18.0" prefWidth="99.0" text="Disconnect" textFill="#004eff" visible="false" />
-                              <Hyperlink fx:id="messages" layoutX="112.0" layoutY="11.0" prefHeight="23.0" prefWidth="150.0" text="(No Messages)" textAlignment="CENTER" textFill="#004eff" visible="false" />
+                              <Hyperlink fx:id="messages" onAction="#MessagesHandler" layoutX="112.0" layoutY="11.0" prefHeight="23.0" prefWidth="150.0" text="(No Messages)" textAlignment="CENTER" textFill="#004eff" visible="false" />
                            </children>
                         </AnchorPane>
                      </children>

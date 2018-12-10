@@ -20,12 +20,12 @@
     <TextField id="destination" fx:id="destinationTXT" layoutX="34.0" layoutY="77.0" promptText="destination" />
     <TextField id="LastnameTXT" fx:id="vacationTypeTXT" layoutX="439.0" layoutY="164.0" promptText="Vacation type " />
     <Button id="sign_up" fx:id="submit" layoutX="296.0" layoutY="362.0" mnemonicParsing="false" onAction="#addVacation" text="Sumbit!" />
-    <DatePicker id="startDate" fx:id="startDate" layoutX="87.0" layoutY="114.0" onAction="#addStart" prefHeight="26.0" prefWidth="149.0" promptText="vacation starts at" />
-    <Label id="cof" layoutX="248.0" layoutY="107.0" prefHeight="30.0" prefWidth="54.0" text="-">
+    <DatePicker id="startDate" fx:id="startDate" layoutX="213.0" layoutY="77.0" onAction="#addStart" prefHeight="26.0" prefWidth="149.0" promptText="vacation starts at" />
+    <Label id="cof" layoutX="374.0" layoutY="70.0" prefHeight="30.0" prefWidth="54.0" text="-">
         <font>
             <Font size="28.0" />
         </font></Label>
-    <DatePicker id="returnDate" fx:id="endDate" layoutX="275.0" layoutY="114.0" onAction="#addEnd" prefHeight="26.0" prefWidth="149.0" promptText="until" />
+    <DatePicker id="returnDate" fx:id="endDate" layoutX="401.0" layoutY="77.0" onAction="#addEnd" prefHeight="26.0" prefWidth="149.0" promptText="until" />
     <ComboBox id="LuggageTYPE" fx:id="LuggageType" layoutX="33.0" layoutY="164.0" prefWidth="150.0" promptText="Luggage type">
         <items>
             <FXCollections fx:factory="observableArrayList">
@@ -46,11 +46,11 @@
     <CheckBox fx:id="withStuff" layoutX="230.0" layoutY="280.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="164.0" text="Including lodging" />
     <Slider id="roomRank" fx:id="roomRank" blockIncrement="1.0" layoutX="443.0" layoutY="290.0" majorTickUnit="1.0" max="5.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
     <Label id="lname" layoutX="470.0" layoutY="265.0" prefHeight="30.0" prefWidth="86.0" text="Room rank" />
-    <Label id="lname" layoutX="156.0" layoutY="4.0" prefHeight="30.0" prefWidth="266.0" text="sell your unwanted vacation!">
+    <Label id="lname" layoutX="215.0" layoutY="18.0" prefHeight="30.0" prefWidth="158.0" text="sell your vacation!">
         <font>
             <Font size="19.0" />
         </font>
     </Label>
     <TextField fx:id="Price" layoutX="422.0" layoutY="349.0" promptText="Vacation price in NIS" />
-   <Text id="errorBoard" fx:id="errorBoard" layoutX="435.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="148.79999922215939" />
+   <Text id="errorBoard" fx:id="errorBoard" fill="RED" layoutX="206.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="212.79999922215939" />
 </AnchorPane>
