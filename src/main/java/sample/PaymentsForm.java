@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -36,6 +38,21 @@ public class PaymentsForm {
     private Text totalPrice;
     private double vacPrice;
 
+    public void initialize() {
+        cardId.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    cardId.setText(newValue.replaceAll("[^\\d]", ""));
+                }}});
+        security.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    security.setText(newValue.replaceAll("[^\\d]", ""));}}});
+    }
     public void setVacPrice(double vacPrice) {
         this.vacPrice = vacPrice;
         totalPrice.setText("Total Price: "+this.vacPrice);
@@ -60,12 +77,10 @@ public class PaymentsForm {
             message.append("Credit Card\n");
             missingFlag=true;
         }
-
         if (date.equals("")){
             message.append("Experation Date\n");
             missingFlag=true;
         }
-
         if (security.getText().trim().isEmpty()){
             message.append("cerdit card\n");
             missingFlag=true;
@@ -77,7 +92,7 @@ public class PaymentsForm {
                 String s = security.getText().trim();
                 for (int i = 0; i < security.getText().length() ; i++) {
                     if(s.charAt(i)<'0' && s.charAt(i)>'9' ){
-                        message.append("security Must be 3 digit long");
+                        message.append("security Must contain only numbers");
                     }
 
                 }

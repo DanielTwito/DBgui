@@ -11,21 +11,21 @@
 
 <AnchorPane id="mainpane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RegisterFormView">
     <children>
-        <Label id="signUpTXT" alignment="CENTER" contentDisplay="CENTER" layoutX="217.0" layoutY="41.0" prefHeight="44.0" prefWidth="202.0" text="Sign Up for FREE">
+        <Label id="signUpTXT" alignment="CENTER" contentDisplay="CENTER" layoutX="198.0" layoutY="41.0" prefHeight="44.0" prefWidth="202.0" text="Sign Up for FREE">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-        <PasswordField id="Password Confirmation" fx:id="confirm_password" layoutX="129.0" layoutY="199.0" promptText="Confirm password" />
-        <PasswordField id="Password" fx:id="password" layoutX="129.0" layoutY="161.0" promptText="Paaword" />
-        <TextField id="User name" fx:id="userName" layoutX="129.0" layoutY="118.0" promptText="User name" />
-        <TextField id="First name" fx:id="firstName" layoutX="400.0" layoutY="117.0" promptText="First name" />
-        <TextField id="Last name" fx:id="lastName" layoutX="399.0" layoutY="160.0" promptText="Last name" />
-        <TextField id="Email" fx:id="email" layoutX="399.0" layoutY="200.0" promptText="Email address" />
-        <TextField id="city" fx:id="city" layoutX="400.0" layoutY="241.0" promptText="City of residence" />
-        <Button id="imageButton" fx:id="uploadImage" layoutX="129.0" layoutY="241.0" mnemonicParsing="false" onAction="#onUploadAction" text="Upload Image" />
-        <Button id="sign_up" fx:id="submit" layoutX="287.0" layoutY="319.0" mnemonicParsing="false" onAction="#SignUp" text="Sumbit" />
-        <Text id="errorTXT" fx:id="errorBoard" layoutX="14.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="254.9366798400879" />
-        <DatePicker id="birthDate" fx:id="birthdate" layoutX="402.0" layoutY="279.0" onAction="#OnAction" prefHeight="26.0" prefWidth="149.0" promptText="Date of Birth" />
+        <PasswordField id="Password Confirmation" fx:id="confirm_password" layoutX="101.0" layoutY="191.0" promptText="Confirm password" />
+        <PasswordField id="Password" fx:id="password" layoutX="101.0" layoutY="153.0" promptText="Paaword" />
+        <TextField id="User name" fx:id="userName" layoutX="101.0" layoutY="110.0" promptText="User name" />
+        <TextField id="First name" fx:id="firstName" layoutX="371.0" layoutY="110.0" promptText="First name" />
+        <TextField id="Last name" fx:id="lastName" layoutX="371.0" layoutY="152.0" promptText="Last name" />
+        <TextField id="Email" fx:id="email" layoutX="371.0" layoutY="192.0" promptText="Email address" />
+        <TextField id="city" fx:id="city" layoutX="372.0" layoutY="233.0" promptText="City of residence" />
+        <Button id="imageButton" fx:id="uploadImage" layoutX="101.0" layoutY="233.0" mnemonicParsing="false" onAction="#onUploadAction" text="Upload Image" />
+        <Button id="sign_up" fx:id="submit" layoutX="259.0" layoutY="311.0" mnemonicParsing="false" onAction="#SignUp" text="Sumbit" />
+        <Text id="errorTXT" fx:id="errorBoard" layoutX="2.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="237.3367042541504" />
+        <DatePicker id="birthDate" fx:id="birthdate" layoutX="374.0" layoutY="271.0" onAction="#OnAction" prefHeight="26.0" prefWidth="149.0" promptText="Date of Birth" />
     </children>
 </AnchorPane>

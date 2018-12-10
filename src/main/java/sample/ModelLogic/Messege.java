@@ -22,15 +22,15 @@ public class Messege {
         return seller;
     }
 
-    private StringProperty SID;
+    private StringProperty VacationID;
     private StringProperty buyer;
     private StringProperty seller;
 
     public Messege() { }
 
-    public Messege(IntegerProperty messege, StringProperty SID, StringProperty buyer, StringProperty seller) {
+    public Messege(IntegerProperty messege, StringProperty VacationID, StringProperty buyer, StringProperty seller) {
         this.messege = messege;
-        this.SID = SID;
+        this.VacationID = VacationID;
         this.buyer = buyer;
         this.seller = seller;
     }
@@ -47,15 +47,12 @@ public class Messege {
         this.messege.set(messege);
     }
 
-    public String getSID() {
-        return SID.get();
+    public String getVacationID() {return VacationID.get();}
+   public StringProperty SIDProperty() {
+        return VacationID;
     }
 
-    public StringProperty SIDProperty() {
-        return SID;
-    }
-
-    public void setSID(String SID) {
-        this.SID.set(SID);
+    public void setVacationID(String VacationID) {
+        this.VacationID.set(VacationID);
     }
 }
