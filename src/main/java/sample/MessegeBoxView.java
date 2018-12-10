@@ -26,7 +26,8 @@ public class MessegeBoxView {
     public Messege msg;
     public TableView table;
     TableColumn<Messege,String> vacationID;
-    TableColumn<Messege,String> messege;
+   // TableColumn<Messege,String> seller;
+    TableColumn<Messege,String> buyer;
     TableColumn<Messege, String> choicebox;
     TableColumn<Messege, String> buttons;
 
@@ -43,16 +44,19 @@ public class MessegeBoxView {
     private void iniTable(){
 
         vacationID=new TableColumn<Messege,String>("VacationID");
-        //messege=new TableColumn<Messege,String>("messege");
+      //  seller=new TableColumn<Messege,String>("seller");
+        buyer=new TableColumn<Messege,String>("buyer");
         choicebox=new TableColumn<Messege,String>("approve/decline");
         buttons=new TableColumn<Messege,String>("purchase Now");
         vacationID.setPrefWidth(100);
-        //messege.setPrefWidth(100);
+        buyer.setPrefWidth(100);
+      //  seller.setPrefWidth(100);
         choicebox.setPrefWidth(140);
         buttons.setPrefWidth(140);
 
         vacationID.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
-        //messege.setCellValueFactory(new PropertyValueFactory<>("VacID"));
+        buyer.setCellValueFactory(new PropertyValueFactory<>("buyer"));
+      //  seller.setCellValueFactory(new PropertyValueFactory<>("seller"));
         buttons.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
         choicebox.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
       //  if(user.equals(msg.getBuyer())){
@@ -90,7 +94,7 @@ public class MessegeBoxView {
                                 paymentsForm.setController(control);
                                 stage.show();
                                 ArrayList<Pair> tmp = new ArrayList<>();
-                                tmp.add(new Pair<>(Fields.VacID, item));
+                                tmp.add(new Pair<>(Fields.VacId, item));
                                 paymentsForm.setVacID(Integer.parseInt(item));
                             } catch (IOException x) {
                                 x.printStackTrace();
@@ -118,15 +122,15 @@ public class MessegeBoxView {
                                     stage.setScene(new Scene(root, 650, 400));
                                     if (cb.getValue().equals("Approve")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
-                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        updating.add(new Pair<>(Fields.VacId, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
                                     } else if (cb.getValue().equals("Decline")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
-                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        updating.add(new Pair<>(Fields.VacId, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "0", updating);
                                     } else {
                                         ArrayList<Pair> updating = new ArrayList<>();
-                                        updating.add(new Pair<>(Fields.VacID, item));
+                                        updating.add(new Pair<>(Fields.VacId, item));
                                         control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
                                     }
                                 } catch (IOException x) {
@@ -142,7 +146,7 @@ public class MessegeBoxView {
             });
         buttons.setEditable(false);buttons.setEditable(false);
 
-        table.getColumns().addAll(vacationID, buttons, choicebox);
+        table.getColumns().addAll(vacationID, buttons, choicebox,buyer);
     }
 
     public void setMesseges(List<Messege> messeges){
