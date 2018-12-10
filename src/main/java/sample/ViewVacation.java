@@ -111,10 +111,17 @@ public class ViewVacation {
             a.show();
             return;
         }
+        if(seller.equals(buyer)){
+            a.setHeaderText("Error");
+            a.setContentText("You can't buy a vacation from yourself!");
+            a.show();
+            return;
+        }
+
         ArrayList<Pair> fields= new ArrayList<>();
         fields.add(new Pair<>("Seller",seller));
         fields.add(new Pair<>("Buyer",buyer));
-        fields.add(new Pair<>("vacId",VacID));
+        fields.add(new Pair<>("VacId",VacID));
         fields.add(new Pair<>("approved","2"));
         if(control.ReadEntries(fields,Tables.PurchaseRequest).size() != 0) {
             a.setHeaderText("Error!");

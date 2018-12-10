@@ -15,6 +15,7 @@ import sample.Enums.Tables;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -103,7 +104,6 @@ public class RegisterFormView {
             errorBoard.setText(errortext.toString());
             return;
         }
-
         if (ld != null && Period.between(LocalDate.now(), ld).getYears() > 18)//checks if user age in null
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
@@ -128,15 +128,21 @@ public class RegisterFormView {
         pattern = Pattern.compile(regexMail, Pattern.CASE_INSENSITIVE);
         if (!pattern.matcher(email.getText().trim()).matches())
             errortext.append("please enter a real Email address\n");
-
+        String strImage="";
+        byte[] bytePhoto=null;
         //turns the image url to a byte array
         if(!(imageURL==null)) {
-            BufferedImage userImage = ImageIO.read(new File(imageURL));
-            ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
-            ImageIO.write(userImage, "jpg", imageStream);
-            byte[] bytePhoto = imageStream.toByteArray();
-            String strImage = new String(bytePhoto);
+            imageURL = imageURL.replace("file:/", "");
+            try {
+                File f = new File(imageURL);
+                BufferedImage userImage = ImageIO.read(f);
+                ByteArrayOutputStream imageStream = new ByteArrayOutputStream();
+                ImageIO.write(userImage, "jpg", imageStream);
+                bytePhoto = imageStream.toByteArray();
+                strImage = new String(bytePhoto);
+            }catch (Exception e){}
         }
+        else{errortext.append("please add a picture\n");}
         if (errortext.toString().length() == 0) {
             ArrayList<Pair> user = new ArrayList<>();
             user.add(new Pair<>(Fields.userName, userName.getText().trim()));
@@ -146,25 +152,28 @@ public class RegisterFormView {
             user.add(new Pair<>(Fields.Email, email.getText().trim()));
             user.add(new Pair<>(Fields.hometown, city.getText().trim()));
             user.add(new Pair<>(Fields.birthDate, ld.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-          // user.add(new Pair<>(Fields.image));
-            System.out.println("adding user DONE");
+             user.add(new Pair<>(Fields.image,strImage));
+          //  System.out.println("adding user DONE");
             control.AddEntry(user,Tables.Users);
             ArrayList<Pair> user2 = new ArrayList<>();
             user.add(new Pair<>(Fields.userName, userName.getText().trim()));
             user.add(new Pair<>(Fields.balance,"99999999999999"));
             control.AddEntry(user2,Tables.PayPal);
+
         }
         else {errorBoard.setText(errortext.toString());}
     }
 
 
                     //this is to get image from byte array to image
-        /**
-        ByteArrayInputStream input_stream= new ByteArrayInputStream(byte_array);
-        BufferedImage final_buffered_image = ImageIO.read(input_stream);
-        ImageIO.write(final_buffered_image , "jpg", new File("final_file.jpg") );
-        System.out.println("Converted Successfully!");
-        **/
+    /**
+     ByteArrayInputStream input_stream= new ByteArrayInputStream(bytePhoto);
+     BufferedImage final_buffered_image = ImageIO.read(input_stream);
+     ImageIO.write(final_buffered_image , "jpg", new File("final_file.jpg") );
+     System.out.println("Converted Successfully!");
+     **/
+
+
 
 
 

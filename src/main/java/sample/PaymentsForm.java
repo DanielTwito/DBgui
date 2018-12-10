@@ -2,10 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import sample.Enums.Tables;
@@ -23,6 +20,7 @@ import java.util.SplittableRandom;
 
 public class PaymentsForm {
 
+
     private Paypal paypal;
     private Controller controller ;
     //Controls in the javaFX
@@ -38,6 +36,8 @@ public class PaymentsForm {
     private Text errorText;
     @FXML
     private Text totalPrice;
+    @FXML
+    private Label approved;
 
     private double vacPrice;
     private int vacId;
@@ -47,15 +47,16 @@ public class PaymentsForm {
     public void setVacID(int vacId) {
         this.vacId = vacId;
         ArrayList<Pair> data = new ArrayList<>();
-        data.add(new Pair<String, String>(Fields.VacID + "", vacId + ""));
+        data.add(new Pair<String, String>(Fields.VacId + "", vacId + ""));
         ArrayList<HashMap<String, String>> ans = controller.ReadEntries(data, Tables.ListingVacation);
         totalPrice.setText("Total Price: " + ans.get(0).get(Fields.price + ""));
         this.vacPrice= Double.parseDouble(ans.get(0).get(Fields.price+""));
         this.seller = ans.get(0).get(Fields.Seller + "");
         data = new ArrayList<>();
-        data.add(new Pair<String, String>(Fields.VacID + "", vacId + ""));
+        data.add(new Pair<String, String>(Fields.VacId + "", vacId + ""));
         data.add(new Pair<String, String>(Fields.Seller + "", seller + ""));
-        data.add(new Pair<String, String>(Fields.approved + "", 1 + ""));
+        data.add(new Pair<String, String>(Fields.approved + "", "1"));
+        ans.clear();
         ans = controller.ReadEntries(data, Tables.PurchaseRequest);
         this.buyer = ans.get(0).get("Buyer");
 
@@ -112,6 +113,7 @@ public class PaymentsForm {
                 if (resualt){
                     documentTransaction();
                     deleteVactionFromTheBoard();
+                    showApprove();
                 }else{
                     errorText.setText("cant complete the deal!");
                 }
@@ -123,6 +125,15 @@ public class PaymentsForm {
         }
 
 
+    }
+
+    private void showApprove() {
+        this.cardId.setVisible(false);
+        this.exp.setVisible(false);
+        this.security.setVisible(false);
+        this.totalPrice.setVisible(false);
+        this.pay.setVisible(false);
+        this.approved.setVisible(true);
     }
 
     private void documentTransaction() {
@@ -143,10 +154,9 @@ public class PaymentsForm {
 
     private void deleteVactionFromTheBoard() {
         ArrayList<Pair> toDelete = new ArrayList<>();
-        toDelete.add(new Pair<String,String>(Fields.VacID+"",vacId+""));
+        toDelete.add(new Pair<String,String>(Fields.VacId+"",vacId+""));
         controller.DeleteEntry(Tables.PurchaseRequest,toDelete);
         controller.DeleteEntry(Tables.ListingVacation,toDelete);
-
 
     }
 
