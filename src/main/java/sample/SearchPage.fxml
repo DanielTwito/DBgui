@@ -36,7 +36,7 @@
                </effect>
             </TextField>
             <ImageView fx:id="logo" fitHeight="84.0" fitWidth="295.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <Hyperlink fx:id="ad_search" alignment="CENTER" disable="true" onAction="#AdvancedSearchHandler" text="Advanced Search" textFill="#4e7aff" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Hyperlink fx:id="ad_search" alignment="CENTER" disable="false" onAction="#AdvancedSearchHandler" text="Advanced Search" textFill="#4e7aff" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
