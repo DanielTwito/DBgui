@@ -48,7 +48,7 @@ public class SearchPageView {
     public Hyperlink messages;
     public Hyperlink disconnect;
 
-    private LoggedUser user;
+    private LoggedUser user = null;
 
     TableColumn<VacationListing, String> logos;
     TableColumn<VacationListing, String> dests;
@@ -145,6 +145,7 @@ public class SearchPageView {
                                 // Hide this current window (if this is what you want)
                                 //((Node) (e.getSource())).getScene().getWindow().hide();
                                 viewvacation.setVacID(item);
+                                viewvacation.setBuyer(user == null? null: user.getUserName());
 //                                viewvacation.setBuyer();
                             } catch (IOException x) {
                                 x.printStackTrace();
@@ -184,7 +185,11 @@ public class SearchPageView {
     public void setControl(Controller control){this.control=control;}
 
     public void AdvancedSearchHandler(ActionEvent actionEvent) {
-
+        Alert a = new Alert(Alert.AlertType.WARNING);
+        a.setTitle("Not implemented");
+        a.setHeaderText("Not implemented");
+        a.setContentText("This proccess is not part of the prototype, thus, it has not been implemented yet.");
+        a.show();
     }
 
 
