@@ -8,14 +8,16 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SearchPageView">
+<AnchorPane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SearchPageView">
    <children>
       <GridPane alignment="CENTER" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
         <columnConstraints>
@@ -27,7 +29,7 @@
           <RowConstraints maxHeight="540.0000183105468" minHeight="10.0" prefHeight="499.19999999999993" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="simpleSearch" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#OnTextChanged" prefHeight="30.0" prefWidth="323.0" promptText="Where would you like to travel?" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <TextField fx:id="simpleSearch" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="323.0" promptText="Where would you like to travel?" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets top="90.0" />
                </GridPane.margin>
@@ -74,14 +76,31 @@
                            <children>
                               <Label fx:id="logged" layoutX="263.0" layoutY="13.0" prefHeight="23.0" prefWidth="150.0" />
                               <Hyperlink fx:id="disconnect" layoutX="14.0" layoutY="11.0" onAction="#DisconnectUser" prefHeight="18.0" prefWidth="99.0" text="Disconnect" textFill="#004eff" visible="false" />
-                              <Hyperlink fx:id="messages" onAction="#MessagesHandler" layoutX="112.0" layoutY="11.0" prefHeight="23.0" prefWidth="150.0" text="(No Messages)" textAlignment="CENTER" textFill="#004eff" visible="false" />
+                              <Hyperlink fx:id="messages" layoutX="112.0" layoutY="11.0" onAction="#MessagesHandler" prefHeight="23.0" prefWidth="150.0" text="(No Messages)" textAlignment="CENTER" textFill="#004eff" visible="false" />
                            </children>
                         </AnchorPane>
                      </children>
                   </GridPane>
                </buttons>
             </ButtonBar>
-            <Button fx:id="AddVacation" disable="true" mnemonicParsing="false" onAction="#openAddVacationForm" prefHeight="26.0" prefWidth="134.0" text="Add Vacation" GridPane.rowIndex="1" />
+            <Button fx:id="AddVacation" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#openAddVacationForm" prefHeight="26.0" prefWidth="134.0" style="-fx-background-color: #77afff;" text="Add Vacation" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <GridPane.margin>
+                  <Insets top="415.0" />
+               </GridPane.margin></Button>
+            <Label fx:id="recTitle" alignment="CENTER" prefHeight="50.0" prefWidth="678.0" text="Recommended Vacations!" textFill="#6ac6ff" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="400.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="Tw Cen MT Condensed Extra Bold" size="43.0" />
+               </font>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" spread="0.12" />
+               </effect>
+            </Label>
          </children>
       </GridPane>
    </children>

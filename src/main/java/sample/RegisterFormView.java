@@ -2,26 +2,24 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
+import sample.Enums.RESULT;
 import sample.Enums.Tables;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +29,8 @@ public class RegisterFormView {
     private Controller control;
 
     //Controls in the javaFX
+    @FXML
+    private AnchorPane backPane;
     @FXML
     private TextField userName;
     @FXML
@@ -74,6 +74,14 @@ public class RegisterFormView {
         txtList.add(lastName);
         txtList.add(email);
         txtList.add(city);
+
+        BackgroundImage myBI= new BackgroundImage(
+                new Image(getClass().getClassLoader().getResourceAsStream("signupBackground.JPG"),
+                        750,550,
+                        true,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        backPane.setBackground(new Background(myBI));
     }
 
     /**
@@ -159,11 +167,26 @@ public class RegisterFormView {
             user.add(new Pair<>(Fields.birthDate, ld.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
              user.add(new Pair<>(Fields.image,strImage));
           //  System.out.println("adding user DONE");
-            control.AddEntry(user,Tables.Users);
+            RESULT r = control.AddEntry(user,Tables.Users);
+            if(r == RESULT.Fail)
+            {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                a.setTitle("Failed");
+                a.setHeaderText("Failures!");
+                a.setContentText("Failed to register user, please try again.");
+                a.show();
+                return;
+            }
+            //r = control.AddEntry()
             ArrayList<Pair> user2 = new ArrayList<>();
-            user.add(new Pair<>(Fields.userName, userName.getText().trim()));
-            user.add(new Pair<>(Fields.balance,"99999999999999"));
+            user2.add(new Pair<>(Fields.userName, userName.getText().trim()));
+            user2.add(new Pair<>(Fields.balance,"99999999999999"));
             control.AddEntry(user2,Tables.PayPal);
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setTitle("Success");
+            a.setHeaderText("Successful!");
+            a.setContentText("Welcome Abord!\n");
+            a.show();
 
         }
         else {errorBoard.setText(errortext.toString());}
@@ -177,11 +200,6 @@ public class RegisterFormView {
      ImageIO.write(final_buffered_image , "jpg", new File("final_file.jpg") );
      System.out.println("Converted Successfully!");
      **/
-
-
-
-
-
 
     public void OnAction(ActionEvent actionEvent)
     {

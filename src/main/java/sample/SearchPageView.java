@@ -1,8 +1,11 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,8 +19,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -27,12 +30,11 @@ import sample.ModelLogic.Messege;
 import sample.ModelLogic.VacationListing;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SearchPageView {
+    public Label recTitle;
+    public AnchorPane backPane;
     public TextField logUsername;
     public PasswordField logPassword;
     public Button AddVacation;
@@ -48,7 +50,9 @@ public class SearchPageView {
     public Hyperlink messages;
     public Hyperlink disconnect;
 
+    private String toSreach;
     private LoggedUser user = null;
+    private static double vacid = 0;
 
     TableColumn<VacationListing, String> logos;
     TableColumn<VacationListing, String> dests;
@@ -57,16 +61,66 @@ public class SearchPageView {
     TableColumn<VacationListing, String> prices;
     TableColumn<VacationListing, String> buttons;
 
-    int r;
+    Thread t = null;
+    boolean messagesService = false;
     @FXML
     public void initialize(){
-        logo.setImage(new Image(getClass().getClassLoader().getResourceAsStream("vacation_logo.JPG")));
-        r = 1;
+        toSreach = "";
+        logo.setImage(new Image(getClass().getClassLoader().getResourceAsStream("vacation_logo.png")));
+        BackgroundImage myBI= new BackgroundImage(
+                new Image(getClass().getClassLoader().getResourceAsStream("background.JPG"),
+                        1000,780,
+                        false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        backPane.setBackground(new Background(myBI));
+        simpleSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+
+                toSreach = newValue;
+                OnTextChanged();
+            }
+        });
         iniTable();
     }//end initialize
-
-    private void iniTable()
-    {
+    public void setRecommendedListings() {
+        ObservableList<VacationListing> list = FXCollections.observableArrayList(getRecommendedVacations());
+        table.setItems(list);
+    }
+    private List<VacationListing> getRecommendedVacations() {
+        ArrayList<HashMap<String, String>> ResList = control.ReadEntries(new ArrayList<Pair>(),
+                Tables.ListingVacation);
+        return getVacationList(ResList, true);
+    }
+    private List<VacationListing> getVacationList(ArrayList<HashMap<String, String>> ResList, boolean ToRandom) {
+        List<VacationListing> l = new LinkedList<>();
+        for(HashMap<String, String> paired : ResList)
+        {
+            if(Double.parseDouble(paired.get("VacID")) > vacid) vacid = Double.parseDouble(paired.get("VacID"));
+            if(ToRandom && new Random().nextInt(10) < 5) continue;
+            l.add(new VacationListing(new SimpleStringProperty(paired.get("destination").toString().toUpperCase(Locale.US)),
+                    new SimpleStringProperty(paired.get("FlightDate")),
+                    new SimpleIntegerProperty(Integer.parseInt(paired.get("price"))),
+                    new SimpleBooleanProperty(paired.get("Connection").equals("1")?true:false),
+                    new SimpleStringProperty(paired.get("VacID"))));
+        }
+        //vacid = Double.parseDouble(ResList.get(ResList.size()-1).get("VacID"));
+        return l;
+    }
+    private void AutoMessageCheck() {
+        while(messagesService) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(user == null) continue;
+            CheckMessages();
+        }
+    }
+    private void iniTable() {
         logged.setText("guest user");
         logos = new TableColumn<VacationListing, String>("ID");
 
@@ -183,7 +237,6 @@ public class SearchPageView {
         table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
     }
     public void setControl(Controller control){this.control=control;}
-
     public void AdvancedSearchHandler(ActionEvent actionEvent) {
         Alert a = new Alert(Alert.AlertType.WARNING);
         a.setTitle("Not implemented");
@@ -191,30 +244,15 @@ public class SearchPageView {
         a.setContentText("This proccess is not part of the prototype, thus, it has not been implemented yet.");
         a.show();
     }
-
-
-    public void OnTextChanged(KeyEvent keyEvent) {
-        String toSreach = simpleSearch.getText()+keyEvent.getCharacter();
+    public void OnTextChanged() {
         ArrayList<Pair> searchqry = new ArrayList<>();
+        toSreach = toSreach.toLowerCase();
         searchqry.add(new Pair(Fields.destination, toSreach));
         ArrayList<HashMap<String, String>> ResList = control.ReadEntries(searchqry, Tables.ListingVacation);
-        List<VacationListing> l = new LinkedList<>();
-        for(HashMap<String, String> paired : ResList)
-        {
-            if(user != null && user.getUserName().equals(paired.get("Seller")))
-                continue;
-            l.add(new VacationListing(new SimpleStringProperty(paired.get("destination")),
-                    new SimpleStringProperty(paired.get("FlightDate")),
-                    new SimpleIntegerProperty(Integer.parseInt(paired.get("price"))),
-                    new SimpleBooleanProperty(paired.get("Connection").equals("1")?true:false),
-                    new SimpleStringProperty(paired.get("VacID"))));
-        }
-        ObservableList<VacationListing> list = FXCollections.observableArrayList(l);
+        ObservableList<VacationListing> list = FXCollections.observableArrayList(getVacationList(ResList, false));
         table.setItems(list);
     }
-
-    public void OpenSignupForm(ActionEvent mouseEvent)
-    {
+    public void OpenSignupForm(ActionEvent mouseEvent) {
         Parent root;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -232,9 +270,7 @@ public class SearchPageView {
             e.printStackTrace();
         }
     }
-
-    public void openAddVacationForm(ActionEvent actionEvent)
-    {
+    public void openAddVacationForm(ActionEvent actionEvent) {
         Parent root;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -244,6 +280,8 @@ public class SearchPageView {
             stage.setScene(new Scene(root, 650, 400));
             AddVacationView rfv = fxmlLoader.getController();
             rfv.setControl(control);
+            rfv.setUser(user.getUserName());
+            rfv.setVacID(vacid);
             stage.show();
             //((Node)(actionEvent.getSource())).getScene().getWindow().hide();
         }
@@ -251,7 +289,6 @@ public class SearchPageView {
             e.printStackTrace();
         }
     }
-
     public void Login(ActionEvent event) {
         errortext=new StringBuilder();
         if(logPassword.getText().trim().isEmpty() || logUsername.getText().trim().isEmpty() ){
@@ -279,29 +316,34 @@ public class SearchPageView {
             messages.setText("(No Messages)");
             messages.setVisible(true);
             CheckMessages();
+            messagesService = true;
+            t = new Thread( () -> AutoMessageCheck());
+            t.start();
+            recTitle.setText("Listing Offers");
         }
     }
+    private void CheckMessages() {
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                user.getMessages().clear();
+            getMessages(Fields.Seller);
+            getMessages(Fields.Buyer);
 
-    private void CheckMessages()
-    {
-        user.getMessages().clear();
-        getMessages(Fields.Seller);
-        getMessages(Fields.Buyer);
-
-        if(user.isMailboxEmpty())
-        {
-            messages.setText("(No Messages)");
-            messages.setStyle("-fx-text-fill: #004eff");
+                if(user.isMailboxEmpty())
+            {
+                messages.setText("(No Messages)");
+                messages.setStyle("-fx-text-fill: #004eff");
+            }
+                else
+            {
+                messages.setText("("+user.MessagesCount()+") New Messages");
+                messages.setStyle("-fx-text-fill: crimson");
+            }
+                //System.out.println("checking messages "+"("+user.MessagesCount()+")");
         }
-        else
-        {
-            messages.setText("("+user.MessagesCount()+") New Messages");
-            messages.setStyle("-fx-text-fill: crimson");
-        }
+        });
     }
-
-    private void getMessages(Fields field)
-    {
+    private void getMessages(Fields field) {
         ArrayList<Pair> searchMessages = new ArrayList<>();
         searchMessages.add(new Pair(field, user.getUserName()));
         ArrayList<HashMap<String, String>> res = control.ReadEntries(searchMessages, Tables.PurchaseRequest);
@@ -316,8 +358,9 @@ public class SearchPageView {
                     new SimpleStringProperty(resEntry.get("Seller"))));
         }
     }
-
     public void DisconnectUser(ActionEvent actionEvent) {
+        messagesService = false;
+        t = null;
         user = null;
         AddVacation.setDisable(true);
         signup.setDisable(false);
@@ -332,10 +375,10 @@ public class SearchPageView {
         logged.setText("guest user");
         logPassword.clear();
         logUsername.clear();
+        recTitle.setText("RECOMMENDED VACATIONS!");
+        setRecommendedListings();
     }
-
-    public void MessagesHandler(ActionEvent actionEvent)
-    {
+    public void MessagesHandler(ActionEvent actionEvent) {
         CheckMessages();
         if(user.isMailboxEmpty())
         {
@@ -361,5 +404,8 @@ public class SearchPageView {
                 x.printStackTrace();
             }
         }
+    }
+    public void exit() {
+        messagesService = false;
     }
 }

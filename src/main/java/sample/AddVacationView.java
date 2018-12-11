@@ -5,9 +5,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import sample.Enums.Fields;
+import sample.Enums.RESULT;
 import sample.Enums.Tables;
 
 import java.time.LocalDate;
@@ -17,6 +20,10 @@ import java.util.ArrayList;
 
 public class AddVacationView {
     //Controls in the javaFX
+    @FXML
+    AnchorPane mainSignUp;
+    @FXML
+    CheckBox isConnection;
     @FXML
     TextField vacationTypeTXT;
     @FXML
@@ -51,7 +58,9 @@ public class AddVacationView {
     private Controller control;
     private LocalDate startD;
     private LocalDate endD;
+    private String user;
 
+    public static double VacID = 10000;
     @FXML
     /**
      * initialize the View related variables
@@ -63,8 +72,26 @@ public class AddVacationView {
                                 String newValue) {
                 if (!newValue.matches("\\d*")) {
                     Price.setText(newValue.replaceAll("[^\\d]", ""));
-                }}});}
+                }}});
+        BackgroundImage myBI= new BackgroundImage(
+                new Image(getClass().getClassLoader().getResourceAsStream("addToListingBackground.png"),
+                        800,550,
+                        false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        mainSignUp.setBackground(new Background(myBI));
 
+    }
+
+    /**
+     * setter for the vacationID
+     * @param id
+     */
+    public void setVacID(double id)
+    {
+        if(VacID < id + 1) VacID = id + 1;
+        System.out.println(VacID);
+    }
     /**
      * sets the controller for the class
      * @param control
@@ -120,9 +147,12 @@ public class AddVacationView {
         if(withReturn.isSelected()){retunD=endD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim();}
         if (msg.length() == 0) {
             ArrayList<Pair> vac = new ArrayList<>();
+            vac.add(new Pair(Fields.Connection, isConnection.isSelected()?"1":"0"));
+            vac.add(new Pair(Fields.VacId, (VacID)+""));
+            vac.add(new Pair<>(Fields.Seller, user));
             vac.add(new Pair<>(Fields.vacationType+"", vacationTypeTXT.getText().trim()));
             vac.add(new Pair<>(Fields.airline+"", AirLineTXT.getText().trim()));
-            vac.add(new Pair<>(Fields.destination+"", destinationTXT.getText().trim()));
+            vac.add(new Pair<>(Fields.destination+"", destinationTXT.getText().trim().toLowerCase()));
             vac.add(new Pair<>(Fields.FlightDate+"", startD.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).trim()));
             vac.add(new Pair<>(Fields.Returndate+"", retunD));
             vac.add(new Pair<>(Fields.adultTickets+"", adultAmount.getValue().toString()));
@@ -133,10 +163,31 @@ public class AddVacationView {
             vac.add(new Pair<>(Fields.includeRoom+"", stuff+""));
             vac.add(new Pair<>(Fields.includeReturn+"", toreturn+""));
             vac.add(new Pair<>(Fields.price+"",Price.getText().trim()));
-            control.AddEntry(vac, Tables.ListingVacation);
+            if(control.AddEntry(vac, Tables.ListingVacation) == RESULT.Success)
+            {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                a.setTitle("Success");
+                a.setHeaderText("Successful!");
+                a.setContentText("Vacation added Successfully!\nListing ID is: "+VacID);
+                a.show();
+            }
+            else
+            {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                a.setTitle("Failed");
+                a.setHeaderText("Failures!");
+                a.setContentText("Failed listing your vacation, please try again.");
+                a.show();
+            }
         } else {
             errorBoard.setText(msg.toString());
         }
+        VacID++;
+    }
+
+    public void setUser(String username)
+    {
+        user = username;
     }
 
     /**
