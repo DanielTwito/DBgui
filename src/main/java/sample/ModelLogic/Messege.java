@@ -28,10 +28,18 @@ public class Messege {
     private StringProperty seller;
     private StringProperty VacIDnSeller;
 
+    /**
+     * returns the VacIDnSeller variable as String
+     * @return a string representation of VacIDnSeller
+     */
     public String getVacIDnSeller() {
         return VacIDnSeller.get();
     }
 
+    /**
+     * returns the VacIDnSeller variable as StringProperty
+     * @return the value of VacIDnSeller
+     */
     public StringProperty vacIDnSellerProperty() {
         return VacIDnSeller;
     }
@@ -46,23 +54,46 @@ public class Messege {
         this.VacIDnSeller = new SimpleStringProperty(VacationID.toString()+","+seller.toString());
     }
 
+    /**
+     * returns a message variable as int IntegerProperty
+     * @return a int representation if message
+     */
     public int getMessege() {
         return messege.get();
     }
 
+    /**
+     *  returns a message variable as IntegerProperty
+     * @return the value of message
+     */
     public IntegerProperty messegeProperty() {
         return messege;
     }
 
+    /**
+     * sets the value of message
+     * @param messege - the new value of message that will be inserted
+     */
     public void setMessege(int messege) {
         this.messege.set(messege);
     }
-
+    /**
+     * returns the VacationID variable as String
+     * @return a string representation of VacationID
+     */
     public String getVacationID() {return VacationID.get();}
+    /**
+     * returns the SIDProperty variable as StringProperty
+     * @return the value of SIDProperty variable
+     */
    public StringProperty SIDProperty() {
         return VacationID;
     }
 
+    /**
+     * sets the value of  VacationID variable
+     * @param VacationID - the new VacationID that will be inserted
+     */
     public void setVacationID(String VacationID) {
         this.VacationID.set(VacationID);
     }

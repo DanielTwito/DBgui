@@ -62,6 +62,9 @@ public class AddVacationView {
 
     public static double VacID = 10000;
     @FXML
+    /**
+     * initialize the View related variables
+     */
     public void initialize() {
         Price.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -79,14 +82,31 @@ public class AddVacationView {
         mainSignUp.setBackground(new Background(myBI));
 
     }
+
+    /**
+     * setter for the vacationID
+     * @param id
+     */
     public void setVacID(double id)
     {
         if(VacID < id + 1) VacID = id + 1;
         System.out.println(VacID);
     }
+    /**
+     * sets the controller for the class
+     * @param control
+     */
     public void setControl(Controller control) {
         this.control = control;
     }
+
+    /**
+     * Reaction to the "submit" button action event.
+     * gets all the parameters from the data fields,
+     * checks the input, react if is not correct, if is correct
+     * cascade the data up to controller
+     * @param event
+     */
     public void addVacation(ActionEvent event) {
         errorBoard.setText("");
         StringBuilder msg = new StringBuilder();
@@ -170,7 +190,17 @@ public class AddVacationView {
         user = username;
     }
 
+    /**
+     * reacts to the flight date field fill event
+     * sets the data as string
+     * @param event
+     */
     public void addStart(ActionEvent event) { startD = startDate.getValue();}
 
+    /**
+     * reacts to the flight return date field fill event
+     * sets the data as string
+     * @param event
+     */
     public void addEnd(ActionEvent event) {endD = endDate.getValue();}
     }

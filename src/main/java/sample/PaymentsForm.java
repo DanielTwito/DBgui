@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 import sample.Enums.Fields;
@@ -46,9 +49,24 @@ public class PaymentsForm {
     private String seller;
     private String buyer;
 
+    @FXML
     public void initialize()
     {
         payp.setImage(new Image(getClass().getClassLoader().getResourceAsStream("Paypal-logo.png")));
+        cardId.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    cardId.setText(newValue.replaceAll("[^\\d]", ""));
+                }}});
+        BackgroundImage myBI= new BackgroundImage(
+                new Image(getClass().getClassLoader().getResourceAsStream("addToListingBackground.png"),
+                        800,550,
+                        false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+//        mainSignUp.setBackground(new Background(myBI));
     }
 
     public void setVacID(int vacId) {

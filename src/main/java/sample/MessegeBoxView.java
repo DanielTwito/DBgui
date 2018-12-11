@@ -34,18 +34,35 @@ public class MessegeBoxView {
     TableColumn<Messege, String> buttons;
     int indexMessege;
     int indexMessege2;
+
+    /**
+     * initialize the MessageBox variables
+     */
     public void initialize(){
         iniTable();
         indexMessege = 0;
         indexMessege2 = 0;
     }
+
+    /**
+     * sets the view class controller
+     * @param control
+     */
     public void setControl(Controller control) {
         this.control = control;
     }
+
+    /**
+     * sets the username for the user currently using the class
+     * @param user
+     */
     public void setuser(String user){
         this.user=user;
     }
 
+    /**
+     * initialize the tableView object with the requierd fields
+     */
     private void iniTable(){
 
         vacationID = new TableColumn<Messege,String>("VacationID");
@@ -165,6 +182,11 @@ public class MessegeBoxView {
         table.getColumns().addAll(BuyerID, SellerID, buttons, vacationID);
     }
 
+    /**
+     * finds and retrives the a messages based on the vacationID
+     * @param id- the ID number of the required Message
+     * @return the required Message
+     */
     private Messege getMsgByID(String id)
     {
         for(Messege m : messeges)
@@ -174,6 +196,10 @@ public class MessegeBoxView {
         return null;
     }
 
+    /**
+     * adds a message to the tableView, adds a row
+     * @param messeges the message we want to add
+     */
     public void setMesseges(List<Messege> messeges){
         this.messeges = messeges;
         ObservableList<Messege> list = FXCollections.observableArrayList(this.messeges);

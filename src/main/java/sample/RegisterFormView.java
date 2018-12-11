@@ -43,8 +43,6 @@ public class RegisterFormView {
     private TextField lastName;
     @FXML
     private TextField email;
-    public String date = null;
-    private Stage s;
     @FXML
     private TextField city;
     @FXML
@@ -55,13 +53,18 @@ public class RegisterFormView {
     private Button uploadImage;
     @FXML
     Text errorBoard;
+    // the java variables
+    public String date = null;
+    private Stage s;
     StringBuilder errortext;
     public LocalDate ld;
     ArrayList<TextField> txtList = new ArrayList<>();
-    //data for the user
     public String imageURL = null;
 
     @FXML
+    /**
+     * initialize the RegisterForm relevent variables
+     */
     public void initialize()
     {
         txtList.add(userName);
@@ -91,8 +94,10 @@ public class RegisterFormView {
     }
 
     /**
-     * react to the submit button
-     *
+     * react to the submit button action event
+     * gets all the parameters from the data fields,
+     * checks the input, react if is not correct, if is correct
+     * cascade the data up to controller
      * @param event
      */
     @FXML
