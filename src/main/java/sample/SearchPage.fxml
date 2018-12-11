@@ -101,6 +101,11 @@
                   <DropShadow blurType="GAUSSIAN" spread="0.12" />
                </effect>
             </Label>
+            <Label fx:id="warning" prefHeight="27.0" prefWidth="236.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font name="Verdana" size="11.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
    </children>

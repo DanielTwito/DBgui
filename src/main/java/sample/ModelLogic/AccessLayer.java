@@ -47,7 +47,7 @@ public class AccessLayer {
                 }
                 stmt.execute();
             }catch (Exception e){
-                e.printStackTrace();
+                //e.printStackTrace();
                 return RESULT.Fail;
             }
             return RESULT.Success;

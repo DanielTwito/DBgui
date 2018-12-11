@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class SearchPageView {
+    public Label warning;
     public Label recTitle;
     public AnchorPane backPane;
     public TextField logUsername;
@@ -85,15 +86,36 @@ public class SearchPageView {
         });
         iniTable();
     }//end initialize
+
+    /**
+     * This method gets the recommended vacations listings and
+     * fills the result table with them
+     */
     public void setRecommendedListings() {
         ObservableList<VacationListing> list = FXCollections.observableArrayList(getRecommendedVacations());
         table.setItems(list);
     }
+
+    /**
+     * this method gets the recommended vacation listings
+     * and return a list of listings
+     * @return List<VacationListing>
+     */
     private List<VacationListing> getRecommendedVacations() {
         ArrayList<HashMap<String, String>> ResList = control.ReadEntries(new ArrayList<Pair>(),
                 Tables.ListingVacation);
         return getVacationList(ResList, true);
     }
+
+    /**
+     * a general method that converts the request output to a list of vacations.
+     * since we did not really implemented a recommendation system, if ToRandom is set to 'true'
+     * only random listings will be added to the output list, if ToRandom is set to 'false'
+     * all listings will be added to the list
+     * @param ResList - output list from a request
+     * @param ToRandom - boolean to random or not to random listings
+     * @return a List of VacatiobListing
+     */
     private List<VacationListing> getVacationList(ArrayList<HashMap<String, String>> ResList, boolean ToRandom) {
         List<VacationListing> l = new LinkedList<>();
         for(HashMap<String, String> paired : ResList)
@@ -109,6 +131,12 @@ public class SearchPageView {
         //vacid = Double.parseDouble(ResList.get(ResList.size()-1).get("VacID"));
         return l;
     }
+
+    /**
+     * this method is run at the background by a dedicated thread.
+     * every 4 seconds it calls CheckMessahes method to refresh messages in the current logged user
+     * message box at real time
+     */
     private void AutoMessageCheck() {
         while(messagesService) {
             try {
@@ -120,6 +148,10 @@ public class SearchPageView {
             CheckMessages();
         }
     }
+
+    /**
+     * this method initiate the result table with columns and cells
+     */
     private void iniTable() {
         logged.setText("guest user");
         logos = new TableColumn<VacationListing, String>("ID");
@@ -236,7 +268,19 @@ public class SearchPageView {
         table.setPrefWidth(650);
         table.getColumns().addAll(logos, dests, dates, connections, prices, buttons);
     }
+
+    /**
+     * sets a control to this View class, the control is the logic of our app
+     * @param control Controller
+     */
     public void setControl(Controller control){this.control=control;}
+
+    /**
+     * not implemented yet.
+     * this method opens the advanced search option to enable searching by custom
+     * parameters as the user chooses.
+     * @param actionEvent click action
+     */
     public void AdvancedSearchHandler(ActionEvent actionEvent) {
         Alert a = new Alert(Alert.AlertType.WARNING);
         a.setTitle("Not implemented");
@@ -244,6 +288,11 @@ public class SearchPageView {
         a.setContentText("This proccess is not part of the prototype, thus, it has not been implemented yet.");
         a.show();
     }
+
+    /**
+     * this method is called by the onTextChange even handler for the simple search line
+     * it updates the table accordingly to the user's input at real time.
+     */
     public void OnTextChanged() {
         ArrayList<Pair> searchqry = new ArrayList<>();
         toSreach = toSreach.toLowerCase();
@@ -252,6 +301,11 @@ public class SearchPageView {
         ObservableList<VacationListing> list = FXCollections.observableArrayList(getVacationList(ResList, false));
         table.setItems(list);
     }
+
+    /**
+     * this method creates and opens the Sign Up form window.
+     * @param mouseEvent click action
+     */
     public void OpenSignupForm(ActionEvent mouseEvent) {
         Parent root;
         try {
@@ -270,6 +324,11 @@ public class SearchPageView {
             e.printStackTrace();
         }
     }
+
+    /**
+     * this method creates and opens the Add Vacation form window.
+     * @param actionEvent click action
+     */
     public void openAddVacationForm(ActionEvent actionEvent) {
         Parent root;
         try {
@@ -289,8 +348,15 @@ public class SearchPageView {
             e.printStackTrace();
         }
     }
+
+    /**
+     * this method connects a user to the system, connected users are able to do various
+     * things and many features are opened to them
+     * @param event click action
+     */
     public void Login(ActionEvent event) {
         errortext=new StringBuilder();
+        warning.setText("");
         if(logPassword.getText().trim().isEmpty() || logUsername.getText().trim().isEmpty() ){
             errortext.append("please fill user name and password\n");
          return;}
@@ -299,9 +365,11 @@ public class SearchPageView {
         ArrayList<HashMap<String, String>> userCheck = control.ReadEntries(tmp, Tables.Users);
         if (userCheck == null || userCheck.size() == 0){
             errortext.append("user not register, please register \n");
+            warning.setText("*Username or Password does not exist");
             return;}
         if(!userCheck.get(0).get("password").equals(logPassword.getText().trim())){
             errortext.append("wrong password, try again\n");
+            warning.setText("*Username or Password does not exist");
             return;}
         else{AddVacation.setDisable(false);
             signup.setDisable(true);
@@ -322,6 +390,11 @@ public class SearchPageView {
             recTitle.setText("Listing Offers");
         }
     }
+
+    /**
+     * this method checks if the user have messages, reads them
+     * and fill the current logged user's message box with the relevant messages
+     */
     private void CheckMessages() {
         Platform.runLater(new Runnable() {
             @Override public void run() {
@@ -343,6 +416,12 @@ public class SearchPageView {
         }
         });
     }
+
+    /**
+     * this method reads all messages where the user is either the buyer or the seller
+     * according to the 'field' argument, and adds the messages to his mail box.
+     * @param field Fields of the field you wish to match your messages to
+     */
     private void getMessages(Fields field) {
         ArrayList<Pair> searchMessages = new ArrayList<>();
         searchMessages.add(new Pair(field, user.getUserName()));
@@ -358,6 +437,12 @@ public class SearchPageView {
                     new SimpleStringProperty(resEntry.get("Seller"))));
         }
     }
+
+    /**
+     * this method disconnects the current logged user from the system.
+     * stops the auto message service.
+     * @param actionEvent click action
+     */
     public void DisconnectUser(ActionEvent actionEvent) {
         messagesService = false;
         t = null;
@@ -378,6 +463,12 @@ public class SearchPageView {
         recTitle.setText("RECOMMENDED VACATIONS!");
         setRecommendedListings();
     }
+
+    /**
+     * this method handles the message box button, it creates
+     * and opens the mail box window
+     * @param actionEvent click action
+     */
     public void MessagesHandler(ActionEvent actionEvent) {
         CheckMessages();
         if(user.isMailboxEmpty())
@@ -405,7 +496,14 @@ public class SearchPageView {
             }
         }
     }
+
+    /**
+     * this method is called when the exit button is called to close the window.
+     * since its the main window it must handle the safe termination of the
+     * message service thread
+     */
     public void exit() {
+        System.out.println("MailBox Service Stopped, please wait for the service to safely terminate");
         messagesService = false;
     }
 }
