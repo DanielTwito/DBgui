@@ -1,3 +1,7 @@
+/**
+ * @author: Elad Cohen
+ * @helped: Avi Elly
+ */
 package sample;
 
 import javafx.application.Platform;

@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
+import sample.Enums.RESULT;
 import sample.Enums.Tables;
 import sample.ModelLogic.Messege;
 
@@ -151,28 +152,55 @@ public class MessegeBoxView {
                         cb.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent e) {
-                                Parent root;
+//                                Parent root;
+                                RESULT r = RESULT.Fail;
                                 try {
-                                    FXMLLoader fxmlLoader = new FXMLLoader();
-                                    root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
-                                    Stage stage = new Stage();
-                                    stage.setScene(new Scene(root, 650, 400));
+//                                    FXMLLoader fxmlLoader = new FXMLLoader();
+//                                    root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
+//                                    Stage stage = new Stage();
+//                                    stage.setScene(new Scene(root, 650, 400));
                                     if (cb.getValue().equals("Approve")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacId, item));
-                                        control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
+                                        r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
                                     } else if (cb.getValue().equals("Decline")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacId, item));
-                                        control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "0", updating);
+                                        r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "0", updating);
                                     } else {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacId, item));
-                                        control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
+                                        r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "2", updating);
                                     }
-                                } catch (IOException x) {
+                                } catch (Exception x) {
                                     x.printStackTrace();
                                 }
+                                Alert a;
+                                if(r == RESULT.Fail)
+                                {
+                                    a = new Alert(Alert.AlertType.ERROR);
+                                    a.setTitle("Error while approval");
+                                    a.setHeaderText("Approval status not set");
+                                    a.setContentText("Could not update your approval choice\nPlease try again.");
+                                }
+                                else
+                                {
+                                    a = new Alert(Alert.AlertType.CONFIRMATION);
+                                    a.setTitle("Approval recorded");
+                                    a.setHeaderText("Updated status success.");
+                                    if(cb.getValue().equals("Approve")) {
+                                        a.setContentText("Thank you for your reply.\n" +
+                                                "A message was sent to the buyer about your choice." +
+                                                "\nPlease wait for his payment to complete the transaction");
+                                    }
+                                    else
+                                    {
+                                        a.setContentText("Thank you for your reply.\n" +
+                                                "A message was sent to the buyer about your choice.");
+                                    }
+                                }
+                                a.show();
+                                cb.setDisable(true);
                             }
                         });
                         cb.setStyle("-fx-background-color: #00b286");
