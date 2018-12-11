@@ -53,6 +53,9 @@ public class AddVacationView {
     private LocalDate endD;
 
     @FXML
+    /**
+     * initialize the View related variables
+     */
     public void initialize() {
         Price.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -61,9 +64,22 @@ public class AddVacationView {
                 if (!newValue.matches("\\d*")) {
                     Price.setText(newValue.replaceAll("[^\\d]", ""));
                 }}});}
+
+    /**
+     * sets the controller for the class
+     * @param control
+     */
     public void setControl(Controller control) {
         this.control = control;
     }
+
+    /**
+     * Reaction to the "submit" button action event.
+     * gets all the parameters from the data fields,
+     * checks the input, react if is not correct, if is correct
+     * cascade the data up to controller
+     * @param event
+     */
     public void addVacation(ActionEvent event) {
         errorBoard.setText("");
         StringBuilder msg = new StringBuilder();
@@ -123,7 +139,17 @@ public class AddVacationView {
         }
     }
 
+    /**
+     * reacts to the flight date field fill event
+     * sets the data as string
+     * @param event
+     */
     public void addStart(ActionEvent event) { startD = startDate.getValue();}
 
+    /**
+     * reacts to the flight return date field fill event
+     * sets the data as string
+     * @param event
+     */
     public void addEnd(ActionEvent event) {endD = endDate.getValue();}
     }
