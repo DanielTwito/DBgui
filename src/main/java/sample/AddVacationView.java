@@ -90,7 +90,6 @@ public class AddVacationView {
     public void setVacID(double id)
     {
         if(VacID < id + 1) VacID = id + 1;
-        System.out.println(VacID);
     }
     /**
      * sets the controller for the class
