@@ -62,9 +62,6 @@ public class AddVacationView {
 
     public static double VacID = 10000;
     @FXML
-    /**
-     * initialize the View related variables
-     */
     public void initialize() {
         Price.textProperty().addListener(new ChangeListener<String>() {
             @Override
