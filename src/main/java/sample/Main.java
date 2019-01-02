@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sample.ModelLogic.Model;
 
 import java.io.File;
@@ -19,19 +20,21 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Controller control=new Controller();
+        Model m = new Model("Database/projectdb.db");
+        control.setModel(m);
         FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("SearchPage.fxml").openStream());
-
+        Parent root = fxmlLoader.load(getClass().getResource("../SearchPage.fxml").openStream());
         primaryStage.setTitle("Vacation4u");
         Scene scene = new Scene(root, 1000, 780);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+      //  scene.getStylesheets().add(getClass().getResource("../style.css").toExternalForm());
         primaryStage.setScene(scene);
-
-        SearchPageView searcgPageView = fxmlLoader.getController();     //getting the controller for the FXML
-
-        searcgPageView.setControl(control);
+        SearchPageView searchPageView = fxmlLoader.getController();     //getting the controller for the FXML
+        searchPageView.setControl(control);
         control.setModel(new Model("Database/projectdb.db"));//setting a Model for it
-
+        searchPageView.setRecommendedListings();
+        primaryStage.setOnCloseRequest((WindowEvent event1) -> {
+            searchPageView.exit();
+        });
         primaryStage.show();
     }
 

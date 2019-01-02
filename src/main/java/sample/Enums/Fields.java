@@ -1,3 +1,5 @@
 package sample.Enums;
 
-public enum Fields {Username, Password, Birthdate, FirstName, LastName,Email, city,image}
+public enum Fields {userName, password, birthDate, firstName, lastName,Email, hometown,image,airline,FlightDate,Returndate,baggage,adultTickets,childTickets,babyTickets, Connection
+    ,destination,includeReturn,vacationType,includeRoom,placeRank,price,homeTown,VacId,creditCard,expirationDate,security,balance,approved,Seller,Buyer,transactionTime,transactionDate}
+
