@@ -54,6 +54,9 @@ public class AddVacationView {
     Text errorBoard;
     @FXML
     Button submit;
+    @FXML
+    CheckBox isTradeable;
+
     public String retunD;
     private Controller control;
     private LocalDate startD;
@@ -159,6 +162,7 @@ public class AddVacationView {
             vac.add(new Pair<>(Fields.includeRoom+"", stuff+""));
             vac.add(new Pair<>(Fields.includeReturn+"", toreturn+""));
             vac.add(new Pair<>(Fields.price+"",Price.getText().trim()));
+            vac.add(new Pair<>(Fields.Tradeable+"", isTradeable.isSelected()?"1":"0"));
             if(control.AddEntry(vac, Tables.ListingVacation) == RESULT.Success)
             {
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION);

@@ -23,6 +23,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *           message types:
+ *
+ *      2 -  purchase request
+ *      0 -  decline (false)
+ *      1 -  approve (true)
+ *      3 -  trade request
+ */
 public class MessegeBoxView {
     List<Messege> messeges=null;
     private Controller control;
@@ -32,8 +40,9 @@ public class MessegeBoxView {
     TableColumn<Messege,String> vacationID;
     TableColumn<Messege,String> SellerID;
     TableColumn<Messege, String> BuyerID;
-    TableColumn<Messege, String> choicebox;
+    TableColumn<Messege, String> mtype;
     TableColumn<Messege, String> buttons;
+    TableColumn<Messege, String> vacationToTrade;
     int indexMessege;
     int indexMessege2;
 
@@ -72,6 +81,9 @@ public class MessegeBoxView {
         SellerID = new TableColumn<Messege,String>("Seller");
         BuyerID = new TableColumn<>("Buyer");
         buttons = new TableColumn<Messege,String>("Action");
+        mtype = new TableColumn<Messege, String>("Information");
+        vacationToTrade = new TableColumn<>("Offers this");
+
         vacationID.setPrefWidth(100);
         buttons.setPrefWidth(140);
 
@@ -79,6 +91,8 @@ public class MessegeBoxView {
         BuyerID.setCellValueFactory(new PropertyValueFactory<>("buyer"));
         SellerID.setCellValueFactory(new PropertyValueFactory<>("seller"));
         buttons.setCellValueFactory(new PropertyValueFactory<>("VacationID"));
+        mtype.setCellValueFactory(new PropertyValueFactory<>("info"));
+        vacationToTrade.setCellValueFactory(new PropertyValueFactory<>("vacationToTrade"));
         buttons.setCellFactory(col -> new TableCell<Messege, String>(){
             Button button = new Button("Buy");
             ObservableList<String> options =
@@ -110,44 +124,46 @@ public class MessegeBoxView {
                             return;
                         }
                         //System.out.println("Seller: "+m.getBuyer()+", Buyer: "+user+" message: "+indexMessege2);
-                        button.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent e) {
-                                Parent root;
-                            try {
-                                FXMLLoader fxmlLoader = new FXMLLoader();
-                                root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(root, 650, 400));
-                                PaymentsForm paymentsForm = fxmlLoader.getController();
-                                paymentsForm.setController(control);
-                                stage.show();
-                                ArrayList<Pair> tmp = new ArrayList<>();
-                                tmp.add(new Pair<>(Fields.VacId, item));
-                                paymentsForm.setVacID(Integer.parseInt(item));
-                                button.setDisable(true);
-                            } catch (IOException x) {
-                                x.printStackTrace();
-                            }}
-                    }
-                    );
-                        button.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                                new EventHandler<MouseEvent>() {
-                                    @Override
-                                    public void handle(MouseEvent e) {
-                                        button.setEffect(new DropShadow());
-                                        button.setStyle("-fx-background-color: cyan");
-                                    }
-                                });
-                        button.addEventHandler(MouseEvent.MOUSE_EXITED,
-                                new EventHandler<MouseEvent>() {
-                                    @Override
-                                    public void handle(MouseEvent e) {
-                                        button.setEffect(null);
-                                        button.setStyle("-fx-background-color: deepskyblue");
-                                    }
-                                });
-                    setGraphic(button);
+//                        button.setOnAction(new EventHandler<ActionEvent>() {
+//                            @Override
+//                            public void handle(ActionEvent e) {
+//                                Parent root;
+//                            try {
+//                                FXMLLoader fxmlLoader = new FXMLLoader();
+//                                root = fxmlLoader.load(getClass().getResource("../PaymentsForm.fxml").openStream());
+//                                Stage stage = new Stage();
+//                                stage.setScene(new Scene(root, 650, 400));
+//                                PaymentsForm paymentsForm = fxmlLoader.getController();
+//                                paymentsForm.setController(control);
+//                                stage.show();
+//                                ArrayList<Pair> tmp = new ArrayList<>();
+//                                tmp.add(new Pair<>(Fields.VacId, item));
+//                                paymentsForm.setVacID(Integer.parseInt(item));
+//                                button.setDisable(true);
+//                            } catch (IOException x) {
+//                                x.printStackTrace();
+//                            }}
+//                    }
+//                    );
+//                        button.addEventHandler(MouseEvent.MOUSE_ENTERED,
+//                                new EventHandler<MouseEvent>() {
+//                                    @Override
+//                                    public void handle(MouseEvent e) {
+//                                        button.setEffect(new DropShadow());
+//                                        button.setStyle("-fx-background-color: cyan");
+//                                    }
+//                                });
+//                        button.addEventHandler(MouseEvent.MOUSE_EXITED,
+//                                new EventHandler<MouseEvent>() {
+//                                    @Override
+//                                    public void handle(MouseEvent e) {
+//                                        button.setEffect(null);
+//                                        button.setStyle("-fx-background-color: deepskyblue");
+//                                    }
+//                                });
+//                    setGraphic(button);
+                        Label l = new Label("Enjoy your flight!");
+                        setGraphic(l);
                     }
                 else
                     {
@@ -209,7 +225,7 @@ public class MessegeBoxView {
                         setGraphic(cb);
                     }
                 }}});
-        table.getColumns().addAll(BuyerID, SellerID, buttons, vacationID);
+        table.getColumns().addAll(BuyerID, SellerID, buttons, vacationID, mtype, vacationToTrade);
     }
 
     /**
@@ -234,5 +250,10 @@ public class MessegeBoxView {
         this.messeges = messeges;
         ObservableList<Messege> list = FXCollections.observableArrayList(this.messeges);
         table.setItems(list);
+    }
+
+
+    public void newMessageHandler(ActionEvent actionEvent) {
+
     }
 }
