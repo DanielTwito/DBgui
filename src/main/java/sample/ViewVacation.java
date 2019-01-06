@@ -3,7 +3,6 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -17,7 +16,6 @@ import sample.Enums.Fields;
 import sample.Enums.RESULT;
 import sample.Enums.Tables;
 
-import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -147,7 +145,7 @@ public class ViewVacation {
     protected void PurchaseRequest(ActionEvent event) {
 
         Alert a = new Alert(Alert.AlertType.INFORMATION);
-        warnings();
+        if(warnings() == RESULT.Fail) return;
 
         ArrayList<Pair> fields= new ArrayList<>();
         fields.add(new Pair<>("Seller",seller));
@@ -155,31 +153,33 @@ public class ViewVacation {
         fields.add(new Pair<>("VacId",VacID));
         fields.add(new Pair<>("approved","2"));
         fields.add(new Pair<>("Trade", "0"));
-        fields.add(new Pair<>("TradedVacID", ""));
+        fields.add(new Pair<>("TradedVacID", "0"));
         addRequest(fields);
         sendRequest.setDisable(true);
     }
 
-    private void warnings()
+    private RESULT warnings()
     {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if(buyer == null){
             a.setHeaderText("Please Login or Sign Up");
             a.setContentText("You must to login in order to send a request");
             a.show();
-            return;
+            return RESULT.Fail;
         }
         if(seller.equals(buyer)){
             a.setHeaderText("Error");
             a.setContentText("You can't buy a vacation from yourself!");
             a.show();
-            return;
+            return RESULT.Fail;
         }
+        return RESULT.Success;
     }
 
-    private void addRequest(ArrayList<Pair> fields)
+    private RESULT addRequest(ArrayList<Pair> fields)
     {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
+        RESULT r = RESULT.Fail;
         if(control.AddEntry(fields,Tables.PurchaseRequest) == RESULT.Fail)
         {
             a.setHeaderText("Error!");
@@ -189,13 +189,15 @@ public class ViewVacation {
         {
             a.setHeaderText("Succeeded! :)");
             a.setContentText("Your request has been sent");
+            r = RESULT.Success;
         }
         a.show();
+        return r;
     }
 
     public void tradeClick(ActionEvent actionEvent) {
 
-        warnings();
+        if(warnings() == RESULT.Fail) return;
         //String vac = vacs.getValue().toString();
         if(vacs.getValue() == null)
         {

@@ -5,22 +5,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import sample.Enums.Fields;
 import sample.Enums.RESULT;
 import sample.Enums.Tables;
 import sample.ModelLogic.Messege;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -180,7 +175,8 @@ public class MessegeBoxView {
                                     if (cb.getValue().equals("Approve")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacId, item));
-                                        r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
+                                        //r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
+                                        r = removeVacations(updating);
                                     } else if (cb.getValue().equals("Decline")) {
                                         ArrayList<Pair> updating = new ArrayList<>();
                                         updating.add(new Pair<>(Fields.VacId, item));
@@ -240,6 +236,29 @@ public class MessegeBoxView {
             if(m.getVacationID().equals(id)) return m;
         }
         return null;
+    }
+
+    private RESULT removeVacations(ArrayList<Pair> updating)
+    {
+        RESULT r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
+        if(r == RESULT.Fail)
+            return r;
+        try {
+            ArrayList<Pair> read = new ArrayList<>();
+            read.add(new Pair(Fields.VacId, updating.get(0).getValue()));
+            read.add(new Pair(Fields.approved, "1"));
+            ArrayList<HashMap<String, String>> res = control.ReadEntries(read, Tables.PurchaseRequest);
+            for (HashMap<String, String> entery : res) {
+                read.clear();
+                read.add(new Pair(Fields.VacId, entery.get("VacId")));
+                control.DeleteEntry(Tables.ListingVacation, read);
+                read.clear();
+                read.add(new Pair(Fields.VacId, entery.get("TradedVacID")));
+                control.DeleteEntry(Tables.ListingVacation, read);
+            }
+        }
+        catch(Exception e) {return RESULT.Fail;}
+        return RESULT.Success;
     }
 
     /**
