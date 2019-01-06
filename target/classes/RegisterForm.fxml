@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="mainpane" fx:id="backPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RegisterFormView">
+<AnchorPane id="mainpane" fx:id="backPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RegisterFormView">
     <children>
         <Label id="signUpTXT" alignment="CENTER" contentDisplay="CENTER" layoutX="198.0" layoutY="41.0" prefHeight="44.0" prefWidth="202.0" text="Sign Up for FREE">
             <font>
@@ -25,7 +25,8 @@
         <TextField id="city" fx:id="city" layoutX="372.0" layoutY="233.0" promptText="City of residence" />
         <Button id="imageButton" fx:id="uploadImage" layoutX="101.0" layoutY="233.0" mnemonicParsing="false" onAction="#onUploadAction" text="Upload Image" />
         <Button id="sign_up" fx:id="submit" layoutX="259.0" layoutY="311.0" mnemonicParsing="false" onAction="#SignUp" text="Sumbit" />
-        <Text id="errorTXT" fx:id="errorBoard" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="237.3367042541504" />
+        <Text id="errorTXT" fx:id="errorBoard" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="237.3367042541504" />
         <DatePicker id="birthDate" fx:id="birthdate" layoutX="374.0" layoutY="271.0" onAction="#OnAction" prefHeight="26.0" prefWidth="149.0" promptText="Date of Birth" />
+      <Label layoutX="17.0" layoutY="258.0" prefHeight="26.0" prefWidth="202.0" text="Image is optional for the prototype" />
     </children>
 </AnchorPane>

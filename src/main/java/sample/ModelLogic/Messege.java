@@ -1,5 +1,6 @@
 package sample.ModelLogic;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -27,6 +28,8 @@ public class Messege {
     private StringProperty buyer;
     private StringProperty seller;
     private StringProperty VacIDnSeller;
+    private StringProperty info;
+    private IntegerProperty vacationToTrade;
 
     /**
      * returns the VacIDnSeller variable as String
@@ -46,12 +49,17 @@ public class Messege {
 
     public Messege() { }
 
-    public Messege(IntegerProperty messege, StringProperty VacationID, StringProperty buyer, StringProperty seller) {
+    public Messege(IntegerProperty messege, StringProperty VacationID, StringProperty buyer, StringProperty seller, BooleanProperty trade, IntegerProperty vacTT) {
         this.messege = messege;
         this.VacationID = VacationID;
         this.buyer = buyer;
         this.seller = seller;
+        this.vacationToTrade = vacTT;
         this.VacIDnSeller = new SimpleStringProperty(VacationID.toString()+","+seller.toString());
+        if(trade.getValue())
+            info = new SimpleStringProperty("New Trade Request");
+        else
+            info = new SimpleStringProperty("New Purchase Request");
     }
 
     /**
@@ -96,5 +104,29 @@ public class Messege {
      */
     public void setVacationID(String VacationID) {
         this.VacationID.set(VacationID);
+    }
+
+    public String getInfo() {
+        return info.get();
+    }
+
+    public StringProperty infoProperty() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info.set(info);
+    }
+
+    public int getVacationToTrade() {
+        return vacationToTrade.get();
+    }
+
+    public IntegerProperty vacationToTradeProperty() {
+        return vacationToTrade;
+    }
+
+    public void setVacationToTrade(int vacationToTrade) {
+        this.vacationToTrade.set(vacationToTrade);
     }
 }

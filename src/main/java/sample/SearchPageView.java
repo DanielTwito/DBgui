@@ -4,6 +4,7 @@
  */
 package sample;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -71,6 +72,9 @@ public class SearchPageView {
     @FXML
     public void initialize(){
         toSreach = "";
+        Tooltip t = new Tooltip();
+        t.setText("You can search by Destination or Vacation ID!");
+        simpleSearch.setTooltip(t);
         logo.setImage(new Image(getClass().getClassLoader().getResourceAsStream("vacation_logo.png")));
         BackgroundImage myBI= new BackgroundImage(
                 new Image(getClass().getClassLoader().getResourceAsStream("background.JPG"),
@@ -129,7 +133,7 @@ public class SearchPageView {
             l.add(new VacationListing(new SimpleStringProperty(paired.get("destination").toString().toUpperCase(Locale.US)),
                     new SimpleStringProperty(paired.get("FlightDate")),
                     new SimpleIntegerProperty(Integer.parseInt(paired.get("price"))),
-                    new SimpleBooleanProperty(paired.get("Connection").equals("1")?true:false),
+                    new SimpleBooleanProperty(paired.get("Tradeable").equals("1")?true:false),
                     new SimpleStringProperty(paired.get("VacID"))));
         }
         //vacid = Double.parseDouble(ResList.get(ResList.size()-1).get("VacID"));
@@ -164,7 +168,7 @@ public class SearchPageView {
 
         dates = new TableColumn<VacationListing, String>("Date");
 
-        connections = new TableColumn<VacationListing, Boolean>("Connection");
+        connections = new TableColumn<VacationListing, Boolean>("Accepts Trades");
 
         prices = new TableColumn<VacationListing, String>("Price");
 
@@ -176,7 +180,7 @@ public class SearchPageView {
         dests.setPrefWidth(100);
         dates.setCellValueFactory(new PropertyValueFactory<>("date"));
         dates.setPrefWidth(100);
-        connections.setCellValueFactory(new PropertyValueFactory<>("isConnection"));
+        connections.setCellValueFactory(new PropertyValueFactory<>("Tradeable"));
         connections.setCellFactory(col -> new TableCell<VacationListing, Boolean>() {
             ImageView im = new ImageView();
             {
@@ -299,8 +303,20 @@ public class SearchPageView {
      */
     public void OnTextChanged() {
         ArrayList<Pair> searchqry = new ArrayList<>();
-        toSreach = toSreach.toLowerCase();
-        searchqry.add(new Pair(Fields.destination, toSreach));
+        boolean isNum = true;
+        try
+        {
+            Integer.parseInt(toSreach);
+        }
+        catch(Exception e)
+        {
+            isNum = false;
+        }
+        if(!isNum) {
+            toSreach = toSreach.toLowerCase();
+            searchqry.add(new Pair(Fields.destination, toSreach));
+        }
+        else { searchqry.add(new Pair(Fields.VacId, toSreach)); }
         ArrayList<HashMap<String, String>> ResList = control.ReadEntries(searchqry, Tables.ListingVacation);
         ObservableList<VacationListing> list = FXCollections.observableArrayList(getVacationList(ResList, false));
         table.setItems(list);
@@ -438,7 +454,9 @@ public class SearchPageView {
             user.addToMailBox(new Messege(new SimpleIntegerProperty(Integer.parseInt(resEntry.get("approved"))),
                     new SimpleStringProperty(resEntry.get("VacId")),
                     new SimpleStringProperty(resEntry.get("Buyer")),
-                    new SimpleStringProperty(resEntry.get("Seller"))));
+                    new SimpleStringProperty(resEntry.get("Seller")),
+                    new SimpleBooleanProperty(resEntry.get("Trade").equals("1")?true:false),
+                    new SimpleIntegerProperty(Integer.parseInt(resEntry.get("TradedVacID")))));
         }
     }
 
@@ -510,4 +528,5 @@ public class SearchPageView {
         System.out.println("MailBox Service Stopped, please wait for the service to safely terminate");
         messagesService = false;
     }
+
 }

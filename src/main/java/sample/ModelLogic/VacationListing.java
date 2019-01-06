@@ -8,7 +8,7 @@ public class VacationListing {
     private StringProperty dest;
     private StringProperty date;
     private IntegerProperty price;
-    private BooleanProperty isConnection;
+    private BooleanProperty Tradeable;
 
     public void setVacID(String vacID) {
         this.VacID.set(vacID);
@@ -24,11 +24,11 @@ public class VacationListing {
 
     private StringProperty VacID;
 
-    public VacationListing(StringProperty dest, StringProperty date, IntegerProperty price, BooleanProperty isConnection, StringProperty VacID) {
+    public VacationListing(StringProperty dest, StringProperty date, IntegerProperty price, BooleanProperty Tradeable, StringProperty VacID) {
         this.dest = dest;
         this.date = date;
         this.price = price;
-        this.isConnection = isConnection;
+        this.Tradeable = Tradeable;
         this.VacID = VacID;
     }
 
@@ -38,7 +38,7 @@ public class VacationListing {
                 "dest=" + dest +
                 ", date=" + date +
                 ", price=" + price +
-                ", isConnection=" + isConnection +
+                ", Tradeable=" + Tradeable +
                 ", VacID="+VacID+'}';
     }
     public void setDest(String dest) {
@@ -54,7 +54,7 @@ public class VacationListing {
     }
 
     public void setIsConnection(boolean isConnection) {
-        this.isConnection.set(isConnection);
+        this.Tradeable.set(isConnection);
     }
 
     public String getDest() {
@@ -81,11 +81,11 @@ public class VacationListing {
         return price;
     }
 
-    public boolean isIsConnection() {
-        return isConnection.get();
+    public boolean getTradeable() {
+        return Tradeable.get();
     }
 
-    public BooleanProperty isConnectionProperty() {
-        return isConnection;
+    public BooleanProperty TradeableProperty() {
+        return Tradeable;
     }
 }

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +17,7 @@ import sample.Enums.Fields;
 import sample.Enums.RESULT;
 import sample.Enums.Tables;
 
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,6 +30,8 @@ public class ViewVacation {
 
     private String buyer;
 
+    @FXML
+    ComboBox vacs;
     @FXML
     AnchorPane backPane;
     @FXML
@@ -62,6 +66,8 @@ public class ViewVacation {
     private Text sellerName;
     @FXML
     private Button sendRequest;
+    @FXML
+    private  Button tradebtn;
 
     private ArrayList<Text> txtList = new ArrayList<>();
 
@@ -74,6 +80,7 @@ public class ViewVacation {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         backPane.setBackground(new Background(myBI));
+        tradebtn.setDisable(true);
     }
 
     public void setControl(Controller control)
@@ -112,6 +119,8 @@ public class ViewVacation {
         price.setText(vacationDetails.get("price"));
         withConnection.setText(vacationDetails.get("Connection"));
         seller =vacationDetails.get("Seller");
+        if(vacationDetails.get("Tradeable").equals(("1")))
+            tradebtn.setDisable(false);
         sellerName.setText(seller);
         sendRequest.setStyle("-fx-background-color: deepskyblue");
         sendRequest.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -138,6 +147,22 @@ public class ViewVacation {
     protected void PurchaseRequest(ActionEvent event) {
 
         Alert a = new Alert(Alert.AlertType.INFORMATION);
+        warnings();
+
+        ArrayList<Pair> fields= new ArrayList<>();
+        fields.add(new Pair<>("Seller",seller));
+        fields.add(new Pair<>("Buyer",buyer));
+        fields.add(new Pair<>("VacId",VacID));
+        fields.add(new Pair<>("approved","2"));
+        fields.add(new Pair<>("Trade", "0"));
+        fields.add(new Pair<>("TradedVacID", ""));
+        addRequest(fields);
+        sendRequest.setDisable(true);
+    }
+
+    private void warnings()
+    {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
         if(buyer == null){
             a.setHeaderText("Please Login or Sign Up");
             a.setContentText("You must to login in order to send a request");
@@ -150,21 +175,11 @@ public class ViewVacation {
             a.show();
             return;
         }
+    }
 
-        ArrayList<Pair> fields= new ArrayList<>();
-        fields.add(new Pair<>("Seller",seller));
-        fields.add(new Pair<>("Buyer",buyer));
-        fields.add(new Pair<>("VacId",VacID));
-        fields.add(new Pair<>("approved","2"));
-//        if(control.ReadEntries(fields,Tables.PurchaseRequest).size() != 0) {
-//            a.setHeaderText("Error!");
-//            a.setContentText("You already submitted a purchase  request for this vacation\n Please be patient until the seller will send you a response.");
-//        }else{
-//            a.setHeaderText("Succeeded! :)");
-//            control.AddEntry(fields,Tables.PurchaseRequest);
-//            a.setContentText("Your request has been sent");
-//        }
-
+    private void addRequest(ArrayList<Pair> fields)
+    {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
         if(control.AddEntry(fields,Tables.PurchaseRequest) == RESULT.Fail)
         {
             a.setHeaderText("Error!");
@@ -176,6 +191,44 @@ public class ViewVacation {
             a.setContentText("Your request has been sent");
         }
         a.show();
-        sendRequest.setDisable(true);
+    }
+
+    public void tradeClick(ActionEvent actionEvent) {
+
+        warnings();
+        //String vac = vacs.getValue().toString();
+        if(vacs.getValue() == null)
+        {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("No vacation selected");
+            a.setHeaderText("No Vacation selected to trade");
+            a.setContentText("No vacation ID was selected to trade.\n" +
+                    "Please select a Vacation you would like to trade with this seller.");
+            a.show();
+            return;
+        }
+        String s = vacs.getValue().toString();
+        ArrayList<Pair> fields= new ArrayList<>();
+        fields.add(new Pair<>("Seller",seller));
+        fields.add(new Pair<>("Buyer",buyer));
+        fields.add(new Pair<>("VacId",VacID));
+        fields.add(new Pair<>("approved","2"));
+        fields.add(new Pair<>("Trade", "1"));
+        fields.add(new Pair<>("TradedVacID", vacs.getValue()));
+        addRequest(fields);
+
+        tradebtn.setDisable(true);
+    }
+
+    public void showVacs(MouseEvent mouseEvent) {
+        if(vacs.getItems().size() > 0) return;
+        ArrayList<Pair> fields = new ArrayList<>();
+        fields.add(new Pair<>(Fields.Seller, buyer));
+        ArrayList<HashMap<String, String>> res = control.ReadEntries(fields,Tables.ListingVacation);
+        for (HashMap<String, String> entery : res)
+        {
+            String s = entery.get("VacID");
+            vacs.getItems().add(s);
+        }
     }
 }
