@@ -4,7 +4,6 @@
  */
 package sample;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -242,7 +241,12 @@ public class SearchPageView {
                                 viewvacation.setBuyer(user == null? null: user.getUserName());
 //                                viewvacation.setBuyer();
                             } catch (IOException x) {
-                                x.printStackTrace();
+//                                x.printStackTrace();
+                                Alert a = new Alert(Alert.AlertType.ERROR);
+                                a.setTitle("Vacation not found");
+                                a.setContentText("The selected vacation was not found");
+                                a.setHeaderText("Vacation not found");
+                                a.show();
                             }
                         }
                     });

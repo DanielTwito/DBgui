@@ -243,7 +243,8 @@ public class MessegeBoxView {
         RESULT r = control.UpdateEntries(Tables.PurchaseRequest, Fields.approved, "1", updating);
         if(r == RESULT.Fail)
             return r;
-        try {
+        try
+        {
             ArrayList<Pair> read = new ArrayList<>();
             read.add(new Pair(Fields.VacId, updating.get(0).getValue()));
             read.add(new Pair(Fields.approved, "1"));

@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SearchPageView">
+<AnchorPane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SearchPageView">
    <children>
       <GridPane alignment="CENTER" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1000.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
         <columnConstraints>
@@ -105,6 +105,14 @@
                <font>
                   <Font name="Verdana" size="11.0" />
                </font>
+            </Label>
+            <Label prefHeight="35.0" prefWidth="111.0" style="-fx-text-fill: #3388DD;" text="EVERY" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Harrington" size="21.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="200.0" />
+               </GridPane.margin>
             </Label>
          </children>
       </GridPane>

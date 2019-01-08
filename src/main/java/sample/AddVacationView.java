@@ -134,6 +134,11 @@ public class AddVacationView {
 
         if (startD != null && endD != null && Period.between(endD, startD).getDays() > 0) {
             msg.append("vacation return date must be later then departure date \n");}
+        int x = Period.between(LocalDate.now(), startD).getDays();
+        int y = Period.between(LocalDate.now(), endD).getDays();
+        if(startD != null && endD != null && (Period.between(LocalDate.now(), startD).getDays() < 0 || Period.between(LocalDate.now(), endD).getDays() < 0)){
+            msg.append("vacation return be later then today \n");
+        }
         if(Babyamount.getValue()+ChildAmount.getValue()+adultAmount.getValue()==0){
             msg.append("there must be at least 1 passanger \n");}
 

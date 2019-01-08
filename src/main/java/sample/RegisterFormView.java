@@ -19,8 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -117,7 +117,8 @@ public class RegisterFormView {
             errorBoard.setText(errortext.toString());
             return;
         }
-        if (ld != null && Period.between(LocalDate.now(), ld).getYears() > 18)//checks if user age in null
+        long x = LocalDate.from(ld).until(LocalDate.now(), ChronoUnit.YEARS);
+        if (ld != null && x < 18)//checks if user age in null
             errortext.append("all users must be over 18 years old. \n");
         // checks if username already in db
         ArrayList<Pair> tmp1 = new ArrayList<>();
