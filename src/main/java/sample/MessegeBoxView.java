@@ -16,6 +16,7 @@ import sample.ModelLogic.Messege;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -40,6 +41,7 @@ public class MessegeBoxView {
     TableColumn<Messege, String> vacationToTrade;
     int indexMessege;
     int indexMessege2;
+    HashSet<String> vacs = new HashSet<>();
 
     /**
      * initialize the MessageBox variables
@@ -111,6 +113,9 @@ public class MessegeBoxView {
                     setGraphic(null);}
                 else {
                     Messege m = getMsgByID(item);
+                    String vacID = m.getVacationID();
+                    if(!vacs.contains(vacID))
+                        vacs.add(vacID);
                     if(m.getBuyer().equals(user))
                     {
                         if(m.getMessege() == 0)
@@ -222,6 +227,27 @@ public class MessegeBoxView {
                     }
                 }}});
         table.getColumns().addAll(BuyerID, SellerID, buttons, vacationID, mtype, vacationToTrade);
+        Thread t = new Thread(this::deleteMSGs);
+        t.start();
+    }
+
+    private void deleteMSGs()
+    {
+        System.out.println("DELETING MESSAGES");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) { }
+        ArrayList<Pair> args = new ArrayList<>();
+        for (String vID: vacs)
+        {
+            args.add(new Pair(Fields.VacId, vID));
+            args.add(new Pair(Fields.Buyer, user));
+            RESULT r = control.DeleteEntry(Tables.PurchaseRequest, args);
+            if(r == RESULT.Fail)
+            {
+                return;
+            }
+        }
     }
 
     /**
